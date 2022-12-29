@@ -73,7 +73,7 @@
 						<!-- Configures the content of the created manifest -->
 						<manifest></manifest>
 						<manifestEntries>
-							<Plugin-Class>com.fathzer.plugin.loader.example.plugin.MyPlugin</Plugin-Class>
+							<Plugin-Class>com.fathzer.jchess.chesslib.ChessLibEngine</Plugin-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -84,12 +84,6 @@
 				<configuration>
 					<finalName>${customized.jar.name}</finalName>
 					<minimizeJar>true</minimizeJar>
-					<!--
-					<transformers>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>com.fathzer.plugin.loader.example.App</mainClass>
-						</transformer>
-					</transformers>-->
 				</configuration>
 				<executions>
 					<execution>
