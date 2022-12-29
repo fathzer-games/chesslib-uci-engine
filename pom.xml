@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>chesslib-uci-engine</groupId>
+	<groupId>com.fathzer</groupId>
 	<artifactId>chesslib-uci-engine</artifactId>
 	<version>0.0.1</version>
 
@@ -99,6 +99,22 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Prevent maven from deploying the produced files to local repository -->
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>3.0.1</version> <!-- IMPORTANT: versions previous 2.4 ignore skip configuration -->
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<!-- Prevent maven from deploying the produced files -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
