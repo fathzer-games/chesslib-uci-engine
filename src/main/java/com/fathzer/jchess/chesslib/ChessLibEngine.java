@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.fathzer.games.ai.GameContext;
+import com.fathzer.games.ai.MoveGenerator;
 import com.fathzer.games.perft.PerfT;
 import com.fathzer.games.perft.Divide;
 import com.fathzer.jchess.uci.Engine;
@@ -31,8 +31,8 @@ public class ChessLibEngine implements Engine {
 		return "Jean-Marc Astesana (Fathzer)";
 	}
 	
-	private Supplier<GameContext<Move>> getContextBuilder() {
-		return ()-> new ChessLibGameContext(b->0, (com.github.bhlangonijr.chesslib.Board)board);
+	private Supplier<MoveGenerator<Move>> getContextBuilder() {
+		return ()-> new ChessLibMoveGenerator((com.github.bhlangonijr.chesslib.Board)board);
 	}
 	
 	@Override

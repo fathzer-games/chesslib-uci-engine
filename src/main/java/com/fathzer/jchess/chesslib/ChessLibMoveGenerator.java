@@ -2,21 +2,18 @@ package com.fathzer.jchess.chesslib;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.ToIntFunction;
 
 import com.fathzer.games.GameState;
 import com.fathzer.games.Status;
-import com.fathzer.games.ai.GameContext;
+import com.fathzer.games.ai.MoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibGameContext implements GameContext<Move> {
-	private ToIntFunction<Board> evaluator;
+public class ChessLibMoveGenerator implements MoveGenerator<Move> {
 	private Board board;
 	
-	public ChessLibGameContext(ToIntFunction<Board> evaluator, Board board) {
-		this.evaluator = evaluator;
+	public ChessLibMoveGenerator(Board board) {
 		this.board = board.clone();
 	}
 	
@@ -27,7 +24,6 @@ public class ChessLibGameContext implements GameContext<Move> {
 	
 	@Override
 	public void unmakeMove() {
-//System.out.println("Unmake move "+move+" on thread "+Thread.currentThread()+" at depth "+currentDepth);
 		board.undoMove();
 	}
 	
@@ -66,10 +62,5 @@ public class ChessLibGameContext implements GameContext<Move> {
 				return moves.iterator();
 			}
 		}; 
-	}
-
-	@Override
-	public int evaluate() {
-		return -evaluator.applyAsInt(board);
 	}
 }
