@@ -1,23 +1,17 @@
 package com.fathzer.jchess.chesslib;
 
-import java.util.Collection;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import com.fathzer.games.ai.MoveGenerator;
-import com.fathzer.games.perft.PerfT;
-import com.fathzer.games.perft.Divide;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.LongRunningTask;
+import com.fathzer.jchess.uci.UCIMoveGeneratorProvider;
 import com.fathzer.jchess.uci.UCIMove;
+import com.fathzer.jchess.uci.UCIMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibEngine implements Engine {
+public class ChessLibEngine implements Engine, UCIMoveGeneratorProvider<Move> {
 	public static final Engine INSTANCE = new ChessLibEngine();
 	private Board board;
 	
@@ -29,10 +23,6 @@ public class ChessLibEngine implements Engine {
 	@Override
 	public String getAuthor() {
 		return "Jean-Marc Astesana (Fathzer)";
-	}
-	
-	private Supplier<MoveGenerator<Move>> getContextBuilder() {
-		return ()-> new ChessLibMoveGenerator((com.github.bhlangonijr.chesslib.Board)board);
 	}
 	
 	@Override
@@ -61,29 +51,10 @@ public class ChessLibEngine implements Engine {
 	}
 	
 	@Override
-	public LongRunningTask<Collection<Divide<UCIMove>>> divide(int depth, int parallelism) {
-		final PerfT<Move> perft = new PerfT<>(getContextBuilder());
-		perft.setParallelism(parallelism);
-		return new LongRunningTask<>() {
-			@Override
-			public Collection<Divide<UCIMove>> get() {
-				final Function<Divide<Move>, Divide<UCIMove>> mapper = d -> new Divide<>(toMove(d.getMove()), d.getCount());
-				return perft.divide(depth).stream().map(mapper).collect(Collectors.toList());
-			}
-
-			@Override
-			public void stop() {
-				super.stop();
-				perft.interrupt();
-			}
-		};
+	public UCIMoveGenerator<Move> getMoveGenerator() {
+		return new ChessLibMoveGenerator((com.github.bhlangonijr.chesslib.Board)board);
 	}
 	
-	private UCIMove toMove(Move move) {
-		final String fenSymbol = Piece.NONE.equals(move.getPromotion()) ? null : move.getPromotion().getFenSymbol().toLowerCase();
-		return new UCIMove(move.getFrom().name().toLowerCase(), move.getTo().name().toLowerCase(), fenSymbol);
-	}
-
 	@Override
 	public String getBoardAsString() {
 		return board==null ? "no position defined" : board.toString();
