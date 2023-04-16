@@ -13,23 +13,6 @@
 		<connection>https://github.com/fathzer-games/chesslib-uci-engine.git</connection>
 	</scm>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>Fathzer</id>
-			<name>Jean-Marc Astesana</name>
-			<email>admin@fathzer.com</email>
-		</developer>
-	</developers>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -64,20 +47,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<archive>
-						<!-- Configures the content of the created manifest -->
-						<manifest></manifest>
-						<manifestEntries>
-							<Plugin-Class>com.fathzer.jchess.chesslib.ChessLibEngine</Plugin-Class>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>3.4.1</version>
