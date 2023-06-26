@@ -4,16 +4,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.fathzer.games.GameState;
+import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.ZobristProvider;
 import com.fathzer.games.Status;
-import com.fathzer.jchess.uci.UCIMove;
-import com.fathzer.jchess.uci.UCIMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibMoveGenerator implements UCIMoveGenerator<Move>, ZobristProvider {
+public class ChessLibMoveGenerator implements MoveGenerator<Move>, ZobristProvider {
 	private Board board;
 	
 	public ChessLibMoveGenerator(Board board) {
@@ -65,12 +63,6 @@ public class ChessLibMoveGenerator implements UCIMoveGenerator<Move>, ZobristPro
 				return moves.iterator();
 			}
 		}; 
-	}
-	
-	@Override
-	public UCIMove toUCI(Move move) {
-		final String fenSymbol = Piece.NONE.equals(move.getPromotion()) ? null : move.getPromotion().getFenSymbol().toLowerCase();
-		return new UCIMove(move.getFrom().name().toLowerCase(), move.getTo().name().toLowerCase(), fenSymbol);
 	}
 	
 	@Override

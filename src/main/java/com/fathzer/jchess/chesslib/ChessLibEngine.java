@@ -1,17 +1,19 @@
 package com.fathzer.jchess.chesslib;
 
+import com.fathzer.games.MoveGenerator;
+import com.fathzer.games.perft.TestableMoveGeneratorSupplier;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.LongRunningTask;
-import com.fathzer.jchess.uci.UCIMoveGeneratorProvider;
+import com.fathzer.jchess.uci.MoveGeneratorSupplier;
+import com.fathzer.jchess.uci.MoveToUCIConverter;
 import com.fathzer.jchess.uci.UCIMove;
-import com.fathzer.jchess.uci.UCIMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibEngine implements Engine, UCIMoveGeneratorProvider<Move> {
+public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Move>, MoveGeneratorSupplier<Move>, MoveToUCIConverter<Move> {
 	public static final Engine INSTANCE = new ChessLibEngine();
 	private Board board;
 	
@@ -40,7 +42,7 @@ public class ChessLibEngine implements Engine, UCIMoveGeneratorProvider<Move> {
 	}
 
 	@Override
-	public void setFEN(String fen) {
+	public void setStartPosition(String fen) {
 		board = new Board();
 		board.loadFromFen(fen);
 	}
@@ -51,8 +53,14 @@ public class ChessLibEngine implements Engine, UCIMoveGeneratorProvider<Move> {
 	}
 	
 	@Override
-	public UCIMoveGenerator<Move> getMoveGenerator() {
+	public MoveGenerator<Move> get() {
 		return new ChessLibMoveGenerator((com.github.bhlangonijr.chesslib.Board)board);
+	}
+	
+	@Override
+	public String toUCI(Move move) {
+		final String fenSymbol = Piece.NONE.equals(move.getPromotion()) ? null : move.getPromotion().getFenSymbol().toLowerCase();
+		return new UCIMove(move.getFrom().name().toLowerCase(), move.getTo().name().toLowerCase(), fenSymbol).toString();
 	}
 	
 	@Override
