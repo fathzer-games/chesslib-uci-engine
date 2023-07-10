@@ -1,9 +1,7 @@
 package com.fathzer.jchess.chesslib;
 
-import java.util.Iterator;
 import java.util.List;
 
-import com.fathzer.games.GameState;
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.ZobristProvider;
 import com.fathzer.games.Status;
@@ -29,40 +27,16 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, ZobristProvid
 	}
 	
 	@Override
-	public GameState<Move> getState() {
-		final List<Move> moves = board.legalMoves();
-		final Status status;
-		if (moves.isEmpty()) {
-			final boolean isCheck = board.isKingAttacked();
-			if (isCheck) {
-				status = Side.BLACK.equals(board.getSideToMove()) ? Status.WHITE_WON : Status.BLACK_WON;
-			} else {
-				status = Status.DRAW;
-			}
-		} else {
-			status = Status.PLAYING;
+	public List<Move> getMoves() {
+		return board.legalMoves();
+	}
+
+	@Override
+	public Status getStatus() {
+		if (board.isMated()) {
+			return Side.BLACK.equals(board.getSideToMove()) ? Status.WHITE_WON : Status.BLACK_WON;
 		}
-		return new GameState<Move>() {
-			@Override
-			public Status getStatus() {
-				return status;
-			}
-
-			@Override
-			public int size() {
-				return moves.size();
-			}
-
-			@Override
-			public Move get(int index) {
-				return moves.get(index);
-			}
-
-			@Override
-			public Iterator<Move> iterator() {
-				return moves.iterator();
-			}
-		}; 
+		return board.isDraw() ? Status.DRAW : Status.PLAYING;
 	}
 	
 	@Override

@@ -54,7 +54,7 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	
 	@Override
 	public MoveGenerator<Move> get() {
-		return new ChessLibMoveGenerator((com.github.bhlangonijr.chesslib.Board)board);
+		return new ChessLibMoveGenerator(board);
 	}
 	
 	@Override
