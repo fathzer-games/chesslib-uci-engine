@@ -3,13 +3,13 @@ package com.fathzer.jchess.chesslib;
 import java.util.List;
 
 import com.fathzer.games.MoveGenerator;
-import com.fathzer.games.ZobristProvider;
+import com.fathzer.games.HashProvider;
 import com.fathzer.games.Status;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibMoveGenerator implements MoveGenerator<Move>, ZobristProvider {
+public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider {
 	private Board board;
 	
 	public ChessLibMoveGenerator(Board board) {
@@ -40,7 +40,7 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, ZobristProvid
 	}
 	
 	@Override
-	public long getZobristKey() {
+	public long getHashKey() {
 		return board.getZobristKey();
 	}
 }
