@@ -22,6 +22,7 @@
 		<check-dependencies-java-version>11</check-dependencies-java-version>
 	    <maven.compiler.release>11</maven.compiler.release>
 		<sonar.organization>fathzer-games</sonar.organization>
+		<customized.jar.name>chesslib-uci-engine</customized.jar.name>
 	</properties>
 
 	<repositories>
@@ -43,15 +44,30 @@
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.7</version>
+		</dependency>
+		<dependency>
 			<groupId>com.fathzer</groupId>
 			<artifactId>jchess-uci</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.7.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fathzer</groupId>
+			<artifactId>jchess-perft-dataset</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>2.0.7</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -64,6 +80,12 @@
 				<configuration>
 					<finalName>${customized.jar.name}</finalName>
 					<minimizeJar>true</minimizeJar>
+					<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>com.fathzer.jchess.chesslib.uci.Main</mainClass>
+						</transformer>
+					</transformers>
 				</configuration>
 				<executions>
 					<execution>

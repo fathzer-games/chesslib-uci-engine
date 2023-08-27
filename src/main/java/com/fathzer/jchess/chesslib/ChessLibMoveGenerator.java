@@ -43,4 +43,8 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	public long getHashKey() {
 		return board.getZobristKey();
 	}
+	
+	public Board getBoard() {
+		return this.board; 
+	}
 }
