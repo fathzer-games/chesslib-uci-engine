@@ -25,12 +25,12 @@ public class BasicMoveComparator implements Comparator<Move> {
 
 	public int getValue(Move m) {
 		final PieceType promotion = m.getPromotion().getPieceType();
-		int value = promotion==null ? 0 : PIECE_VALUE.get(promotion);
+		int value = promotion==null ? 0 : (PIECE_VALUE.get(promotion)-1)*16;
 		final PieceType caught = board.getBoard().getPiece(m.getTo()).getPieceType();
 		if (caught==null) {
 			return value;
 		} else {
-			value += 64 + PIECE_VALUE.get(caught);
+			value += PIECE_VALUE.get(caught)*16;
 			final PieceType catching = board.getBoard().getPiece(m.getFrom()).getPieceType();
 			return value - (catching==PieceType.KING ? 10 : PIECE_VALUE.get(catching));
 		}

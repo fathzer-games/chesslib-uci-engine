@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.fathzer.games.ai.transposition.SizeUnit;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
@@ -11,7 +12,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 class TranspositionTableTest {
 	@Test
 	void test() {
-		TT tt = new TT(1);
+		TT tt = new TT(1, SizeUnit.KB);
 		Move mv = new Move(Square.D7,Square.D8, Piece.WHITE_QUEEN);
 		Move other = tt.toMove(tt.toInt(mv));
 		assertEquals(Square.D7, other.getFrom());

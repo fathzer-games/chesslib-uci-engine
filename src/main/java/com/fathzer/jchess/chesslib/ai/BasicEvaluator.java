@@ -25,7 +25,7 @@ public class BasicEvaluator implements Evaluator<ChessLibMoveGenerator> {
 		map.put(PieceType.BISHOP, 3);
 		map.put(PieceType.KNIGHT, 3);
 		map.put(PieceType.PAWN, 1);
-		map.put(PieceType.KING, 100);
+		map.put(PieceType.KING, 1000);
 		PIECE_VALUE = Collections.unmodifiableMap(map);
 	}
 	

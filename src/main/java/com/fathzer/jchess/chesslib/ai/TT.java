@@ -1,6 +1,7 @@
 package com.fathzer.jchess.chesslib.ai;
 
 import com.fathzer.games.ai.transposition.OneLongEntryTranspositionTable;
+import com.fathzer.games.ai.transposition.SizeUnit;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
@@ -15,8 +16,8 @@ class TT extends OneLongEntryTranspositionTable<Move> {
 	private static final int TO_OFFSET = 12;
 	private static final int PROMOTION_OFFSET = 24;
 	
-	public TT(int sizeInMB) {
-		super(sizeInMB);
+	public TT(int size, SizeUnit unit) {
+		super(size, unit);
 	}
 
 	@Override
