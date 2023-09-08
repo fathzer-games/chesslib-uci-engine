@@ -13,11 +13,11 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 class DefaultLogger implements EventLogger<Move> {
 	private static final Logger log = LoggerFactory.getLogger(DefaultLogger.class);
-	private final int parallelism;
+	private final InternalEngine engine;
 
-	DefaultLogger(int parallelism) {
+	DefaultLogger(InternalEngine engine) {
 		super();
-		this.parallelism = parallelism;
+		this.engine = engine;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ class DefaultLogger implements EventLogger<Move> {
 		final List<EvaluatedMove<Move>> cut = bestMoves.getCut();
 		log.info("{} move generations, {} moves generated, {} moves played, {} evaluations for {} moves at depth {} by {} threads in {}ms -> {}",
 				stat.getMoveGenerationCount(), stat.getGeneratedMoveCount(), stat.getMovePlayedCount(), stat.getEvaluationCount(), bestMoves.getList().size(),
-				depth, parallelism, duration, cut.isEmpty()?null:cut.get(0).getEvaluation());
+				depth, engine.getParallelism(), duration, cut.isEmpty()?null:cut.get(0).getEvaluation());
 		log.info("Search at depth {} returns: {}", depth, bestMoves.getCut());
 	}
 

@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fathzer.games.Color;
-import com.fathzer.games.ai.Negamax;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.exec.ExecutionContext;
@@ -32,10 +31,10 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	private Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorSupplier;
 	
 	public InternalEngine(Evaluator<ChessLibMoveGenerator> evaluator , int maxDepth) {
-		super(evaluator, maxDepth, new TT(512, SizeUnit.MB));
+		super(evaluator, maxDepth, new TT(16, SizeUnit.MB));
 		setDeepeningPolicyBuilder(() -> new ChessLibDeepeningPolicy(getMaxTime()));
 		moveComparatorSupplier = BasicMoveComparator::new;
-		setLogger(new DefaultLogger(getParallelism()));
+		setLogger(new DefaultLogger(this));
 	}
 	
 	public void setMoveComparatorSupplier(Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorSupplier) {
@@ -44,25 +43,17 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 
 	@Override
 	protected ExecutionContext<Move, ChessLibMoveGenerator> buildExecutionContext(ChessLibMoveGenerator board) {
+		board.setMoveComparator(moveComparatorSupplier.apply(board));
 		if (getParallelism()==1) {
 			return new SingleThreadContext<>(board);
 		} else {
-			final Supplier<ChessLibMoveGenerator> supplier = () -> new ChessLibMoveGenerator(board.getBoard());
+			final Supplier<ChessLibMoveGenerator> supplier = () -> {
+				final ChessLibMoveGenerator mg = new ChessLibMoveGenerator(board.getBoard());
+				mg.setMoveComparator(moveComparatorSupplier.apply(mg));
+				return mg;
+			};
 			return new MultiThreadsContext<>(supplier, new ContextualizedExecutor<>(getParallelism()));
 		}
-	}
-
-	@Override
-	protected Negamax<Move, ChessLibMoveGenerator> buildNegaMax(ExecutionContext<Move, ChessLibMoveGenerator> context, Evaluator<ChessLibMoveGenerator> evaluator) {
-		return new Negamax<>(context, evaluator) {
-			@Override
-			public List<Move> sort(List<Move> moves) {
-				final ChessLibMoveGenerator b = getGamePosition();
-				final Comparator<Move> cmp = moveComparatorSupplier.apply(b);
-				moves.sort(cmp);
-				return moves;
-			}
-		};
 	}
 
 	@Override

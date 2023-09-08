@@ -27,7 +27,6 @@ final class ChessLibDeepeningPolicy implements DeepeningPolicy {
 		if (depth<5 || spent<maxTime/3) {
 			return DeepeningPolicy.super.getMovesToDeepen(depth, evaluations, ended);
 		} else {
-//			log.info("{}ms seems not enough to deepen the search",spent);
 			return Collections.emptyList();
 		}
 	}

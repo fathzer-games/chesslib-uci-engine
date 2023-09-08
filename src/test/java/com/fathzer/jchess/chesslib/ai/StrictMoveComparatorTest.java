@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.fathzer.jchess.chesslib.ai.MinimaxEngineTest.fromFEN;
 import static com.github.bhlangonijr.chesslib.Square.*;
@@ -47,7 +48,12 @@ class StrictMoveComparatorTest {
 		final Move knightCaught = new Move(Square.B2, Square.B3);
 		final Move pawnAdvance = new Move(Square.H6, Square.H5);
 
-		assertEquals(Arrays.asList(queenPromo, rookPromo, knightCaught, bishopPromo, knightPromo, pawnAdvance), moves);
+		
+		final List<Move> expected = Arrays.asList(queenPromo, rookPromo, knightCaught, bishopPromo, knightPromo, pawnAdvance);
+		// Warning, move generator can return pseudo legal moves that should be ignored in sorting comparison
+		// in order to not have to rewrite test when generator changes from pseudo legals to strictly legal moves
+		moves = moves.stream().filter(expected::contains).collect(Collectors.toList());
+		assertEquals(expected, moves);
 		
 		assertTrue(cmp.compare(bishopPromo,rookPromo)>0);
 		assertTrue(cmp.compare(knightPromo, bishopPromo)>0);
