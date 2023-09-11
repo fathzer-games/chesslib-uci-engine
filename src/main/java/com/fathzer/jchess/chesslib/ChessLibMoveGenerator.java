@@ -61,4 +61,18 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	public void setMoveComparator(Comparator<Move> comparator) {
 		this.comparator = comparator;
 	}
+
+	@Override
+	public Status isRepetition() {
+		return board.getHalfMoveCounter()>50 || board.isInsufficientMaterial() || board.isRepetition() ? Status.DRAW : Status.PLAYING;
+	}
+
+	@Override
+	public Status onNoValidMove() {
+		if (board.isKingAttacked()) {
+			return board.getSideToMove()==Side.BLACK ? Status.WHITE_WON : Status.BLACK_WON;
+		} else {
+			return Status.DRAW;
+		}
+	}
 }
