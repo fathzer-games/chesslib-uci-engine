@@ -38,7 +38,7 @@ class StrictMoveComparatorTest {
 		ChessLibMoveGenerator board = fromFEN("5B2/8/7p/8/8/NN6/pk1K4/8 b - - 0 1");
 		final StrictMoveComparator cmp = new StrictMoveComparator(board);
 		
-		List<Move> moves = board.getMoves();
+		List<Move> moves = board.getMoves(false);
 		moves.sort(cmp);
 		
 		final Move queenPromo = new Move(Square.A2, Square.A1, Piece.BLACK_QUEEN);

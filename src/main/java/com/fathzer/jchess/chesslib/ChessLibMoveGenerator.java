@@ -29,15 +29,14 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	}
 	
 	@Override
-	public List<Move> getMoves() {
-		final List<Move> moves = board.pseudoLegalMoves();
+	public List<Move> getMoves(boolean quiesce) {
+		final List<Move> moves = quiesce ? board.pseudoLegalCaptures() : board.pseudoLegalMoves();
 		if (comparator!=null) {
 			moves.sort(comparator);
 		}
 		return moves;
 	}
 
-	@Override
 	public Status getStatus() {
 		if (board.isMated()) {
 			return Side.BLACK.equals(board.getSideToMove()) ? Status.WHITE_WON : Status.BLACK_WON;
