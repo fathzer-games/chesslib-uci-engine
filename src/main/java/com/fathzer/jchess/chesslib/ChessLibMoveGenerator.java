@@ -29,22 +29,19 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	}
 	
 	@Override
-	public List<Move> getMoves() {
-		final List<Move> moves = board.pseudoLegalMoves();
+	public List<Move> getMoves(boolean quiesce) {
+		final List<Move> moves = quiesce ? board.pseudoLegalCaptures() : board.pseudoLegalMoves();
 		if (comparator!=null) {
 			moves.sort(comparator);
 		}
 		return moves;
 	}
-
-	@Override
-	public Status getStatus() {
-		if (board.isMated()) {
-			return Side.BLACK.equals(board.getSideToMove()) ? Status.WHITE_WON : Status.BLACK_WON;
-		}
-		return board.isDraw() ? Status.DRAW : Status.PLAYING;
-	}
 	
+	@Override
+	public List<Move> getLegalMoves() {
+		return board.legalMoves();
+	}
+
 	@Override
 	public long getHashKey() {
 		return board.getZobristKey();
@@ -63,12 +60,12 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	}
 
 	@Override
-	public Status isRepetition() {
+	public Status getContextualStatus() {
 		return board.getHalfMoveCounter()>50 || board.isInsufficientMaterial() || board.isRepetition() ? Status.DRAW : Status.PLAYING;
 	}
 
 	@Override
-	public Status onNoValidMove() {
+	public Status getEndGameStatus() {
 		if (board.isKingAttacked()) {
 			return board.getSideToMove()==Side.BLACK ? Status.WHITE_WON : Status.BLACK_WON;
 		} else {
