@@ -1,19 +1,15 @@
 package com.fathzer.jchess.chesslib.ai;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.fathzer.games.ai.SearchResult;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.iterativedeepening.DeepeningPolicy;
 
-final class ChessLibDeepeningPolicy implements DeepeningPolicy {
-	private final long maxTime;
-	private final long start;
+final class ChessLibDeepeningPolicy extends DeepeningPolicy {
 	
 	protected ChessLibDeepeningPolicy(long maxTimeMs) {
-		this.maxTime = maxTimeMs;
-		this.start = System.currentTimeMillis();
+		super(maxTimeMs);
 	}
 	
 	@Override
@@ -22,13 +18,8 @@ final class ChessLibDeepeningPolicy implements DeepeningPolicy {
 	}
 
 	@Override
-	public <M> List<M> getMovesToDeepen(int depth, List<EvaluatedMove<M>> evaluations, List<EvaluatedMove<M>> ended) {
-		final long spent = System.currentTimeMillis()-start;
-		if (depth<5 || spent<maxTime/3) {
-			return DeepeningPolicy.super.getMovesToDeepen(depth, evaluations, ended);
-		} else {
-			return Collections.emptyList();
-		}
+	public boolean isEnoughTimeToDeepen(int depth) {
+		return depth<5 || getSpent()<getMaxTime()/3;
 	}
 
 	@Override
@@ -36,7 +27,7 @@ final class ChessLibDeepeningPolicy implements DeepeningPolicy {
 		if ((interruptionDepth - bestMovesDepth)%2==0) {
 			//TODO Remove when quiesce will be implemented
 			// Do not merge results if depth are optimistic and pessimistic. 
-			DeepeningPolicy.super.mergeInterrupted(bestMoves, bestMovesDepth, partialList, interruptionDepth);
+			super.mergeInterrupted(bestMoves, bestMovesDepth, partialList, interruptionDepth);
 		}
 	}
 }

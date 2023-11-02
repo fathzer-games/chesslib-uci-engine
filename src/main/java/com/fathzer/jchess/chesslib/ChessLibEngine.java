@@ -2,7 +2,9 @@ package com.fathzer.jchess.chesslib;
 
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.perft.TestableMoveGeneratorSupplier;
+import com.fathzer.jchess.uci.BestMoveReply;
 import com.fathzer.jchess.uci.Engine;
+import com.fathzer.jchess.uci.GoOptions;
 import com.fathzer.jchess.uci.LongRunningTask;
 import com.fathzer.jchess.uci.MoveGeneratorSupplier;
 import com.fathzer.jchess.uci.MoveToUCIConverter;
@@ -48,7 +50,7 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	}
 	
 	@Override
-	public LongRunningTask<UCIMove> go() {
+	public LongRunningTask<BestMoveReply> go(GoOptions options) {
 		throw new UnsupportedOperationException();
 	}
 	
