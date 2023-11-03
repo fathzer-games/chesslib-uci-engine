@@ -32,7 +32,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	
 	public InternalEngine(Evaluator<ChessLibMoveGenerator> evaluator , int maxDepth) {
 		super(evaluator, maxDepth, new TT(16, SizeUnit.MB));
-		setDeepeningPolicyBuilder(() -> new ChessLibDeepeningPolicy(getMaxTime()));
+		setDeepeningPolicy(new ChessLibDeepeningPolicy(maxDepth));
 		moveComparatorSupplier = BasicMoveComparator::new;
 		setLogger(new DefaultLogger(this));
 	}
@@ -77,7 +77,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	
 	@Override
 	protected IterativeDeepeningSearch<Move> search(ChessLibMoveGenerator board) {
-		log.info("--- Start evaluation for {} with size={}, accuracy={}, maxDepth={}---", board.getBoard().getFen(), getSearchParams().getSize(), getSearchParams().getAccuracy(), getSearchParams().getDepth());
+		log.info("--- Start evaluation for {} with size={}, accuracy={}, maxDepth={}---", board.getBoard().getFen(), getDeepeningPolicy().getSize(), getDeepeningPolicy().getAccuracy(), getDeepeningPolicy().getDepth());
 		IterativeDeepeningSearch<Move> search = super.search(board);
 		log.info("--- End of iterative evaluation returns: {}", search.getBestMoves());
 		return search;

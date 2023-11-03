@@ -65,7 +65,7 @@ public class Main extends UCI {
 	private void speedTest(String[] args) {
 		final long start = System.currentTimeMillis();
 		final InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
-		engine.getSearchParams().setSize(Integer.MAX_VALUE);
+		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		if (args.length!=0) {
 			engine.setParallelism(Integer.parseInt(args[0]));
 		}
@@ -117,8 +117,8 @@ public class Main extends UCI {
 		mv.assertEquals("h8", mv.moves.get(0).getContent().getTo().toString().toLowerCase());
 		
 		// Check in 3
-		engine.getSearchParams().setSize(3);
-		engine.getSearchParams().setAccuracy(100);
+		engine.getDeepeningPolicy().setSize(3);
+		engine.getDeepeningPolicy().setAccuracy(100);
 		mv.fill("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1");
 		mv.assertEquals(19, mv.moves.size());
 		m = mv.moves.get(0).getContent();
@@ -126,8 +126,8 @@ public class Main extends UCI {
 		mv.assertEquals("d7", m.getTo().toString().toLowerCase());
 		
 		// Check in 4
-		engine.getSearchParams().setSize(1);
-		engine.getSearchParams().setAccuracy(0);
+		engine.getDeepeningPolicy().setSize(1);
+		engine.getDeepeningPolicy().setAccuracy(0);
 		mv.fill("8/4k3/8/R7/8/8/8/4K2R w K - 0 1");
 		mv.assertEquals(2, mv.moves.size());
 		mv.assertEquals(Evaluation.Type.WIN, mv.moves.get(0).getEvaluation().getType());

@@ -35,7 +35,7 @@ class MinimaxEngineTest {
 	void blackPlayingTest() {
 		final InternalEngine mme4 = new InternalEngine(new BasicEvaluator(), 3);
 		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
-		mme4.getSearchParams().setSize(Integer.MAX_VALUE);
+		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		final List<EvaluatedMove<Move>> moves = mme4.getBestMoves(fromFEN("7k/5p1Q/5P1N/5PPK/6PP/8/8/8 b - - 6 5"));
 //show(moves);
 		assertEquals(1, moves.size());
@@ -52,7 +52,7 @@ class MinimaxEngineTest {
 	void test() {
 		List<EvaluatedMove<Move>> moves;
 		final InternalEngine mme4 = new InternalEngine(new BasicEvaluator(), 4);
-		mme4.getSearchParams().setSize(Integer.MAX_VALUE);
+		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
 		
 		// 3 possible Mats in 1 with whites
@@ -109,8 +109,8 @@ class MinimaxEngineTest {
 		System.out.println("------------------");
 		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 6);
 		engine.setMoveComparatorSupplier(StrictMoveComparator::new);
-		engine.getSearchParams().setSize(3);
-		engine.getSearchParams().setAccuracy(100);
+		engine.getDeepeningPolicy().setSize(3);
+		engine.getDeepeningPolicy().setAccuracy(100);
 		engine.setMoveComparatorSupplier(StrictMoveComparator::new);
 		moves = engine.getBestMoves(fromFEN("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1"));
 //show(moves);
@@ -150,9 +150,9 @@ assertEquals(19, moves.size());
 		// I should think more about it...
 		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
 		engine.setParallelism(4);
-		engine.getSearchParams().setSize(1);
-		engine.getSearchParams().setAccuracy(300);
-		engine.setMaxTime(15000);
+		engine.getDeepeningPolicy().setSize(1);
+		engine.getDeepeningPolicy().setAccuracy(300);
+		engine.getDeepeningPolicy().setMaxTime(15000);
 		// Tests that loose in 1 are not in the best moves (was a bug in fist iterative engine version)
 		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(fromFEN("4n2r/2k1Q2p/5B2/2N5/2B2R2/1P6/3PKPP1/6q1 b - - 2 46"));
 		assertEquals(2, moves.size());
@@ -164,9 +164,9 @@ assertEquals(19, moves.size());
 	void iterativeTest2() {
 		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 4);
 		engine.setParallelism(4);
-		engine.getSearchParams().setSize(1);
-		engine.getSearchParams().setAccuracy(100);
-		engine.setMaxTime(15000);
+		engine.getDeepeningPolicy().setSize(1);
+		engine.getDeepeningPolicy().setAccuracy(100);
+		engine.getDeepeningPolicy().setMaxTime(15000);
 		// Tests that loosing move is not in the best moves (was a bug in fist iterative engine version)
 		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(fromFEN("3bkrnr/p2ppppp/7q/2p5/8/2P5/PP1PPPPP/RNBQKBNR b KQk - 0 1"));
 		for (EvaluatedMove<Move> ev : moves) {
@@ -180,7 +180,7 @@ assertEquals(19, moves.size());
 		// Not a bug, just a problem with evaluation function
 		ChessLibMoveGenerator board = fromFEN("8/8/8/4p1k1/3bK3/8/7p/8 b - - 0 1");
 		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 4);
-		engine.getSearchParams().setSize(Integer.MAX_VALUE);
+		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		System.out.println(engine.getBestMoves(board));
 		System.out.println(engine.apply(board));
 	}

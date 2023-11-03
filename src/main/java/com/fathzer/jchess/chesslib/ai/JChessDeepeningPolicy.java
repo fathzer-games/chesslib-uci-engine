@@ -8,8 +8,8 @@ import com.fathzer.games.ai.iterativedeepening.DeepeningPolicy;
 
 final class ChessLibDeepeningPolicy extends DeepeningPolicy {
 	
-	protected ChessLibDeepeningPolicy(long maxTimeMs) {
-		super(maxTimeMs);
+	protected ChessLibDeepeningPolicy(int maxDepth) {
+		super(maxDepth);
 	}
 	
 	@Override
