@@ -1,7 +1,11 @@
-package com.fathzer.jchess.chesslib;
+package com.fathzer.jchess.chesslib.uci;
 
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.perft.TestableMoveGeneratorSupplier;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.chesslib.ai.InternalEngine;
+import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
+import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.fathzer.jchess.uci.BestMoveReply;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.GoOptions;
@@ -18,6 +22,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Move>, MoveGeneratorSupplier<Move>, MoveToUCIConverter<Move> {
 	public static final Engine INSTANCE = new ChessLibEngine();
 	private Board board;
+	private InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
 	
 	@Override
 	public String getId() {
@@ -26,7 +31,7 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	
 	@Override
 	public String getAuthor() {
-		return "Jean-Marc Astesana (Fathzer)";
+		return "Jean-Marc Astesana (Fathzer), Move generator is from Ben-Hur Carlos Vieira Langoni Junior";
 	}
 	
 	@Override
@@ -56,7 +61,9 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	
 	@Override
 	public MoveGenerator<Move> get() {
-		return new ChessLibMoveGenerator(board);
+		final ChessLibMoveGenerator result = new ChessLibMoveGenerator(board);
+		result.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) engine.getEvaluator());
+		return result;
 	}
 	
 	@Override

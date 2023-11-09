@@ -6,6 +6,8 @@ import java.util.List;
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.HashProvider;
 import com.fathzer.games.Status;
+import com.fathzer.jchess.chesslib.eval.AbstractEvaluationStack;
+import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
@@ -13,19 +15,47 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider {
 	private final Board board;
 	private Comparator<Move> comparator;
+	private AbstractEvaluationStack<Move, ChessLibMoveGenerator, ?> evaluationStack;
 	
 	public ChessLibMoveGenerator(Board board) {
 		this.board = board.clone();
 	}
 	
+	public void setIncrementalEvaluator(IncrementalEvaluator<Move, ChessLibMoveGenerator, ?> evaluator) {
+		this.evaluationStack = new AbstractEvaluationStack<>(this, evaluator);
+	}
+	
+	public AbstractEvaluationStack<Move, ChessLibMoveGenerator, ?> getEvaluationStack() {
+		return evaluationStack;
+	}
+
 	@Override
-	public boolean makeMove(Move move) {
-		return board.doMove(move);
+	public boolean makeMove(Move move, MoveConfidence confidence) {
+		if (evaluationStack!=null) {
+			evaluationStack.prepareMove(move);
+		}
+		final boolean isMoveValid = internalMakeMove(move, confidence);
+		if (isMoveValid && evaluationStack!=null) {
+			evaluationStack.commitMove(move);
+		}
+		return isMoveValid;
+	}
+
+	private boolean internalMakeMove(Move move, MoveConfidence confidence) {
+		try {
+			return board.doMove(move, MoveConfidence.UNSAFE==confidence);
+		} catch (RuntimeException e) {
+			// Can throw an exception if no piece is at move from cell
+			return false;
+		}
 	}
 	
 	@Override
 	public void unmakeMove() {
 		board.undoMove();
+		if (evaluationStack!=null) {
+			evaluationStack.unmakeMove();
+		}
 	}
 	
 	@Override

@@ -16,11 +16,12 @@ import com.fathzer.games.ai.Negamax;
 import com.fathzer.games.ai.SearchParameters;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
-import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
 import com.fathzer.games.ai.exec.ExecutionContext;
 import com.fathzer.games.ai.exec.SingleThreadContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
+import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -123,7 +124,8 @@ assertEquals(19, moves.size());
 	@Test
 	void moreTests() {
 		final ChessLibMoveGenerator board = fromFEN("8/8/8/3kr3/8/8/5PPP/7K w - - 0 1");
-		final Evaluator<ChessLibMoveGenerator> basicEvaluator = new BasicEvaluator();
+		final IncrementalEvaluator<Move,ChessLibMoveGenerator,?> basicEvaluator = new BasicEvaluator();
+		board.setIncrementalEvaluator(basicEvaluator);
 		basicEvaluator.setViewPoint(Color.WHITE);
 		try (ExecutionContext<Move, ChessLibMoveGenerator> exec = new SingleThreadContext<>(board)) {
 			Negamax<Move, ChessLibMoveGenerator> ai = new Negamax<>(exec, basicEvaluator);

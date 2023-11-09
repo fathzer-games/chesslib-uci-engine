@@ -1,8 +1,8 @@
 package com.fathzer.jchess.chesslib.ai;
 
-import java.util.Comparator;
+import static com.fathzer.jchess.chesslib.eval.BasicEvaluator.PIECE_VALUE;
 
-import static com.fathzer.jchess.chesslib.ai.BasicEvaluator.PIECE_VALUE;
+import java.util.Comparator;
 
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.PieceType;

@@ -22,6 +22,7 @@ import com.fathzer.games.ai.moveSelector.StaticMoveSelector;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.util.ContextualizedExecutor;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -45,11 +46,17 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	protected ExecutionContext<Move, ChessLibMoveGenerator> buildExecutionContext(ChessLibMoveGenerator board) {
 		board.setMoveComparator(moveComparatorSupplier.apply(board));
 		if (getParallelism()==1) {
+			if (getEvaluator() instanceof IncrementalEvaluator) {
+				board.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) getEvaluator());
+			}
 			return new SingleThreadContext<>(board);
 		} else {
 			final Supplier<ChessLibMoveGenerator> supplier = () -> {
 				final ChessLibMoveGenerator mg = new ChessLibMoveGenerator(board.getBoard());
 				mg.setMoveComparator(moveComparatorSupplier.apply(mg));
+				if (getEvaluator() instanceof IncrementalEvaluator) {
+					mg.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) getEvaluator());
+				}
 				return mg;
 			};
 			return new MultiThreadsContext<>(supplier, new ContextualizedExecutor<>(getParallelism()));

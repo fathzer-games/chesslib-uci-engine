@@ -11,9 +11,16 @@ It requires a Java 11+ virtual machine.
 
 Download the jar, then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
 
+## Known bugs
+- The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
+An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...
+
 ## Developer notes
 
 ### Tests settings
 The *com.fathzer.jchess.chesslib.PerfTTest* class tests moves generation algorithm using a perfT data base.  
 The duration and accuracy of this test greatly depends on its search depth.  
 This depth is 1 by default (to limit Github's resources consumption - Every push trigger a mvn test action). In order to perform better test, you can set the **perftDepth** system property to a higher value.
+
+### TODO
+- The incremental evaluation integration with ChessLibMoveGenerator is ugly (the unsafe cast in the context creation is the symptom.
