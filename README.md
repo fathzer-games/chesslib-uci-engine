@@ -13,7 +13,8 @@ Download the jar, then Launch the engine with the following command: ```java -ja
 
 ## Known bugs
 - The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
-An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...
+An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...  
+The test class ```com.fathzer.jchess.chesslib.ChessLibMoveGeneratorTest``` has commented assertions that currently fails.
 
 ## Developer notes
 

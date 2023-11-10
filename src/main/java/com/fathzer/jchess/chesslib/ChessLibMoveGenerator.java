@@ -91,7 +91,7 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 
 	@Override
 	public Status getContextualStatus() {
-		return board.getHalfMoveCounter()>50 || board.isInsufficientMaterial() || board.isRepetition() ? Status.DRAW : Status.PLAYING;
+		return board.getHalfMoveCounter()>=100 || board.isInsufficientMaterial() || board.isRepetition() ? Status.DRAW : Status.PLAYING;
 	}
 
 	@Override
