@@ -1,10 +1,17 @@
 package com.fathzer.jchess.chesslib.uci;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.List;
 
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
+import com.fathzer.games.perft.PerfTParser;
+import com.fathzer.games.perft.PerfTTestData;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.InternalEngine;
 import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
@@ -23,6 +30,16 @@ public class Main extends UCI {
 		super(defaultEngine);
 		addCommand(this::speedTest, "st");
 	}
+	
+	@Override
+	protected Collection<PerfTTestData> readTestData() {
+		try (InputStream stream = Main.class.getResourceAsStream("/Perft.txt")) {
+			return new PerfTParser().withStartPositionPrefix("position fen").withStartPositionCustomizer(s -> s+" 0 1").read(stream, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
 
 //TODO Commonalize this with JChess-core	
 	private static class MovesAndMore {
