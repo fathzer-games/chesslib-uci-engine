@@ -8,11 +8,11 @@ import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
 import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.fathzer.jchess.uci.BestMoveReply;
 import com.fathzer.jchess.uci.Engine;
-import com.fathzer.jchess.uci.GoOptions;
 import com.fathzer.jchess.uci.LongRunningTask;
 import com.fathzer.jchess.uci.MoveGeneratorSupplier;
 import com.fathzer.jchess.uci.MoveToUCIConverter;
 import com.fathzer.jchess.uci.UCIMove;
+import com.fathzer.jchess.uci.parameters.GoParameters;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Side;
@@ -55,7 +55,7 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	}
 	
 	@Override
-	public LongRunningTask<BestMoveReply> go(GoOptions options) {
+	public LongRunningTask<BestMoveReply> go(GoParameters options) {
 		throw new UnsupportedOperationException();
 	}
 	

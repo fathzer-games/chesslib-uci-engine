@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
@@ -78,12 +79,12 @@ public class Main extends UCI {
 		}
 	}
 	
-	private void speedTest(String[] args) {
+	private void speedTest(Deque<String> args) {
 		final long start = System.currentTimeMillis();
 		final InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
-		if (args.length!=0) {
-			engine.setParallelism(Integer.parseInt(args[0]));
+		if (!args.isEmpty()) {
+			engine.setParallelism(Integer.parseInt(args.pop()));
 		}
 		
 		// 3 possible Mats in 1 with whites

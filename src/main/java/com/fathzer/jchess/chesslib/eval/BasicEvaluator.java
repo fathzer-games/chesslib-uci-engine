@@ -75,6 +75,7 @@ public class BasicEvaluator implements IncrementalEvaluator<Move, ChessLibMoveGe
 		return points;
 	}
 	
+	@Override
 	public int getIncrement(ChessLibMoveGenerator board, Move move, int previous) {
 		if (viewPoint==null) {
 			previous = - previous;
