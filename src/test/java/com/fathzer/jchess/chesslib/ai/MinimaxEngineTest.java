@@ -13,15 +13,16 @@ import org.junit.jupiter.api.Test;
 
 import com.fathzer.games.Color;
 import com.fathzer.games.ai.Negamax;
+import com.fathzer.games.ai.SearchContext;
 import com.fathzer.games.ai.SearchParameters;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
-import com.fathzer.games.ai.exec.ExecutionContext;
-import com.fathzer.games.ai.exec.SingleThreadContext;
+import com.fathzer.games.ai.evaluation.Evaluator;
+import com.fathzer.games.util.exec.ExecutionContext;
+import com.fathzer.games.util.exec.SingleThreadContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
-import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -34,7 +35,7 @@ class MinimaxEngineTest {
 
 	@Test
 	void blackPlayingTest() {
-		final InternalEngine mme4 = new InternalEngine(new BasicEvaluator(), 3);
+		final InternalEngine mme4 = new InternalEngine(BasicEvaluator::new, 3);
 		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		final List<EvaluatedMove<Move>> moves = mme4.getBestMoves(fromFEN("7k/5p1Q/5P1N/5PPK/6PP/8/8/8 b - - 6 5"));
@@ -52,7 +53,7 @@ class MinimaxEngineTest {
 	@Test
 	void test() {
 		List<EvaluatedMove<Move>> moves;
-		final InternalEngine mme4 = new InternalEngine(new BasicEvaluator(), 4);
+		final InternalEngine mme4 = new InternalEngine(BasicEvaluator::new, 4);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
 		
@@ -108,7 +109,7 @@ class MinimaxEngineTest {
 		
 		// Check in 3
 		System.out.println("------------------");
-		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 6);
+		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 6);
 		engine.setMoveComparatorSupplier(StrictMoveComparator::new);
 		engine.getDeepeningPolicy().setSize(3);
 		engine.getDeepeningPolicy().setAccuracy(100);
@@ -124,11 +125,11 @@ assertEquals(19, moves.size());
 	@Test
 	void moreTests() {
 		final ChessLibMoveGenerator board = fromFEN("8/8/8/3kr3/8/8/5PPP/7K w - - 0 1");
-		final IncrementalEvaluator<Move,ChessLibMoveGenerator,?> basicEvaluator = new BasicEvaluator();
-		board.setIncrementalEvaluator(basicEvaluator);
+		final Evaluator<Move,ChessLibMoveGenerator> basicEvaluator = new BasicEvaluator(board);
 		basicEvaluator.setViewPoint(Color.WHITE);
-		try (ExecutionContext<Move, ChessLibMoveGenerator> exec = new SingleThreadContext<>(board)) {
-			Negamax<Move, ChessLibMoveGenerator> ai = new Negamax<>(exec, basicEvaluator);
+		SearchContext<Move, ChessLibMoveGenerator> context = new SearchContext<>(board, basicEvaluator);
+		try (ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> exec = new SingleThreadContext<>(context)) {
+			Negamax<Move, ChessLibMoveGenerator> ai = new Negamax<>(exec);
 			List<Move> l = new ArrayList<>();
 			l.add(new Move(H1, G1));
 			l.add(new Move(F2, F3));
@@ -150,7 +151,7 @@ assertEquals(19, moves.size());
 		// when ai is called with a reasonable non null accuracy
 		// Currently, the only way to achieve this is to have a custom win/loose evaluation with a gap higher than the accuracy
 		// I should think more about it...
-		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
+		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 8);
 		engine.setParallelism(4);
 		engine.getDeepeningPolicy().setSize(1);
 		engine.getDeepeningPolicy().setAccuracy(300);
@@ -164,7 +165,7 @@ assertEquals(19, moves.size());
 	
 	@Test
 	void iterativeTest2() {
-		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 4);
+		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 4);
 		engine.setParallelism(4);
 		engine.getDeepeningPolicy().setSize(1);
 		engine.getDeepeningPolicy().setAccuracy(100);
@@ -181,7 +182,7 @@ assertEquals(19, moves.size());
 	void bug20230813() {
 		// Not a bug, just a problem with evaluation function
 		ChessLibMoveGenerator board = fromFEN("8/8/8/4p1k1/3bK3/8/7p/8 b - - 0 1");
-		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 4);
+		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 4);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		System.out.println(engine.getBestMoves(board));
 		System.out.println(engine.apply(board));
@@ -191,7 +192,7 @@ assertEquals(19, moves.size());
 	@Disabled
 	void bug20230821() {
 		// Not a bug, just a problem with evaluation function
-		InternalEngine engine = new InternalEngine(new BasicEvaluator(), 7);
+		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 7);
 		System.out.println(engine.apply(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")));
 	}
 }

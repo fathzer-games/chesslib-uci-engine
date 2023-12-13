@@ -5,16 +5,17 @@ import static com.fathzer.jchess.chesslib.eval.BasicEvaluator.PIECE_VALUE;
 import java.util.Comparator;
 
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.PieceType;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 /** A move comparator that considers a catch is better than other moves and taking a high value piece with a small value piece is better than the opposite.
  */
 public class BasicMoveComparator implements Comparator<Move> {
-	private ChessLibMoveGenerator board;
+	private Board board;
 	
 	public BasicMoveComparator(ChessLibMoveGenerator board) {
-		this.board = board;
+		this.board = board.getBoard();
 	}
 
 	@Override
@@ -26,12 +27,12 @@ public class BasicMoveComparator implements Comparator<Move> {
 	public int getValue(Move m) {
 		final PieceType promotion = m.getPromotion().getPieceType();
 		int value = promotion==null ? 0 : (PIECE_VALUE.get(promotion)-1)*16;
-		final PieceType caught = board.getBoard().getPiece(m.getTo()).getPieceType();
+		final PieceType caught = board.getPiece(m.getTo()).getPieceType();
 		if (caught==null) {
 			return value;
 		} else {
 			value += PIECE_VALUE.get(caught)*16;
-			final PieceType catching = board.getBoard().getPiece(m.getFrom()).getPieceType();
+			final PieceType catching = board.getPiece(m.getFrom()).getPieceType();
 			return value - (catching==PieceType.KING ? 10 : PIECE_VALUE.get(catching));
 		}
 	}

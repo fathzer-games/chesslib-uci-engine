@@ -2,46 +2,26 @@ package com.fathzer.jchess.chesslib;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.HashProvider;
 import com.fathzer.games.Status;
-import com.fathzer.jchess.chesslib.eval.AbstractEvaluationStack;
-import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider {
 	private final Board board;
+	private Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorBuilder;
 	private Comparator<Move> comparator;
-	private AbstractEvaluationStack<Move, ChessLibMoveGenerator, ?> evaluationStack;
 	
 	public ChessLibMoveGenerator(Board board) {
-		this.board = board.clone();
+		this.board = board;
 	}
 	
-	public void setIncrementalEvaluator(IncrementalEvaluator<Move, ChessLibMoveGenerator, ?> evaluator) {
-		this.evaluationStack = new AbstractEvaluationStack<>(this, evaluator);
-	}
-	
-	public AbstractEvaluationStack<Move, ChessLibMoveGenerator, ?> getEvaluationStack() {
-		return evaluationStack;
-	}
-
 	@Override
 	public boolean makeMove(Move move, MoveConfidence confidence) {
-		if (evaluationStack!=null) {
-			evaluationStack.prepareMove(move);
-		}
-		final boolean isMoveValid = internalMakeMove(move, confidence);
-		if (isMoveValid && evaluationStack!=null) {
-			evaluationStack.commitMove(move);
-		}
-		return isMoveValid;
-	}
-
-	private boolean internalMakeMove(Move move, MoveConfidence confidence) {
 		try {
 			return board.doMove(move, MoveConfidence.UNSAFE==confidence);
 		} catch (RuntimeException e) {
@@ -53,9 +33,6 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	@Override
 	public void unmakeMove() {
 		board.undoMove();
-		if (evaluationStack!=null) {
-			evaluationStack.unmakeMove();
-		}
 	}
 	
 	@Override
@@ -81,12 +58,17 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 		return this.board; 
 	}
 
-	public Comparator<Move> getMoveComparator() {
-		return this.comparator;
-	}
+//	public Comparator<Move> getMoveComparator() {
+//		return this.comparator;
+//	}
 	
-	public void setMoveComparator(Comparator<Move> comparator) {
-		this.comparator = comparator;
+	public void setMoveComparatorBuilder(Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorBuilder) {
+		this.moveComparatorBuilder = moveComparatorBuilder;
+		if (moveComparatorBuilder==null) {
+			comparator = null;
+		} else {
+			comparator = moveComparatorBuilder.apply(this);
+		}
 	}
 
 	@Override
@@ -101,5 +83,12 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 		} else {
 			return Status.DRAW;
 		}
+	}
+
+	@Override
+	public MoveGenerator<Move> fork() {
+		final ChessLibMoveGenerator result = new ChessLibMoveGenerator(board.clone());
+		result.setMoveComparatorBuilder(moveComparatorBuilder);
+		return result;
 	}
 }

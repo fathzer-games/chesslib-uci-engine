@@ -1,12 +1,15 @@
 package com.fathzer.jchess.chesslib.eval;
 
 import static com.fathzer.games.Color.*;
+import static com.github.bhlangonijr.chesslib.PieceType.*;
 
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
 import com.fathzer.games.Color;
+import com.fathzer.games.ai.evaluation.Evaluator;
+import com.fathzer.games.util.Stack;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
@@ -15,8 +18,11 @@ import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class BasicEvaluator implements IncrementalEvaluator<Move, ChessLibMoveGenerator, BasicEvalState> {
+public class BasicEvaluator implements Evaluator<Move, ChessLibMoveGenerator> {
 	public static final Map<PieceType, Integer> PIECE_VALUE;
+	
+	private final Stack<Integer> scores;
+	private int toCommit; 
 	private Side viewPoint;
 	
 	static {
@@ -28,6 +34,15 @@ public class BasicEvaluator implements IncrementalEvaluator<Move, ChessLibMoveGe
 		map.put(PieceType.PAWN, 1);
 		map.put(PieceType.KING, 1000);
 		PIECE_VALUE = Collections.unmodifiableMap(map);
+	}
+	
+	public BasicEvaluator(ChessLibMoveGenerator board) {
+		this(getPoints(board.getBoard()));
+	}
+	
+	private BasicEvaluator(int score) {
+		this.scores = new Stack<>(null);
+		scores.set(score);
 	}
 	
 	@Override
@@ -45,22 +60,14 @@ public class BasicEvaluator implements IncrementalEvaluator<Move, ChessLibMoveGe
 
 	@Override
 	public int evaluate(ChessLibMoveGenerator board) {
-		if (board.getEvaluationStack()==null) {
-			throw new IllegalStateException("increment eval not installed");
-		}
-		return board.getEvaluationStack().getCurrentEvaluation();
-	}
-
-	@Override
-	public int rawEvaluate(ChessLibMoveGenerator board) {
-		int points = 100*getPoints(board.getBoard());
+		int points = 100*scores.get();
 		if (Side.BLACK==viewPoint || (viewPoint==null && Side.BLACK==board.getBoard().getSideToMove())) {
 			points = -points;
 		}
 		return points;
 	}
 
-	public int getPoints(Board board) {
+	public static int getPoints(Board board) {
 		int points = 0;
 		for (Piece p : board.boardToArray()) {
 			if (p!=Piece.NONE) {
@@ -76,40 +83,45 @@ public class BasicEvaluator implements IncrementalEvaluator<Move, ChessLibMoveGe
 	}
 	
 	@Override
-	public int getIncrement(ChessLibMoveGenerator board, Move move, int previous) {
-		if (viewPoint==null) {
-			previous = - previous;
-		}
+	public void prepareMove(ChessLibMoveGenerator board, Move move) {
 		final Board internal = board.getBoard();
+		int increment = 0;
 		if (!internal.getContext().isCastleMove(move)) {
-			int inc = 0;
 	        Piece movingPiece = internal.getPiece(move.getFrom());
 	        Piece capturedPiece = internal.getPiece(move.getTo());
 	        if (!Square.NONE.equals(internal.getEnPassantTarget()) &&
-	                PieceType.PAWN.equals(movingPiece.getPieceType()) &&
+	                PAWN.equals(movingPiece.getPieceType()) &&
 	                !move.getTo().getFile().equals(move.getFrom().getFile()) &&
 	                Piece.NONE.equals(capturedPiece)) {
-	            capturedPiece = internal.getPiece(internal.getEnPassantTarget());
+	            increment = PIECE_VALUE.get(PAWN);
+	        } else {
+		        if (capturedPiece!=Piece.NONE) {
+		        	increment = PIECE_VALUE.get(capturedPiece.getPieceType());
+		        }
+		        if (move.getPromotion()!=Piece.NONE) {
+		        	increment = increment + PIECE_VALUE.get(move.getPromotion().getPieceType())-1;
+		        }
 	        }
-	        if (capturedPiece!=Piece.NONE) {
-	        	inc = PIECE_VALUE.get(capturedPiece.getPieceType());
-	        }
-	        if (move.getPromotion()!=Piece.NONE) {
-	        	inc = inc + PIECE_VALUE.get(move.getPromotion().getPieceType())-1;
-	        }
-			if (inc!=0) {
-				inc = inc * 100;
-				if (board.getBoard().getSideToMove()!=viewPoint) {
-					inc = -inc;
-				}
-				previous += inc;
+			if (board.getBoard().getSideToMove()!=Side.WHITE) {
+				increment = -increment;
 			}
 		}
-		return previous;
+		toCommit = scores.get()+increment;
+	}
+	
+	@Override
+	public void commitMove() {
+		scores.next();
+		scores.set(toCommit);
 	}
 
 	@Override
-	public BasicEvalState newState(int score) {
-		return new BasicEvalState(score);
+	public void unmakeMove() {
+		scores.previous();
+	}
+
+	@Override
+	public Evaluator<Move, ChessLibMoveGenerator> fork() {
+		return new BasicEvaluator(scores.get());
 	}
 }

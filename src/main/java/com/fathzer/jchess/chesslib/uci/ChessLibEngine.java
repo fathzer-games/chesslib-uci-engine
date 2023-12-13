@@ -1,11 +1,10 @@
 package com.fathzer.jchess.chesslib.uci;
 
 import com.fathzer.games.MoveGenerator;
-import com.fathzer.games.perft.TestableMoveGeneratorSupplier;
+import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.InternalEngine;
 import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
-import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.fathzer.jchess.uci.BestMoveReply;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.LongRunningTask;
@@ -19,10 +18,10 @@ import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Move>, MoveGeneratorSupplier<Move>, MoveToUCIConverter<Move> {
+public class ChessLibEngine implements Engine, TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, MoveGeneratorSupplier<Move>, MoveToUCIConverter<Move> {
 	public static final Engine INSTANCE = new ChessLibEngine();
-	private Board board;
-	private InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
+	private ChessLibMoveGenerator board;
+	private InternalEngine engine = new InternalEngine(BasicEvaluator::new, 8);
 	
 	@Override
 	public String getId() {
@@ -40,18 +39,17 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 		final String promotion = move.getPromotion();
 		if (promotion!=null) {
 			// Warning the promotion code is always in lowercase
-			final String notation = Side.WHITE.equals(board.getSideToMove()) ? promotion.toUpperCase() : promotion;
+			final String notation = Side.WHITE.equals(board.getBoard().getSideToMove()) ? promotion.toUpperCase() : promotion;
 			p = Piece.fromFenSymbol(notation);
 		} else {
 			p = Piece.NONE;
 		}
-		board.doMove(new Move(Square.fromValue(move.getFrom().toUpperCase()), Square.fromValue(move.getTo().toUpperCase()), p));
+		board.getBoard().doMove(new Move(Square.fromValue(move.getFrom().toUpperCase()), Square.fromValue(move.getTo().toUpperCase()), p));
 	}
 
 	@Override
 	public void setStartPosition(String fen) {
-		board = new Board();
-		board.loadFromFen(fen);
+		board.getBoard().loadFromFen(fen);
 	}
 	
 	@Override
@@ -61,9 +59,7 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 	
 	@Override
 	public MoveGenerator<Move> get() {
-		final ChessLibMoveGenerator result = new ChessLibMoveGenerator(board);
-		result.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) engine.getEvaluator());
-		return result;
+		return board.fork();
 	}
 	
 	@Override
@@ -79,6 +75,13 @@ public class ChessLibEngine implements Engine, TestableMoveGeneratorSupplier<Mov
 
 	@Override
 	public String getFEN() {
-		return board==null ? null : board.getFen();
+		return board==null ? null : board.getBoard().getFen();
+	}
+
+	@Override
+	public ChessLibMoveGenerator fromFEN(String fen) {
+		final Board internalBoard = new Board();
+		internalBoard.loadFromFen(fen);
+		return new ChessLibMoveGenerator(internalBoard);
 	}
 }

@@ -3,26 +3,25 @@ package com.fathzer.jchess.chesslib.ai;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fathzer.games.Color;
+import com.fathzer.games.ai.SearchContext;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluator;
-import com.fathzer.games.ai.exec.ExecutionContext;
-import com.fathzer.games.ai.exec.MultiThreadsContext;
-import com.fathzer.games.ai.exec.SingleThreadContext;
 import com.fathzer.games.ai.iterativedeepening.FirstBestMoveSelector;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
 import com.fathzer.games.ai.moveSelector.RandomMoveSelector;
 import com.fathzer.games.ai.moveSelector.StaticMoveSelector;
 import com.fathzer.games.ai.transposition.SizeUnit;
-import com.fathzer.games.util.ContextualizedExecutor;
+import com.fathzer.games.util.exec.ContextualizedExecutor;
+import com.fathzer.games.util.exec.ExecutionContext;
+import com.fathzer.games.util.exec.MultiThreadsContext;
+import com.fathzer.games.util.exec.SingleThreadContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.eval.IncrementalEvaluator;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -30,11 +29,13 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	private static final Logger log = LoggerFactory.getLogger(InternalEngine.class);
 	
 	private Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorSupplier;
+	private Function<ChessLibMoveGenerator, Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder;
 	
-	public InternalEngine(Evaluator<ChessLibMoveGenerator> evaluator , int maxDepth) {
-		super(evaluator, maxDepth, new TT(16, SizeUnit.MB));
+	public InternalEngine(Function<ChessLibMoveGenerator, Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder , int maxDepth) {
+		super(maxDepth, new TT(16, SizeUnit.MB));
 		setDeepeningPolicy(new ChessLibDeepeningPolicy(maxDepth));
 		moveComparatorSupplier = BasicMoveComparator::new;
+		this.evaluatorBuilder = evaluatorBuilder;
 		setLogger(new DefaultLogger(this));
 	}
 	
@@ -43,29 +44,18 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	}
 
 	@Override
-	protected ExecutionContext<Move, ChessLibMoveGenerator> buildExecutionContext(ChessLibMoveGenerator board) {
-		board.setMoveComparator(moveComparatorSupplier.apply(board));
+	protected ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> buildExecutionContext(ChessLibMoveGenerator board) {
+		board.setMoveComparatorBuilder(moveComparatorSupplier);
+		final ChessLibMoveGenerator b = (ChessLibMoveGenerator) board.fork();
+		final Evaluator<Move, ChessLibMoveGenerator> evaluator = evaluatorBuilder.apply(b);
+		evaluator.setViewPoint(b.getBoard().getSideToMove()==Side.WHITE ? Color.WHITE:Color.BLACK);
+		final SearchContext<Move, ChessLibMoveGenerator> context = new SearchContext<>(b, evaluator);
 		if (getParallelism()==1) {
-			if (getEvaluator() instanceof IncrementalEvaluator) {
-				board.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) getEvaluator());
-			}
-			return new SingleThreadContext<>(board);
+			return new SingleThreadContext<>(context);
 		} else {
-			final Supplier<ChessLibMoveGenerator> supplier = () -> {
-				final ChessLibMoveGenerator mg = new ChessLibMoveGenerator(board.getBoard());
-				mg.setMoveComparator(moveComparatorSupplier.apply(mg));
-				if (getEvaluator() instanceof IncrementalEvaluator) {
-					mg.setIncrementalEvaluator((IncrementalEvaluator<Move, ChessLibMoveGenerator, ?>) getEvaluator());
-				}
-				return mg;
-			};
-			return new MultiThreadsContext<>(supplier, new ContextualizedExecutor<>(getParallelism()));
+			final ContextualizedExecutor<SearchContext<Move, ChessLibMoveGenerator>> contextualizedExecutor = new ContextualizedExecutor<>(getParallelism());
+			return new MultiThreadsContext<>(context, contextualizedExecutor);
 		}
-	}
-
-	@Override
-	protected void setViewPoint(Evaluator<ChessLibMoveGenerator> evaluator, ChessLibMoveGenerator board) {
-		evaluator.setViewPoint(board.getBoard().getSideToMove()==Side.BLACK ? Color.BLACK : Color.WHITE);
 	}
 
 	@Override
@@ -76,7 +66,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 		final List<EvaluatedMove<Move>> bestMoves = this.getMoveSelector().select(search, search.getBestMoves());
 		final EvaluatedMove<Move> evaluatedMove = bestMoves.get(0);
 		Move move = evaluatedMove.getContent();
-		log.info("Move choosen :{}", move);
+		log.info("Move chosen :{}", move);
 		final List<Move> pv = evaluatedMove.getPrincipalVariation();
 		log.info("pv: {}", pv);
 		return move;

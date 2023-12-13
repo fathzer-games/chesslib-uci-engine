@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
@@ -19,8 +18,8 @@ import com.fathzer.games.perft.PerfT;
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTResult;
 import com.fathzer.games.perft.PerfTTestData;
-import com.fathzer.games.util.ContextualizedExecutor;
 import com.fathzer.games.util.PhysicalCores;
+import com.fathzer.games.util.exec.ContextualizedExecutor;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -53,7 +52,7 @@ class PerfTTest {
 			final Board board = new Board();
 			board.loadFromFen("8/8/6b1/k3p2N/8/b1PB4/K6p/8 b - - 0 1");
 			final PerfT<Move> perfT = new PerfT<>(exec);
-			final PerfTResult<Move> divide = perfT.divide(2, copy(board));
+			final PerfTResult<Move> divide = perfT.divide(2, new ChessLibMoveGenerator(board));
 			System.out.println("Leaves: "+ divide.getNbLeaves());
 			System.out.println("Divide is "+divide.getDivides());
 		}
@@ -65,7 +64,7 @@ class PerfTTest {
 		final PerfT<Move> perfT = new PerfT<>(exec);
 		if (test.getSize()>=depth) {
 //			try {
-				final PerfTResult<Move> divide = perfT.divide(depth, copy(board));
+				final PerfTResult<Move> divide = perfT.divide(depth, new ChessLibMoveGenerator(board));
 				assertEquals(test.getCount(depth), divide.getNbLeaves(), "Error for "+test.getStartPosition()+". Divide is "+divide.getDivides());
 //				if (count != test.getCount(depth)) {
 //					System.out.println("Error for "+test.getFen()+" expected "+test.getCount(depth)+" got "+count);
@@ -77,12 +76,6 @@ class PerfTTest {
 //				throw e;
 //			}
 		}
-	}
-
-	private Supplier<MoveGenerator<Move>> copy(final Board board) {
-		return () -> {
-			return new ChessLibMoveGenerator(board);
-		};
 	}
 
 	private List<PerfTTestData> readTests() throws IOException {

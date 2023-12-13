@@ -24,7 +24,9 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class Main extends UCI {
 
 	public static void main(String[] args) {
-		new Main(new ChessLibEngine()).run();
+		try (UCI uci = new Main(new ChessLibEngine())) {
+			uci.run();
+		}
 	}
 
 	public Main(Engine defaultEngine) {
@@ -81,7 +83,7 @@ public class Main extends UCI {
 	
 	private void speedTest(Deque<String> args) {
 		final long start = System.currentTimeMillis();
-		final InternalEngine engine = new InternalEngine(new BasicEvaluator(), 8);
+		final InternalEngine engine = new InternalEngine(BasicEvaluator::new, 8);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		if (!args.isEmpty()) {
 			engine.setParallelism(Integer.parseInt(args.pop()));
