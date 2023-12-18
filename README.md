@@ -24,4 +24,4 @@ The duration and accuracy of this test greatly depends on its search depth.
 This depth is 1 by default (to limit Github's resources consumption - Every push trigger a mvn test action). In order to perform better test, you can set the **perftDepth** system property to a higher value.
 
 ### TODO
-- The incremental evaluation integration with ChessLibMoveGenerator is ugly (the unsafe cast in the context creation is the symptom.
+- The detection of invalid UNSAFE move does not work.

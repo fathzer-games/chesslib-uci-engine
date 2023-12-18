@@ -61,7 +61,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	@Override
 	public Move apply(ChessLibMoveGenerator board) {
 		final BasicMoveComparator c = new BasicMoveComparator(board); 
-		super.setMoveSelector(new FirstBestMoveSelector<Move>().setNext(new StaticMoveSelector<Move,IterativeDeepeningSearch<Move>>(c::getValue).setNext(new RandomMoveSelector<>())));
+		super.setMoveSelector(new FirstBestMoveSelector<Move>().setNext(new StaticMoveSelector<Move,IterativeDeepeningSearch<Move>>(c::getMoveValue).setNext(new RandomMoveSelector<>())));
 		final IterativeDeepeningSearch<Move> search = search(board);
 		final List<EvaluatedMove<Move>> bestMoves = this.getMoveSelector().select(search, search.getBestMoves());
 		final EvaluatedMove<Move> evaluatedMove = bestMoves.get(0);

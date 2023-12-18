@@ -27,7 +27,7 @@ class BasicMoveComparatorTest {
 		final Move pawnPromo = new Move(Square.E7, Square.E8, Piece.WHITE_QUEEN);
 		final Move pawnCatchPromo = new Move(Square.E7, Square.D8, Piece.WHITE_QUEEN);
 		
-		Arrays.stream(new Move[] {pawnMove, queenQueenCatch, queenPawnCatch, kingCatch, pawnCatchPromo, pawnPromo}).map(m -> m.toString()+":"+cmp.getValue(m)).forEach(System.out::println);
+		Arrays.stream(new Move[] {pawnMove, queenQueenCatch, queenPawnCatch, kingCatch, pawnCatchPromo, pawnPromo}).map(m -> m.toString()+":"+cmp.getMoveValue(m)).forEach(System.out::println);
 		final List<Move> sorted = Arrays.asList(queenPawnCatch, pawnPromo, kingCatch, pawnMove, queenQueenCatch, pawnCatchPromo);
 		sorted.sort(cmp);
 		assertEquals(Arrays.asList(pawnCatchPromo, queenQueenCatch, kingCatch, pawnPromo, queenPawnCatch, pawnMove), sorted);

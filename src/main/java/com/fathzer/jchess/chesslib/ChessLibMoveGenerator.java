@@ -1,12 +1,15 @@
 package com.fathzer.jchess.chesslib;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Function;
 
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.HashProvider;
 import com.fathzer.games.Status;
+import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
@@ -39,9 +42,24 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	public List<Move> getMoves(boolean quiesce) {
 		final List<Move> moves = quiesce ? board.pseudoLegalCaptures() : board.pseudoLegalMoves();
 		if (comparator!=null) {
-			moves.sort(comparator);
+			sort(moves);
 		}
 		return moves;
+	}
+	
+	private void sort(List<Move> moves) {
+		final List<Move> toBeSorted = new ArrayList<>();
+		final BasicMoveComparator cmp = (BasicMoveComparator) comparator; //TODO
+		ListIterator<Move> iter = moves.listIterator();
+		while (iter.hasNext()) {
+			Move m = iter.next();
+			if (cmp.getMoveValue(m)!=0) {
+				toBeSorted.add(m);
+				iter.remove();
+			}
+		}
+		toBeSorted.sort(cmp);
+		moves.addAll(0, toBeSorted);
 	}
 	
 	@Override
@@ -58,10 +76,6 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 		return this.board; 
 	}
 
-//	public Comparator<Move> getMoveComparator() {
-//		return this.comparator;
-//	}
-	
 	public void setMoveComparatorBuilder(Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorBuilder) {
 		this.moveComparatorBuilder = moveComparatorBuilder;
 		if (moveComparatorBuilder==null) {

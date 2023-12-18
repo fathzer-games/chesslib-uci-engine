@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.fathzer</groupId>
@@ -20,7 +22,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<check-dependencies-java-version>11</check-dependencies-java-version>
-	    <maven.compiler.release>11</maven.compiler.release>
+		<maven.compiler.release>11</maven.compiler.release>
 		<sonar.organization>fathzer-games</sonar.organization>
 		<customized.jar.name>chesslib-uci-engine</customized.jar.name>
 	</properties>
@@ -37,6 +39,11 @@
 			<groupId>com.github.bhlangonijr</groupId>
 			<artifactId>chesslib</artifactId>
 			<version>1.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fathzer</groupId>
+			<artifactId>chess-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fathzer</groupId>
@@ -96,10 +103,12 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- Prevent maven from deploying the produced files to local repository -->
+			<!-- Prevent maven from deploying the produced files to local
+			repository -->
 			<plugin>
 				<artifactId>maven-install-plugin</artifactId>
-				<version>3.0.1</version> <!-- IMPORTANT: versions previous 2.4 ignore skip configuration -->
+				<version>3.0.1</version> <!-- IMPORTANT: versions previous 2.4
+				ignore skip configuration -->
 				<configuration>
 					<skip>true</skip>
 				</configuration>
