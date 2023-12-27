@@ -36,7 +36,7 @@ class MinimaxEngineTest {
 	@Test
 	void blackPlayingTest() {
 		final InternalEngine mme4 = new InternalEngine(BasicEvaluator::new, 3);
-		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
+		mme4.setMoveComparatorSupplier(StrictMoveEvaluator::new);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		final List<EvaluatedMove<Move>> moves = mme4.getBestMoves(fromFEN("7k/5p1Q/5P1N/5PPK/6PP/8/8/8 b - - 6 5"));
 //show(moves);
@@ -55,7 +55,7 @@ class MinimaxEngineTest {
 		List<EvaluatedMove<Move>> moves;
 		final InternalEngine mme4 = new InternalEngine(BasicEvaluator::new, 4);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
-		mme4.setMoveComparatorSupplier(StrictMoveComparator::new);
+		mme4.setMoveComparatorSupplier(StrictMoveEvaluator::new);
 		
 		// 3 possible Mats in 1 with whites
 		moves = mme4.getBestMoves(fromFEN("7k/5p2/5PQN/5PPK/6PP/8/8/8 w - - 6 5"));
@@ -110,10 +110,10 @@ class MinimaxEngineTest {
 		// Check in 3
 		System.out.println("------------------");
 		InternalEngine engine = new InternalEngine(BasicEvaluator::new, 6);
-		engine.setMoveComparatorSupplier(StrictMoveComparator::new);
+		engine.setMoveComparatorSupplier(StrictMoveEvaluator::new);
 		engine.getDeepeningPolicy().setSize(3);
 		engine.getDeepeningPolicy().setAccuracy(100);
-		engine.setMoveComparatorSupplier(StrictMoveComparator::new);
+		engine.setMoveComparatorSupplier(StrictMoveEvaluator::new);
 		moves = engine.getBestMoves(fromFEN("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1"));
 //show(moves);
 assertEquals(19, moves.size());

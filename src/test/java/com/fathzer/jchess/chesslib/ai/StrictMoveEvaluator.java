@@ -5,9 +5,9 @@ import com.github.bhlangonijr.chesslib.PieceType;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class StrictMoveComparator extends BasicMoveComparator {
+public class StrictMoveEvaluator extends BasicMoveComparator {
 
-	public StrictMoveComparator(ChessLibMoveGenerator board) {
+	public StrictMoveEvaluator(ChessLibMoveGenerator board) {
 		super(board);
 	}
 

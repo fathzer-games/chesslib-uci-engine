@@ -1,6 +1,5 @@
 package com.fathzer.jchess.chesslib.ai;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -17,6 +16,7 @@ import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
 import com.fathzer.games.ai.moveSelector.RandomMoveSelector;
 import com.fathzer.games.ai.moveSelector.StaticMoveSelector;
 import com.fathzer.games.ai.transposition.SizeUnit;
+import com.fathzer.games.util.SelectiveComparator;
 import com.fathzer.games.util.exec.ContextualizedExecutor;
 import com.fathzer.games.util.exec.ExecutionContext;
 import com.fathzer.games.util.exec.MultiThreadsContext;
@@ -28,7 +28,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveGenerator> {
 	private static final Logger log = LoggerFactory.getLogger(InternalEngine.class);
 	
-	private Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorSupplier;
+	private Function<ChessLibMoveGenerator, SelectiveComparator<Move>> moveComparatorSupplier;
 	private Function<ChessLibMoveGenerator, Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder;
 	
 	public InternalEngine(Function<ChessLibMoveGenerator, Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder , int maxDepth) {
@@ -39,7 +39,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 		setLogger(new DefaultLogger(this));
 	}
 	
-	public void setMoveComparatorSupplier(Function<ChessLibMoveGenerator, Comparator<Move>> moveComparatorSupplier) {
+	public void setMoveComparatorSupplier(Function<ChessLibMoveGenerator, SelectiveComparator<Move>> moveComparatorSupplier) {
 		this.moveComparatorSupplier = moveComparatorSupplier;
 	}
 
@@ -61,7 +61,7 @@ public class InternalEngine extends IterativeDeepeningEngine<Move, ChessLibMoveG
 	@Override
 	public Move apply(ChessLibMoveGenerator board) {
 		final BasicMoveComparator c = new BasicMoveComparator(board); 
-		super.setMoveSelector(new FirstBestMoveSelector<Move>().setNext(new StaticMoveSelector<Move,IterativeDeepeningSearch<Move>>(c::getMoveValue).setNext(new RandomMoveSelector<>())));
+		super.setMoveSelector(new FirstBestMoveSelector<Move>().setNext(new StaticMoveSelector<Move,IterativeDeepeningSearch<Move>>(c::evaluate).setNext(new RandomMoveSelector<>())));
 		final IterativeDeepeningSearch<Move> search = search(board);
 		final List<EvaluatedMove<Move>> bestMoves = this.getMoveSelector().select(search, search.getBestMoves());
 		final EvaluatedMove<Move> evaluatedMove = bestMoves.get(0);

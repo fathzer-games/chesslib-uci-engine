@@ -12,7 +12,7 @@ public final class BoardExplorerBuilder {
 	private static final List<Square> BOARD_SQUARES;
 	
 	private BoardExplorerBuilder() {
-		// Prevent intantiation
+		// Prevent instantiation
 	}
 	
 	static {

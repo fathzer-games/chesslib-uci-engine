@@ -11,18 +11,19 @@ import static com.github.bhlangonijr.chesslib.Square.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.fathzer.games.util.MoveList;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-class StrictMoveComparatorTest {
+class StrictMoveEvaluatorTest {
 
 	@Test
 	void test() {
-		assertEquals(0,StrictMoveComparator.getIndex(Square.A8));
-		StrictMoveComparator c = new StrictMoveComparator(new ChessLibMoveGenerator(new Board()));
+		assertEquals(0,StrictMoveEvaluator.getIndex(Square.A8));
+		StrictMoveEvaluator c = new StrictMoveEvaluator(new ChessLibMoveGenerator(new Board()));
 		
 		// Ensure first is A8
 		assertTrue(c.compare(new Move(A8,A6),new Move(A7,A6))<0);
@@ -36,10 +37,12 @@ class StrictMoveComparatorTest {
 	@Test
 	void test2() {
 		ChessLibMoveGenerator board = fromFEN("5B2/8/7p/8/8/NN6/pk1K4/8 b - - 0 1");
-		final StrictMoveComparator cmp = new StrictMoveComparator(board);
+		final StrictMoveEvaluator cmp = new StrictMoveEvaluator(board);
 		
-		List<Move> moves = board.getLegalMoves();
-		moves.sort(cmp);
+		MoveList<Move> moves = new MoveList<Move>();
+		moves.setComparator(cmp);
+		moves.addAll(board.getLegalMoves());
+		moves.sort();
 		
 		final Move queenPromo = new Move(Square.A2, Square.A1, Piece.BLACK_QUEEN);
 		final Move rookPromo = new Move(Square.A2, Square.A1, Piece.BLACK_ROOK);
@@ -52,8 +55,7 @@ class StrictMoveComparatorTest {
 		final List<Move> expected = Arrays.asList(queenPromo, rookPromo, knightCaught, bishopPromo, knightPromo, pawnAdvance);
 		// Warning, move generator can return pseudo legal moves that should be ignored in sorting comparison
 		// in order to not have to rewrite test when generator changes from pseudo legals to strictly legal moves
-		moves = moves.stream().filter(expected::contains).collect(Collectors.toList());
-		assertEquals(expected, moves);
+		assertEquals(expected, moves.stream().filter(expected::contains).collect(Collectors.toList()));
 		
 		assertTrue(cmp.compare(bishopPromo,rookPromo)>0);
 		assertTrue(cmp.compare(knightPromo, bishopPromo)>0);
