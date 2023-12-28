@@ -5,7 +5,7 @@ import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.clock.CountDownState;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.InternalEngine;
-import com.fathzer.jchess.chesslib.time.TimeManager;
+import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.parameters.GoParameters;
 import com.fathzer.jchess.uci.parameters.GoParameters.PlayerClockData;
 import com.fathzer.jchess.uci.parameters.GoParameters.TimeOptions;
@@ -14,7 +14,7 @@ import com.github.bhlangonijr.chesslib.Side;
 /** A class that configures the engine before executing the go command
  */
 public class UCIEngineSearchConfiguration {
-	private static final BasicTimeManager<ChessLibMoveGenerator> TIME_MANAGER = new BasicTimeManager<>(TimeManager.INSTANCE);
+	private static final BasicTimeManager<ChessLibMoveGenerator> TIME_MANAGER = new BasicTimeManager<>(RemainingMoveOracle.INSTANCE);
 
 	public static class EngineConfiguration {
 		private long maxTime;

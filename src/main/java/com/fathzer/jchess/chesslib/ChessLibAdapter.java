@@ -1,71 +1,51 @@
 package com.fathzer.jchess.chesslib;
 
-import static com.github.bhlangonijr.chesslib.PieceType.PAWN;
+import static com.fathzer.chess.utils.Pieces.*;
+import static com.fathzer.jchess.chesslib.BoardExplorerBuilder.*;
 
 import java.util.stream.Stream;
 
-import com.fathzer.chess.utils.adapters.ColorAdapter;
 import com.fathzer.chess.utils.adapters.MoveAdapter;
-import com.fathzer.chess.utils.adapters.PieceEvaluator;
 import com.fathzer.chess.utils.adapters.PieceStreamer;
-import com.fathzer.jchess.chesslib.ai.PieceValues;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
+import com.github.bhlangonijr.chesslib.PieceType;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public interface ChessLibAdapter extends ColorAdapter<ChessLibMoveGenerator, Side, Piece>, PieceStreamer<ChessLibMoveGenerator, Piece>, PieceEvaluator<Piece>, MoveAdapter<Move, ChessLibMoveGenerator, Piece> {
+public interface ChessLibAdapter extends PieceStreamer<ChessLibMoveGenerator>, MoveAdapter<Move, ChessLibMoveGenerator> {
 	@Override
-	default boolean isWhite(Side color) {
-		return color==Side.WHITE;
+	default boolean isWhiteToMove(ChessLibMoveGenerator board) {
+		return board.getBoard().getSideToMove()==Side.WHITE;
 	}
 
 	@Override
-	default Side getSideToMove(ChessLibMoveGenerator board) {
-		return board.getBoard().getSideToMove();
-	}
-
-	@Override
-	default Stream<Piece> getPieces(ChessLibMoveGenerator board) {
+	default Stream<Integer> getPieces(ChessLibMoveGenerator board) {
 		return BoardExplorerBuilder.getPieces(board.getBoard());
 	}
 
 	@Override
-	default Side getColor(Piece piece) {
-		return piece.getPieceSide();
+	default int getMovingPiece(ChessLibMoveGenerator board, Move move) {
+		return toPiece(board.getBoard().getPiece(move.getFrom()));
 	}
-
+	
 	@Override
-	default int getValue(Piece piece) {
-		return PieceValues.get(piece.getPieceType());
-	}
-
-	@Override
-	default Piece getMoving(ChessLibMoveGenerator board, Move move) {
-		return board.getBoard().getPiece(move.getFrom());
-	}
-
-	@Override
-	default Piece getCaptured(ChessLibMoveGenerator board, Move move) {
-		final Board b = board.getBoard();
-		final Piece moving = b.getPiece(move.getFrom());
-		if (Square.NONE!=b.getEnPassantTarget() && PAWN==moving.getPieceType() &&
+	default int getCapturedType(ChessLibMoveGenerator mv, Move move) {
+		final Board board = mv.getBoard();
+		final Piece moving = board.getPiece(move.getFrom());
+		if (Square.NONE!=board.getEnPassantTarget() && PieceType.PAWN==moving.getPieceType() &&
         move.getTo().getFile()!=move.getFrom().getFile()) {
-			return moving; // Color of piece doesn't matter
+			return PAWN; // A pawn is captured
 		} else {
-			final Piece piece = board.getBoard().getPiece(move.getTo());
-			return piece.getPieceSide()!=moving.getPieceSide() ? piece : Piece.NONE;
+			final Piece piece = board.getPiece(move.getTo());
+			// Be aware of castling in chess 960 where we can consider the king captures its own rook!
+			return piece.getPieceSide()!=moving.getPieceSide() ? fromPieceType(piece.getPieceType()) : 0;
 		}
 	}
 	
 	@Override
-	default Piece getPromotion(ChessLibMoveGenerator board, Move move) {
-		return move.getPromotion();
-	}
-	
-	@Override
-	default boolean isNone(Piece piece) {
-		return piece==Piece.NONE;
+	default int getPromotionType(ChessLibMoveGenerator board, Move move) {
+		return fromPieceType(move.getPromotion().getPieceType());
 	}
 }
