@@ -11,11 +11,13 @@ import java.util.List;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTTestData;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.ai.InternalEngine;
-import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
+import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
+import com.fathzer.jchess.chesslib.ai.ChessLibEngine;
+import com.fathzer.jchess.chesslib.ai.eval.BasicEvaluator;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.github.bhlangonijr.chesslib.Board;
@@ -46,11 +48,11 @@ public class Main extends UCI {
 
 //TODO Commonalize this with JChess-core	
 	private static class MovesAndMore {
-		private final InternalEngine engine;
+		private final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine;
 		private String fen;
 		private List<EvaluatedMove<Move>> moves;
 		
-		MovesAndMore(InternalEngine engine, String fen) {
+		MovesAndMore(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine, String fen) {
 			this.engine = engine;
 			fill(fen);
 		}
@@ -58,7 +60,9 @@ public class Main extends UCI {
 		void fill(String fen) {
 			Board board = new Board();
 			board.loadFromFen(fen);
-			moves = engine.getBestMoves(new ChessLibMoveGenerator(board));
+			final ChessLibMoveGenerator mv = new ChessLibMoveGenerator(board);
+			mv.setMoveComparatorBuilder(BasicMoveComparator::new);
+			moves = engine.getBestMoves(mv);
 		}
 
 		private void assertEquals(Object expected, Object actual) {
@@ -83,7 +87,7 @@ public class Main extends UCI {
 	
 	private void speedTest(Deque<String> args) {
 		final long start = System.currentTimeMillis();
-		final InternalEngine engine = new InternalEngine(BasicEvaluator::new, 8);
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 8);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		if (!args.isEmpty()) {
 			engine.setParallelism(Integer.parseInt(args.pop()));

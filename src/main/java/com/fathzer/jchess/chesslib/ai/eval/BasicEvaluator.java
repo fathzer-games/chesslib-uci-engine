@@ -1,4 +1,4 @@
-package com.fathzer.jchess.chesslib.eval;
+package com.fathzer.jchess.chesslib.ai.eval;
 
 import static com.fathzer.games.Color.*;
 
@@ -9,8 +9,8 @@ import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class BasicEvaluator extends NaiveEvaluator<Move, ChessLibMoveGenerator> implements ChessLibAdapter {
-	public BasicEvaluator(ChessLibMoveGenerator board) {
-		super(board);
+	public BasicEvaluator() {
+		super();
 	}
 
 	private BasicEvaluator(int score) {

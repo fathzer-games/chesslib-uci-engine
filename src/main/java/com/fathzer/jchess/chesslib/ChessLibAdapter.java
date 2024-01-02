@@ -10,16 +10,10 @@ import com.fathzer.chess.utils.adapters.PieceStreamer;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.PieceType;
-import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public interface ChessLibAdapter extends PieceStreamer<ChessLibMoveGenerator>, MoveAdapter<Move, ChessLibMoveGenerator> {
-	@Override
-	default boolean isWhiteToMove(ChessLibMoveGenerator board) {
-		return board.getBoard().getSideToMove()==Side.WHITE;
-	}
-
 	@Override
 	default Stream<Integer> getPieces(ChessLibMoveGenerator board) {
 		return BoardExplorerBuilder.getPieces(board.getBoard());

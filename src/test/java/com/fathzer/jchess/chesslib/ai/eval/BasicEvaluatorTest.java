@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.fathzer.games.Color;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.eval.BasicEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -24,7 +23,8 @@ class BasicEvaluatorTest {
 			Board internal = new Board();
 			internal.loadFromFen(fen);
 			this.mvg = new ChessLibMoveGenerator(internal);
-			this.eval = new BasicEvaluator(mvg);
+			this.eval = new BasicEvaluator();
+			this.eval.init(mvg);
 			eval.setViewPoint(viewPoint);
 			assertEquals(expectedEval, eval.evaluate(mvg));
 		}

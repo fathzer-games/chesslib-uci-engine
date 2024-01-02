@@ -1,15 +1,16 @@
 package com.fathzer.jchess.chesslib.uci;
 
 import com.fathzer.games.Color;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.clock.CountDownState;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.ai.InternalEngine;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.parameters.GoParameters;
 import com.fathzer.jchess.uci.parameters.GoParameters.PlayerClockData;
 import com.fathzer.jchess.uci.parameters.GoParameters.TimeOptions;
 import com.github.bhlangonijr.chesslib.Side;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 /** A class that configures the engine before executing the go command
  */
@@ -20,13 +21,13 @@ public class UCIEngineSearchConfiguration {
 		private long maxTime;
 		private int depth;
 		
-		private EngineConfiguration(InternalEngine engine) {
+		private EngineConfiguration(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine) {
 			maxTime = engine.getDeepeningPolicy().getMaxTime();
 			depth = engine.getDeepeningPolicy().getDepth();
 		}
 	}
 	
-	public EngineConfiguration configure(InternalEngine engine, GoParameters options, ChessLibMoveGenerator board) {
+	public EngineConfiguration configure(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine, GoParameters options, ChessLibMoveGenerator board) {
 		final EngineConfiguration result = new EngineConfiguration(engine);
 		final TimeOptions timeOptions = options.getTimeOptions();
 		if (options.isPonder() || !options.getMoveToSearch().isEmpty() || options.getMate()>0 || options.getNodes()>0 || timeOptions.isInfinite()) {
@@ -47,7 +48,7 @@ public class UCIEngineSearchConfiguration {
 		return result;
 	}
 
-	public void set(InternalEngine engine, EngineConfiguration c) {
+	public void set(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine, EngineConfiguration c) {
 		engine.getDeepeningPolicy().setMaxTime(c.maxTime);
 		engine.getDeepeningPolicy().setDepth(c.depth);
 	}

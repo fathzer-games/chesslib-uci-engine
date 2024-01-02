@@ -22,6 +22,11 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	}
 	
 	@Override
+	public boolean isWhiteToMove() {
+		return board.getSideToMove()==Side.WHITE;
+	}
+
+	@Override
 	public boolean makeMove(Move move, MoveConfidence confidence) {
 		try {
 			return board.doMove(move, MoveConfidence.UNSAFE==confidence);

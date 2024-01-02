@@ -8,26 +8,35 @@ import org.slf4j.LoggerFactory;
 import com.fathzer.games.ai.SearchResult;
 import com.fathzer.games.ai.SearchStatistics;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
-import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine.EventLogger;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine.EngineEventLogger;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-class DefaultLogger implements EventLogger<Move> {
+class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenerator> {
 	private static final Logger log = LoggerFactory.getLogger(DefaultLogger.class);
-	private final InternalEngine engine;
+	private final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine;
 
-	DefaultLogger(InternalEngine engine) {
+	DefaultLogger(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine) {
 		super();
 		this.engine = engine;
 	}
 
 	@Override
-	public void logSearch(int depth, SearchStatistics stat, SearchResult<Move> bestMoves) {
+	public void logSearchAtDepth(int depth, SearchStatistics stat, SearchResult<Move> bestMoves) {
 		final long duration = stat.getDurationMs();
 		final List<EvaluatedMove<Move>> cut = bestMoves.getCut();
 		log.info("{} move generations, {} moves generated, {} moves played, {} evaluations for {} moves at depth {} by {} threads in {}ms -> {}",
 				stat.getMoveGenerationCount(), stat.getGeneratedMoveCount(), stat.getMovePlayedCount(), stat.getEvaluationCount(), bestMoves.getList().size(),
 				depth, engine.getParallelism(), duration, cut.isEmpty()?null:cut.get(0).getEvaluation());
 		log.info("Search at depth {} returns: {}", depth, bestMoves.getCut());
+	}
+
+	
+	@Override
+	public void logSearchStart(ChessLibMoveGenerator board, IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine) {
+		log.info("--- Start evaluation for {} with size={}, accuracy={}, maxDepth={}---", board.getBoard().getFen(), engine.getDeepeningPolicy().getSize(), engine.getDeepeningPolicy().getAccuracy(), engine.getDeepeningPolicy().getDepth());
 	}
 
 	@Override
@@ -38,6 +47,19 @@ class DefaultLogger implements EventLogger<Move> {
 	@Override
 	public void logEndedByPolicy(int depth) {
 		log.info("Search ended by deepening policy at depth {}", depth);
+	}
+	
+	@Override
+	public void logSearchEnd(ChessLibMoveGenerator board, IterativeDeepeningSearch<Move> result) {
+		log.info("--- End of iterative evaluation returns: {}", result.getBestMoves());
+	}
+
+	@Override
+	public void logMoveChosen(ChessLibMoveGenerator board, EvaluatedMove<Move> evaluatedMove) {
+		Move move = evaluatedMove.getContent();
+		log.info("Move chosen :{}", move);
+		final List<Move> pv = evaluatedMove.getPrincipalVariation();
+		log.info("pv: {}", pv);
 	}
 }
 

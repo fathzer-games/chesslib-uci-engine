@@ -6,7 +6,7 @@ import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-class TT extends OneLongEntryTranspositionTable<Move> {
+public class TT extends OneLongEntryTranspositionTable<Move> {
 	// Move is encoded as an int:
 	// 12 bits for source, 12 bits for destination
 	// 8 bits for promotion
