@@ -17,7 +17,6 @@ import com.fathzer.games.perft.PerfTTestData;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
 import com.fathzer.jchess.chesslib.ai.ChessLibEngine;
-import com.fathzer.jchess.chesslib.ai.eval.BasicEvaluator;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.github.bhlangonijr.chesslib.Board;
@@ -87,7 +86,7 @@ public class Main extends UCI {
 	
 	private void speedTest(Deque<String> args) {
 		final long start = System.currentTimeMillis();
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 8);
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.INSTANCE.getEngine();
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		if (!args.isEmpty()) {
 			engine.setParallelism(Integer.parseInt(args.pop()));
