@@ -19,10 +19,11 @@ import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
 import com.fathzer.jchess.chesslib.ai.ChessLibEngine;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
+import com.fathzer.jchess.uci.extended.ExtendedUCI;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class Main extends UCI {
+public class Main extends ExtendedUCI {
 
 	public static void main(String[] args) {
 		try (UCI uci = new Main(new ChessLibEngine())) {

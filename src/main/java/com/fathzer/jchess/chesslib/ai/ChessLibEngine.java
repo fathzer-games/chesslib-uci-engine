@@ -9,30 +9,24 @@ import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
 import com.fathzer.games.ai.moveselector.RandomMoveSelector;
 import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
-import com.fathzer.games.ai.time.TimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.eval.BasicEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
+import com.fathzer.jchess.uci.extended.Displayable;
 import com.fathzer.jchess.uci.helper.AbstractEngine;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator> {
+public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	public static final ChessLibEngine INSTANCE = new ChessLibEngine();
 	
-	@Override
-	protected TimeManager<ChessLibMoveGenerator> buildTimeManager() {
-		return new BasicTimeManager<>(RemainingMoveOracle.INSTANCE);
-	}
-
-	@Override
-	protected IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine() {
-		return buildEngine(BasicEvaluator::new, 8);
+	public ChessLibEngine() {
+		super (buildEngine(BasicEvaluator::new, 8), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 	}
 	
 	@Override
@@ -73,12 +67,12 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 
 	@Override
 	public String getBoardAsString() {
-		return board==null ? "no position defined" : board.toString();
+		return board.getBoard().toString();
 	}
 
 	@Override
 	public String getFEN() {
-		return board==null ? null : board.getBoard().getFen();
+		return board.getBoard().getFen();
 	}
 
 	@Override
