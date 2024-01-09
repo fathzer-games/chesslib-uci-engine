@@ -16,6 +16,8 @@ public class BasicEvaluator extends NaiveEvaluator<Move, ChessLibMoveGenerator> 
 
 	@Override
 	public BasicEvaluator fork(int score) {
-		return new BasicEvaluator(score);
+		final BasicEvaluator result = new BasicEvaluator(score);
+		result.viewPoint = this.viewPoint;
+		return result;
 	}
 }
