@@ -6,9 +6,9 @@ import com.fathzer.games.ai.SearchResult;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.iterativedeepening.DeepeningPolicy;
 
-final class ChessLibDeepeningPolicy extends DeepeningPolicy {
+public final class ChessLibDeepeningPolicy extends DeepeningPolicy {
 	
-	protected ChessLibDeepeningPolicy(int maxDepth) {
+	public ChessLibDeepeningPolicy(int maxDepth) {
 		super(maxDepth);
 	}
 	

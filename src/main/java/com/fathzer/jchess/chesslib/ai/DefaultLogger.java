@@ -14,11 +14,11 @@ import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenerator> {
+public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenerator> {
 	private static final Logger log = LoggerFactory.getLogger(DefaultLogger.class);
 	private final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine;
 
-	DefaultLogger(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine) {
+	public DefaultLogger(IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine) {
 		super();
 		this.engine = engine;
 	}

@@ -18,13 +18,13 @@ import com.github.bhlangonijr.chesslib.move.Move;
 class BasicEvaluatorTest {
 	
 	private static class ATest {
-		private final BasicEvaluator eval;
+		private final NaiveEvaluator eval;
 		private final ChessLibMoveGenerator mvg;
 		
 		private ATest(String fen, Color viewPoint, int expectedEval) {
 			this.mvg = new ChessLibMoveGenerator(new Board());
 			mvg.getBoard().loadFromFen(fen);
-			this.eval = new BasicEvaluator();
+			this.eval = new NaiveEvaluator();
 			this.eval.init(mvg);
 			eval.setViewPoint(viewPoint);
 			assertEquals(expectedEval, eval.evaluate(mvg));
@@ -111,7 +111,7 @@ class BasicEvaluatorTest {
 	void testFork() {
 		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(new Board());
 		mvg.getBoard().loadFromFen("r2qkb1r/1ppb1ppp/4pn2/pP1p4/3P1B2/4P3/P1P2PPP/RN1QKBNR w KQkq a6 0 6");
-		Evaluator<Move, ChessLibMoveGenerator> eval = new BasicEvaluator();
+		Evaluator<Move, ChessLibMoveGenerator> eval = new NaiveEvaluator();
 		eval.init(mvg);
 		eval.setViewPoint(Color.BLACK);
 		assertEquals(-300, eval.evaluate(mvg));

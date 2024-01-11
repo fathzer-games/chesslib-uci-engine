@@ -9,7 +9,6 @@ import java.util.Deque;
 
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTTestData;
-import com.fathzer.jchess.chesslib.ai.ChessLibEngine;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.fathzer.jchess.uci.extended.ExtendedUCI;

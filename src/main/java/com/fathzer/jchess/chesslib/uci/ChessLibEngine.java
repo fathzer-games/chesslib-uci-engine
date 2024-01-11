@@ -1,5 +1,7 @@
-package com.fathzer.jchess.chesslib.ai;
+package com.fathzer.jchess.chesslib.uci;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 
 import com.fathzer.games.ai.evaluation.Evaluator;
@@ -12,11 +14,17 @@ import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.ai.eval.BasicEvaluator;
+import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
+import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
+import com.fathzer.jchess.chesslib.ai.DefaultLogger;
+import com.fathzer.jchess.chesslib.ai.TT;
+import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
 import com.fathzer.jchess.uci.helper.AbstractEngine;
+import com.fathzer.jchess.uci.helper.EvaluatorConfiguration;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
@@ -24,9 +32,11 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	public static final ChessLibEngine INSTANCE = new ChessLibEngine();
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("naive",NaiveEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new));
 	
 	public ChessLibEngine() {
-		super (buildEngine(BasicEvaluator::new, 8), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
+		super (buildEngine(EVALUATORS.get(0).getBuilder(), 8), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
+		setEvaluators(EVALUATORS);
 	}
 	
 	@Override

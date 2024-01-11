@@ -24,7 +24,8 @@ import com.fathzer.games.util.SelectiveComparator;
 import com.fathzer.games.util.exec.ExecutionContext;
 import com.fathzer.games.util.exec.SingleThreadContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.ai.eval.BasicEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
+import com.fathzer.jchess.chesslib.uci.ChessLibEngine;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -42,7 +43,7 @@ class MinimaxEngineTest {
 
 	@Test
 	void blackPlayingTest() {
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> mme4 = ChessLibEngine.buildEngine(BasicEvaluator::new, 3);
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> mme4 = ChessLibEngine.buildEngine(NaiveEvaluator::new, 3);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		final List<EvaluatedMove<Move>> moves = mme4.getBestMoves(fromFEN("7k/5p1Q/5P1N/5PPK/6PP/8/8/8 b - - 6 5", StrictMoveEvaluator::new));
 //show(moves);
@@ -59,7 +60,7 @@ class MinimaxEngineTest {
 	@Test
 	void test() {
 		List<EvaluatedMove<Move>> moves;
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> mme4 = ChessLibEngine.buildEngine(BasicEvaluator::new, 4);
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> mme4 = ChessLibEngine.buildEngine(NaiveEvaluator::new, 4);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		
 		// 3 possible Mats in 1 with whites
@@ -114,7 +115,7 @@ class MinimaxEngineTest {
 		
 		// Check in 3
 		System.out.println("------------------");
-		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 6);
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 6);
 		engine.getDeepeningPolicy().setSize(3);
 		engine.getDeepeningPolicy().setAccuracy(100);
 		moves = engine.getBestMoves(fromFEN("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1", StrictMoveEvaluator::new));
@@ -128,7 +129,7 @@ assertEquals(19, moves.size());
 	@Test
 	void moreTests() {
 		final ChessLibMoveGenerator board = fromFEN("8/8/8/3kr3/8/8/5PPP/7K w - - 0 1");
-		final Evaluator<Move,ChessLibMoveGenerator> basicEvaluator = new BasicEvaluator();
+		final Evaluator<Move,ChessLibMoveGenerator> basicEvaluator = new NaiveEvaluator();
 		basicEvaluator.init(board);
 		SearchContext<Move, ChessLibMoveGenerator> context = new SearchContext<>(board, basicEvaluator);
 		try (ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> exec = new SingleThreadContext<>(context)) {
@@ -154,7 +155,7 @@ assertEquals(19, moves.size());
 		// when ai is called with a reasonable non null accuracy
 		// Currently, the only way to achieve this is to have a custom win/loose evaluation with a gap higher than the accuracy
 		// I should think more about it...
-		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 8);
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 8);
 		engine.setParallelism(4);
 		engine.getDeepeningPolicy().setSize(1);
 		engine.getDeepeningPolicy().setAccuracy(300);
@@ -168,7 +169,7 @@ assertEquals(19, moves.size());
 	
 	@Test
 	void iterativeTest2() {
-		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 4);
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 4);
 		engine.setParallelism(4);
 		engine.getDeepeningPolicy().setSize(1);
 		engine.getDeepeningPolicy().setAccuracy(100);
@@ -185,7 +186,7 @@ assertEquals(19, moves.size());
 	void bug20230813() {
 		// Not a bug, just a problem with evaluation function
 		ChessLibMoveGenerator board = fromFEN("8/8/8/4p1k1/3bK3/8/7p/8 b - - 0 1");
-		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 4);
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 4);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		System.out.println(engine.getBestMoves(board));
 		System.out.println(engine.apply(board));
@@ -195,7 +196,7 @@ assertEquals(19, moves.size());
 	@Disabled
 	void bug20230821() {
 		// Not a bug, just a problem with evaluation function
-		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(BasicEvaluator::new, 7);
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 7);
 		System.out.println(engine.apply(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")));
 	}
 }
