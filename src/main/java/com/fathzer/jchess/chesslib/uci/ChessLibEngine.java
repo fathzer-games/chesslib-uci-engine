@@ -31,8 +31,7 @@ import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-	public static final ChessLibEngine INSTANCE = new ChessLibEngine();
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("naive",NaiveEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new));
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
 	public ChessLibEngine() {
 		super (buildEngine(EVALUATORS.get(0).getBuilder(), 8), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
