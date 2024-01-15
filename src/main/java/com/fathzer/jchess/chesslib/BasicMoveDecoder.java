@@ -1,30 +1,23 @@
 package com.fathzer.jchess.chesslib;
 
-import static com.fathzer.chess.utils.Pieces.*;
+import static com.fathzer.chess.utils.Pieces.PAWN;
 
-import com.fathzer.chess.utils.adapters.MoveAdapter;
-import com.fathzer.chess.utils.adapters.BoardExplorer;
-import com.fathzer.chess.utils.adapters.BoardExplorerBuilder;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.PieceType;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public interface ChessLibAdapter extends BoardExplorerBuilder<ChessLibMoveGenerator>, MoveAdapter<Move, ChessLibMoveGenerator> {
-
-	@Override
-	default BoardExplorer getExplorer(ChessLibMoveGenerator board) {
-		return new ChessLibBoardExplorer(board.getBoard());
+public final class BasicMoveDecoder {
+	private BasicMoveDecoder() {
+		super();
 	}
-
-	@Override
-	default int getMovingPiece(ChessLibMoveGenerator board, Move move) {
+	
+	public static int getMovingPiece(ChessLibMoveGenerator board, Move move) {
 		return toPiece(board.getBoard().getPiece(move.getFrom()));
 	}
 	
-	@Override
-	default int getCapturedType(ChessLibMoveGenerator board, Move move) {
+	public static int getCapturedType(ChessLibMoveGenerator board, Move move) {
 		final Piece moving = board.getBoard().getPiece(move.getFrom());
 		if (Square.NONE!=board.getBoard().getEnPassantTarget() && PieceType.PAWN==moving.getPieceType() &&
         move.getTo().getFile()!=move.getFrom().getFile()) {
@@ -36,8 +29,7 @@ public interface ChessLibAdapter extends BoardExplorerBuilder<ChessLibMoveGenera
 		}
 	}
 	
-	@Override
-	default int getPromotionType(ChessLibMoveGenerator board, Move move) {
+	public static int getPromotionType(ChessLibMoveGenerator board, Move move) {
 		return fromPieceType(move.getPromotion().getPieceType());
 	}
 	
@@ -49,4 +41,5 @@ public interface ChessLibAdapter extends BoardExplorerBuilder<ChessLibMoveGenera
 		final int p = fromPieceType(piece.getPieceType());
 		return piece.getPieceSide()==Side.WHITE ? p : -p;
 	}
+
 }
