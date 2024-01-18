@@ -14,7 +14,8 @@ public final class ChessLibDeepeningPolicy extends DeepeningPolicy {
 	
 	@Override
 	public int getNextDepth(int currentDepth) {
-		return currentDepth < 5 ? currentDepth+2 : currentDepth+1;
+		int candidate = currentDepth < 5 ? currentDepth+2 : currentDepth+1;
+		return candidate>this.getDepth() ? this.getDepth() : candidate;
 	}
 
 	@Override

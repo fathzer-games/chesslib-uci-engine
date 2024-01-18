@@ -17,9 +17,7 @@ public class NaiveEvaluator extends AbstractNaiveEvaluator<Move, ChessLibMoveGen
 
 	@Override
 	public NaiveEvaluator fork(int score) {
-		final NaiveEvaluator result = new NaiveEvaluator(score);
-		result.viewPoint = this.viewPoint;
-		return result;
+		return new NaiveEvaluator(score);
 	}
 
 	@Override

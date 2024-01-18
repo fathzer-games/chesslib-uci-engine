@@ -10,7 +10,7 @@ import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.Square;
 
 class ChessLibBoardExplorer implements BoardExplorer {
-	private static final Square[] SQUARES;
+	static final Square[] SQUARES;
 	
 	static {
 		SQUARES = new Square[] {

@@ -24,8 +24,6 @@ public class SimplifiedEvaluator extends AbstractIncrementalSimplifiedEvaluator<
 
 	@Override
 	protected AbstractIncrementalSimplifiedEvaluator<Move, ChessLibMoveGenerator> fork(IncrementalState state) {
-		SimplifiedEvaluator result = new SimplifiedEvaluator(state);
-		result.viewPoint = this.viewPoint;
-		return result;
+		return new SimplifiedEvaluator(state);
 	}
 }
