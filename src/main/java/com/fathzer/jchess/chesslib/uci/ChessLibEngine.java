@@ -12,6 +12,7 @@ import com.fathzer.games.ai.moveselector.RandomMoveSelector;
 import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
+import com.fathzer.games.ai.transposition.TranspositionTable;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
@@ -101,5 +102,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		});
 		engine.setLogger(new DefaultLogger(engine));
 		return engine;
+	}
+
+	@Override
+	protected TranspositionTable<Move> buildTranspositionTable(int sizeInMB) {
+		return new TT(sizeInMB, SizeUnit.MB);
 	}
 }
