@@ -42,7 +42,20 @@ import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
+<<<<<<< Upstream, based on origin/main
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
+=======
+public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
+<<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
+			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
+			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
+			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
+			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
+		);
+=======
+>>>>>>> 8600cfb squelette d'évaluateur
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
 			Arrays.asList(
 					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
@@ -51,6 +64,14 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
 					);
+<<<<<<< Upstream, based on origin/main
+=======
+>>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+>>>>>>> f86bfc5 squelette d'évaluateur
+>>>>>>> 8600cfb squelette d'évaluateur
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
