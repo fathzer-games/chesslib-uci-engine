@@ -25,6 +25,7 @@ import com.fathzer.jchess.chesslib.ai.BasicQuiesceSearch;
 import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
 import com.fathzer.jchess.chesslib.ai.DefaultLogger;
 import com.fathzer.jchess.chesslib.ai.TT;
+import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
@@ -38,7 +39,8 @@ import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
 	private final Function<ChessLibMoveGenerator, Move> ownBook;
 
