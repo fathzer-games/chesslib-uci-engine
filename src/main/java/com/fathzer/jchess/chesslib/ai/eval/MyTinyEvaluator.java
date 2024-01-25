@@ -3,6 +3,7 @@ package com.fathzer.jchess.chesslib.ai.eval;
 import com.fathzer.games.ai.evaluation.StaticEvaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+<<<<<<< Upstream, based on origin/main
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -35,4 +36,16 @@ public class MyTinyEvaluator implements StaticEvaluator<Move, ChessLibMoveGenera
 		mvg.getBoard().loadFromFen("8/3b3p/p3P1p1/3K4/5P1P/2k5/8/8 b - - 0 56");
 		System.out.println(new MyTinyEvaluator().evaluate(mvg));
 	}
+=======
+import com.github.bhlangonijr.chesslib.move.Move;
+
+public class MyTinyEvaluator implements StaticEvaluator<Move, ChessLibMoveGenerator>, ZeroSumEvaluator<Move, ChessLibMoveGenerator> {
+
+	@Override
+	public int evaluateAsWhite(ChessLibMoveGenerator board) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+>>>>>>> f86bfc5 squelette d'évaluateur
 }

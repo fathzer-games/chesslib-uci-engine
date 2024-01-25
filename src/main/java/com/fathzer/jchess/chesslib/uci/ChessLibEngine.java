@@ -44,6 +44,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
@@ -59,6 +60,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
 					);
 >>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+>>>>>>> f86bfc5 squelette d'évaluateur
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
