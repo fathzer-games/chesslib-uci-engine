@@ -45,6 +45,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 =======
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
+<<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
@@ -90,6 +91,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 >>>>>>> 9c3d5f6 squelette d'évaluateur
 =======
 >>>>>>> e2c25bb Fucking rebase first try
+=======
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+>>>>>>> 021efeb squelette d'évaluateur
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
