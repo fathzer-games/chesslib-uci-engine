@@ -26,6 +26,7 @@ import com.fathzer.jchess.chesslib.ai.BasicQuiesceSearch;
 import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
 import com.fathzer.jchess.chesslib.ai.DefaultLogger;
 import com.fathzer.jchess.chesslib.ai.TT;
+import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
@@ -42,6 +43,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
+			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
