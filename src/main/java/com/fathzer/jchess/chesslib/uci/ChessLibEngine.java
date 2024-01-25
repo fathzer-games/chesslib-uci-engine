@@ -51,6 +51,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
@@ -125,6 +126,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> 31f501a squelette d'évaluateur
+=======
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+>>>>>>> 3f9a979 squelette d'évaluateur
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
