@@ -1,6 +1,7 @@
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 package com.fathzer.jchess.chesslib.ai.eval;
 
 import com.fathzer.games.ai.evaluation.StaticEvaluator;
@@ -126,3 +127,21 @@ public class MyTinyEvaluator implements StaticEvaluator<Move, ChessLibMoveGenera
 	}
 }
 >>>>>>> 1a8ef7d Fixes MyTinyEvaluator hang + search deepen on forced moves
+=======
+package com.fathzer.jchess.chesslib.ai.eval;
+
+import com.fathzer.games.ai.evaluation.StaticEvaluator;
+import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.github.bhlangonijr.chesslib.move.Move;
+
+public class MyTinyEvaluator implements StaticEvaluator<Move, ChessLibMoveGenerator>, ZeroSumEvaluator<Move, ChessLibMoveGenerator> {
+
+	@Override
+	public int evaluateAsWhite(ChessLibMoveGenerator board) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}
+>>>>>>> f86bfc5 squelette d'évaluateur
