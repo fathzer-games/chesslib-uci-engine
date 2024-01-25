@@ -1,5 +1,10 @@
 package com.fathzer.jchess.chesslib.ai;
 
+<<<<<<< Upstream, based on origin/main
+=======
+import static org.junit.jupiter.api.Assertions.*;
+
+>>>>>>> 2a0a7bc An example of calling engine to have three best moves with their pv
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
