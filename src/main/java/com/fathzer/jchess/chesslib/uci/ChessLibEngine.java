@@ -14,6 +14,7 @@ import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.ai.transposition.TranspositionTable;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
+import com.fathzer.games.util.PhysicalCores;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
 import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
@@ -35,7 +36,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
 	public ChessLibEngine() {
-		super (buildEngine(EVALUATORS.get(0).getBuilder(), 8), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
+		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
 	}
 	
@@ -101,6 +102,8 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			return new FirstBestMoveSelector<Move>().setNext(stmv.setNext(rnd));
 		});
 		engine.setLogger(new DefaultLogger(engine));
+		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
+		engine.getDeepeningPolicy().setMaxTime(60000);
 		return engine;
 	}
 
