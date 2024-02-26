@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.fathzer.games.ai.Negamax;
+import com.fathzer.games.ai.SearchContext;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.iterativedeepening.FirstBestMoveSelector;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
@@ -15,8 +17,10 @@ import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.ai.transposition.TranspositionTable;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.games.util.PhysicalCores;
+import com.fathzer.games.util.exec.ExecutionContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.BasicMoveComparator;
+import com.fathzer.jchess.chesslib.ai.BasicQuiesceSearch;
 import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
 import com.fathzer.jchess.chesslib.ai.DefaultLogger;
 import com.fathzer.jchess.chesslib.ai.TT;
@@ -94,7 +98,15 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 	
 	public static IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine(Supplier<Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder, int maxDepth) {
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder);
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder) {
+			@Override
+			protected Negamax<Move, ChessLibMoveGenerator> buildNegaMax(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
+				final Negamax<Move, ChessLibMoveGenerator> negaMax = super.buildNegaMax(context);
+				negaMax.setQuiescePolicy(new BasicQuiesceSearch());
+				return negaMax;
+			}
+			
+		};
 		engine.setMoveSelectorBuilder(b -> {
 			final BasicMoveComparator c = new BasicMoveComparator(b);
 			final RandomMoveSelector<Move, IterativeDeepeningSearch<Move>> rnd = new RandomMoveSelector<>();

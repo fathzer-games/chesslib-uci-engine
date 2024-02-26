@@ -131,7 +131,7 @@ assertEquals(19, moves.size());
 		final ChessLibMoveGenerator board = fromFEN("8/8/8/3kr3/8/8/5PPP/7K w - - 0 1");
 		final Evaluator<Move,ChessLibMoveGenerator> basicEvaluator = new NaiveEvaluator();
 		basicEvaluator.init(board);
-		SearchContext<Move, ChessLibMoveGenerator> context = new SearchContext<>(board, basicEvaluator);
+		SearchContext<Move, ChessLibMoveGenerator> context = SearchContext.get(board, () -> basicEvaluator);
 		try (ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> exec = new SingleThreadContext<>(context)) {
 			Negamax<Move, ChessLibMoveGenerator> ai = new Negamax<>(exec);
 			List<Move> l = new ArrayList<>();

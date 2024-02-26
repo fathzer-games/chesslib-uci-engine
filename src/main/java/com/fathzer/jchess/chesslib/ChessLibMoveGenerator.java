@@ -42,8 +42,8 @@ public class ChessLibMoveGenerator implements MoveGenerator<Move>, HashProvider 
 	}
 	
 	@Override
-	public List<Move> getMoves(boolean quiesce) {
-		final List<Move> moves = quiesce ? board.pseudoLegalCaptures() : board.pseudoLegalMoves();
+	public List<Move> getMoves() {
+		final List<Move> moves = board.pseudoLegalMoves();
 		if (comparator==null) {
 			return moves;
 		}
