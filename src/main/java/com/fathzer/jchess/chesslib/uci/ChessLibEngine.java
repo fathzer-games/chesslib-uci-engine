@@ -102,7 +102,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			@Override
 			protected Negamax<Move, ChessLibMoveGenerator> buildNegaMax(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
 				final Negamax<Move, ChessLibMoveGenerator> negaMax = super.buildNegaMax(context);
-				negaMax.setQuiescePolicy(new BasicQuiesceSearch());
+				negaMax.setQuiesceEvaluator(new BasicQuiesceSearch());
 				return negaMax;
 			}
 			
