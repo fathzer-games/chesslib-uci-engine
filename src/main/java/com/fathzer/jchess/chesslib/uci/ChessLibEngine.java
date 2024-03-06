@@ -2,6 +2,7 @@ package com.fathzer.jchess.chesslib.uci;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.fathzer.games.ai.Negamax;
@@ -39,9 +40,16 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
+	private final Function<ChessLibMoveGenerator, Move> ownBook;
+
 	public ChessLibEngine() {
+		this (null);
+	}
+
+	public ChessLibEngine(Function<ChessLibMoveGenerator, Move> ownBook) {
 		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
+		this.ownBook = ownBook;
 	}
 	
 	@Override
@@ -52,6 +60,17 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	@Override
 	public String getAuthor() {
 		return "Jean-Marc Astesana (Fathzer), Move generator is from Ben-Hur Carlos Vieira Langoni Junior";
+	}
+
+	@Override
+	public boolean hasOwnBook() {
+		return ownBook!=null;
+	}
+
+	@Override
+	public void setOwnBook(boolean activate) {
+		System.out.println("OwnBook set to "+activate);
+		engine.setOpenings(activate?ownBook:null);
 	}
 
 	@Override
@@ -68,6 +87,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	
 	@Override
 	protected Move toMove(UCIMove move) {
+		return fromUCI(move, board);
+	}
+	
+	public static Move fromUCI(UCIMove move, ChessLibMoveGenerator board) {
 		Piece p = null;
 		final String promotion = move.getPromotion();
 		if (promotion!=null) {

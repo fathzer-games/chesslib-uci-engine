@@ -1,24 +1,70 @@
 package com.fathzer.jchess.chesslib.uci;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.function.Function;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTTestData;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.lichess.DefaultOpenings;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.fathzer.jchess.uci.extended.ExtendedUCI;
 import com.fathzer.jchess.uci.extended.SpeedTest;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 public class Main extends ExtendedUCI {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	
 	public static void main(String[] args) {
-		try (UCI uci = new Main(new ChessLibEngine())) {
+		final String pathProperty = System.getProperty("openingsUrl");
+		final Function<ChessLibMoveGenerator, Move> openings = pathProperty==null ? null : readOpenings(pathProperty);
+		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();
+		}
+	}
+	
+	private static URL toURL(String path) throws IOException {
+		URL url;
+		try {
+			url = new URL(path);
+		} catch (MalformedURLException e) {
+			File file = new File(path);
+			if (!file.exists()) {
+				throw new FileNotFoundException();
+			}
+			url = file.toURI().toURL();
+		}
+		return url;
+	}
+	
+	private static Function<ChessLibMoveGenerator, Move> readOpenings(String url) {
+		try {
+			return readOpenings(url, toURL(url));
+		} catch (IOException e) {
+			LOGGER.error("Unable to load opening library at "+url, e);
+			return null;
+		}
+	}
+
+	private static Function<ChessLibMoveGenerator, Move> readOpenings(String url, final URL location) throws IOException {
+		final boolean compressed = location.getFile().endsWith(".gz");
+		try (InputStream stream = location.openStream()) {
+			final DefaultOpenings result = new DefaultOpenings(()->stream, compressed);
+			LOGGER.info("Opening library read from {}", url);
+			return result;
 		}
 	}
 

@@ -11,6 +11,13 @@ It requires a Java 11+ virtual machine.
 
 Download the jar, then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
 
+### Openings library
+You can use an opening library located at a URL using the ```openingsUrl``` system property.  
+Currently such a library is available in *data/masters-shrink.json.gz*, but **this location may change in the future**.
+
+To use this library, launch the engine with:  
+```java -DopeningsUrl=https://github.com/fathzer-games/jchess/raw/branch-first/src/main/resources/lichess/masters-shrink-full.json.gz -jar chesslib-uci-engine.jar```
+
 ## Known bugs
 - The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
 An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...  
