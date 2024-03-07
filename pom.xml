@@ -24,7 +24,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<check-dependencies-java-version>17</check-dependencies-java-version>
-		<maven.compiler.release>11</maven.compiler.release>
+		<maven.compiler.release>17</maven.compiler.release>
 		<sonar.organization>fathzer-games</sonar.organization>
 		<customized.jar.name>chesslib-uci-engine</customized.jar.name>
 	</properties>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>com.fathzer</groupId>
 			<artifactId>games-core</artifactId>
-			<version>0.0.8-SNAPSHOT</version>
+			<version>0.0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fathzer</groupId>

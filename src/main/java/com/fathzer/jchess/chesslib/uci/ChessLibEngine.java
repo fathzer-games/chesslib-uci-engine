@@ -2,7 +2,6 @@ package com.fathzer.jchess.chesslib.uci;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.fathzer.games.ai.Negamax;
@@ -16,6 +15,7 @@ import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.ai.transposition.TranspositionTable;
+import com.fathzer.games.movelibrary.MoveLibrary;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.games.util.PhysicalCores;
 import com.fathzer.games.util.exec.ExecutionContext;
@@ -40,13 +40,13 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
-	private final Function<ChessLibMoveGenerator, Move> ownBook;
+	private final MoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
 	public ChessLibEngine() {
 		this (null);
 	}
 
-	public ChessLibEngine(Function<ChessLibMoveGenerator, Move> ownBook) {
+	public ChessLibEngine(MoveLibrary<Move, ChessLibMoveGenerator> ownBook) {
 		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
 		this.ownBook = ownBook;

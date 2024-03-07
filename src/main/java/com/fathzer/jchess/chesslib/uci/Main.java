@@ -10,11 +10,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fathzer.games.movelibrary.MoveLibrary;
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTTestData;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
@@ -30,7 +30,7 @@ public class Main extends ExtendedUCI {
 	
 	public static void main(String[] args) {
 		final String pathProperty = System.getProperty("openingsUrl");
-		final Function<ChessLibMoveGenerator, Move> openings = pathProperty==null ? null : readOpenings(pathProperty);
+		final MoveLibrary<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : readOpenings(pathProperty);
 		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();
 		}
@@ -50,7 +50,7 @@ public class Main extends ExtendedUCI {
 		return url;
 	}
 	
-	private static Function<ChessLibMoveGenerator, Move> readOpenings(String url) {
+	private static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(String url) {
 		try {
 			return readOpenings(url, toURL(url));
 		} catch (IOException e) {
@@ -59,7 +59,7 @@ public class Main extends ExtendedUCI {
 		}
 	}
 
-	private static Function<ChessLibMoveGenerator, Move> readOpenings(String url, final URL location) throws IOException {
+	private static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(String url, final URL location) throws IOException {
 		final boolean compressed = location.getFile().endsWith(".gz");
 		try (InputStream stream = location.openStream()) {
 			final DefaultOpenings result = new DefaultOpenings(()->stream, compressed);
