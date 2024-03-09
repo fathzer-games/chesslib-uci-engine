@@ -140,6 +140,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
+		engine.getDeepeningPolicy().setDeepenOnForced(false);
 		return engine;
 	}
 
