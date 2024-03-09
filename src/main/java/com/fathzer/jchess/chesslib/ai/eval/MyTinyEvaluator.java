@@ -12,11 +12,22 @@ public class MyTinyEvaluator implements StaticEvaluator<Move, ChessLibMoveGenera
 	@Override
 	public int evaluateAsWhite(ChessLibMoveGenerator board) {
 		// Calculer l'évaluation de base
-		ev.init(board);
-		int baseEvaluation = ev.evaluate(board);
+		int baseEvaluation;
+//		synchronized (this) { // Alternative à la méthode fork
+			ev.init(board);
+			baseEvaluation = ev.evaluateAsWhite(board);
+//		}
 		// Tu peux ajouter ce qui concerne les chaines de pions, mauvais/bon fous, etc à l'évaluation de base ...
 		return baseEvaluation;
 	}
+	
+	@Override
+	public StaticEvaluator<Move, ChessLibMoveGenerator> fork() {
+		// Attention : SimplifiedEvaluator n'est pas thread safe, ce qui est généralement le cas des évaluateurs statiques (d'où l'implémentation par défaut de fork qui renvoie this).
+		// Pour éviter les pb de threading, soit on crée un évaluateur par thread comme ici, soit l'usage du SimplifiedEvaluator doit être protégé par un synchronized (pas performant). 
+		return new MyTinyEvaluator();
+	}
+
 
 	public static void main(String[] args) {
 		// Exemple pour créer un ChessLibMoveGenerator à partir d'un FEN et l'évaluer
