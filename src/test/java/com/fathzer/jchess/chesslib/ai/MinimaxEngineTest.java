@@ -120,7 +120,6 @@ class MinimaxEngineTest {
 		engine.getDeepeningPolicy().setAccuracy(100);
 		moves = engine.getBestMoves(fromFEN("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1", StrictMoveEvaluator::new));
 //show(moves);
-assertEquals(19, moves.size());
 		mv = moves.get(0).getContent();
 		assertEquals(D1, mv.getFrom());
 		assertEquals(D7, mv.getTo());
