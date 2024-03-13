@@ -56,10 +56,14 @@ public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenera
 
 	@Override
 	public void logMoveChosen(ChessLibMoveGenerator board, EvaluatedMove<Move> evaluatedMove) {
-		Move move = evaluatedMove.getContent();
-		log.info("Move chosen :{}", move);
-		final List<Move> pv = evaluatedMove.getPrincipalVariation();
-		log.info("pv: {}", pv);
+		if (evaluatedMove==null) {
+			log.info("No valid move found");
+		} else {
+			Move move = evaluatedMove.getContent();
+			log.info("Move chosen :{}", move);
+			final List<Move> pv = evaluatedMove.getPrincipalVariation();
+			log.info("pv: {}", pv);
+		}
 	}
 }
 

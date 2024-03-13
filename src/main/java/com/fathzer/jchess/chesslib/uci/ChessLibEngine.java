@@ -69,7 +69,6 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 
 	@Override
 	public void setOwnBook(boolean activate) {
-		System.out.println("OwnBook set to "+activate);
 		engine.setOpenings(activate?ownBook:null);
 	}
 
