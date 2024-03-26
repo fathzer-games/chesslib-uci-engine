@@ -17,8 +17,12 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 
 public class HbMyFirstEvaluator implements StaticEvaluator<Move, ChessLibMoveGenerator>, ZeroSumEvaluator<Move, ChessLibMoveGenerator> {
+<<<<<<< Upstream, based on origin/main
 	private final SimplifiedEvaluator ev = new SimplifiedEvaluator();
 >>>>>>> c132cc0 Classes pour ma première fonction d'évaluation s'appuyant sur SimplifiedEvaluator
+=======
+	private final HbSimplifiedEvaluator ev = new HbSimplifiedEvaluator();
+>>>>>>> 587c0c9 HbMyFirstEvaluator uses Hb Classes, from now on. Correction.
 
 	@Override
 	public int evaluateAsWhite(ChessLibMoveGenerator board) {
