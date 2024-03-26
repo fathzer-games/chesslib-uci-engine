@@ -9,7 +9,7 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 
 public class HbMyFirstEvaluator implements StaticEvaluator<Move, ChessLibMoveGenerator>, ZeroSumEvaluator<Move, ChessLibMoveGenerator> {
-	private final SimplifiedEvaluator ev = new SimplifiedEvaluator();
+	private final HbSimplifiedEvaluator ev = new HbSimplifiedEvaluator();
 
 	@Override
 	public int evaluateAsWhite(ChessLibMoveGenerator board) {
