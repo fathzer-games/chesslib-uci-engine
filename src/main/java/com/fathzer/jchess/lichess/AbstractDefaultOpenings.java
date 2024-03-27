@@ -14,6 +14,8 @@ import org.json.JSONTokener;
 
 import com.fathzer.games.movelibrary.AbstractMoveLibrary;
 import com.fathzer.games.MoveGenerator;
+import com.fathzer.games.ai.evaluation.EvaluatedMove;
+import com.fathzer.games.ai.evaluation.Evaluation;
 
 public abstract class AbstractDefaultOpenings<M, B extends MoveGenerator<M>> extends AbstractMoveLibrary<JSONObject, M, B> {
 	private final JSONObject db;
@@ -51,8 +53,8 @@ public abstract class AbstractDefaultOpenings<M, B extends MoveGenerator<M>> ext
 	}
 
 	@Override
-	protected M toMove(B board, JSONObject move) {
-		return fromUCI(board, getCoord(move));
+	protected EvaluatedMove<M> toEvaluatedMove(B board, JSONObject move) {
+		return new EvaluatedMove<>(fromUCI(board, getCoord(move)), Evaluation.UNKNOWN);
 	}
 
 	@Override
