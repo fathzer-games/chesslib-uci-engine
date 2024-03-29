@@ -1,11 +1,12 @@
-package com.fathzer.jchess.chesslib.ai.eval.hbpg;
+package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.BoardExplorerBuilder;
 import com.fathzer.games.MoveGenerator;
 
-abstract class HbSimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
+
+abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
 	private static final int[] PIECE_VALUES = {0, 100, 320, 330, 500, 900, 20000};
 	private static final int[] KING_MID_GAME_EVAL = new int[] {
 			-30,-40,-40,-50,-50,-40,-40,-30,
@@ -82,7 +83,7 @@ abstract class HbSimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implemen
 			-20,-10,-10, -5, -5,-10,-10,-20
 	}};
 	
-	HbSimplifiedEvaluatorBase() {
+	Hb2SimplifiedEvaluatorBase() {
 		super();
 	}
 	
@@ -94,9 +95,16 @@ abstract class HbSimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implemen
 		return PIECE_VALUES[type];
 	}
 	
-	static int getKingPositionsValue(int whiteIndex, int blackIndex, HbPhase phase) {
-		final int[] kingMap = phase==HbPhase.MIDDLE_GAME ? KING_MID_GAME_EVAL : KING_END_GAME_EVAL;
-		return getPositionValue(kingMap, whiteIndex, false) - getPositionValue(kingMap, blackIndex, true);
+	
+	
+	static int getKingPositionsValueMg(int whiteIndex, int blackIndex) {
+		
+		return getPositionValue(KING_MID_GAME_EVAL, whiteIndex, false) - getPositionValue(KING_MID_GAME_EVAL, blackIndex, true);
+	}
+	
+	static int getKingPositionsValueEg(int whiteIndex, int blackIndex) {
+		
+		return getPositionValue(KING_END_GAME_EVAL, whiteIndex, false) - getPositionValue(KING_END_GAME_EVAL, blackIndex, true);
 	}
 	
 	private static int getPositionValue(int[] positionMap, int index, boolean black) {
