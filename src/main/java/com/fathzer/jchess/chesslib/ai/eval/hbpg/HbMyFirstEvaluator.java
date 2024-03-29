@@ -3,7 +3,6 @@ package com.fathzer.jchess.chesslib.ai.eval.hbpg;
 import com.fathzer.games.ai.evaluation.StaticEvaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 

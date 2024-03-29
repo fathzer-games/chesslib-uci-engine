@@ -1,7 +1,10 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg;
 
-import static com.fathzer.chess.utils.Pieces.*;
-import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.*;
+import static com.fathzer.chess.utils.Pieces.KING;
+import static com.fathzer.chess.utils.Pieces.PAWN;
+import static com.fathzer.chess.utils.Pieces.ROOK;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getPositionValue;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getRawValue;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;

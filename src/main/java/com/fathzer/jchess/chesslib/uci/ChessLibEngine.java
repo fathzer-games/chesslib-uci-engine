@@ -30,6 +30,7 @@ import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2MyFirstEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
@@ -72,6 +73,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 >>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 =======
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+<<<<<<< Upstream, based on origin/main
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> f86bfc5 squelette d'évaluateur
 <<<<<<< Upstream, based on origin/main
@@ -95,6 +97,14 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> 021efeb squelette d'évaluateur
+=======
+			Arrays.asList(
+					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
+					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
+					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
+					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
+					);
+>>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
