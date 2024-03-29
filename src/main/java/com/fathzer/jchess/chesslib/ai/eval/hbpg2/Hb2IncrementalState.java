@@ -1,22 +1,22 @@
-package com.fathzer.jchess.chesslib.ai.eval.hbpg;
+package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 import static com.fathzer.chess.utils.Pieces.KING;
 import static com.fathzer.chess.utils.Pieces.PAWN;
 import static com.fathzer.chess.utils.Pieces.ROOK;
-import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getPositionValue;
-import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getRawValue;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getPositionValue;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValue;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
 
-/** The current state of a {@link HbAbstractIncrementalSimplifiedEvaluator}
+/** The current state of a {@link Hb2AbstractIncrementalSimplifiedEvaluator}
  */
-public class HbIncrementalState extends HbBasicState {
-	HbIncrementalState() {
+public class Hb2IncrementalState extends Hb2BasicState {
+	Hb2IncrementalState() {
 		super();
 	}
 	
-	HbIncrementalState(BoardExplorer exp) {
+	Hb2IncrementalState(BoardExplorer exp) {
 		super(exp);
 	}
 
