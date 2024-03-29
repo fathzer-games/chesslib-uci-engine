@@ -4,6 +4,9 @@ import com.fathzer.games.ai.evaluation.StaticEvaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
+=======
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 

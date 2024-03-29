@@ -1,6 +1,7 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg;
 
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import static com.fathzer.chess.utils.Pieces.KING;
 import static com.fathzer.chess.utils.Pieces.PAWN;
 import static com.fathzer.chess.utils.Pieces.ROOK;
@@ -10,6 +11,13 @@ import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase
 import static com.fathzer.chess.utils.Pieces.*;
 import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.*;
 >>>>>>> c132cc0 Classes pour ma première fonction d'évaluation s'appuyant sur SimplifiedEvaluator
+=======
+import static com.fathzer.chess.utils.Pieces.KING;
+import static com.fathzer.chess.utils.Pieces.PAWN;
+import static com.fathzer.chess.utils.Pieces.ROOK;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getPositionValue;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg.HbSimplifiedEvaluatorBase.getRawValue;
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;

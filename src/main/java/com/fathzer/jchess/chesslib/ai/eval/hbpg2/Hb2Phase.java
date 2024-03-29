@@ -11,10 +11,14 @@ public class Hb2Phase {
 	
 	// Very useful for the tapered evaluation
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 	// Ethereal did not even think about it. But many other engines do.
 =======
 	// Ethereal did not even think about it. But many others engines do.
 >>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+	// Ethereal did not even think about it. But many others engines do.
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 	// For example, If white or black or both have 2 queens for example, without an upper  bound, the phase could exceed NB_INCR_PHASE, which would ruin the tapered evaluation
 	public static final int PHASE_UPPER_BOUND = NB_INCR_PHASE;
 	

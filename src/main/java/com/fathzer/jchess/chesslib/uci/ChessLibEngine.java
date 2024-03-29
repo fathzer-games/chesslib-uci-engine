@@ -86,6 +86,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 =======
 =======
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
+<<<<<<< Upstream, based on origin/main
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> e44b9b1 squelette d'évaluateur
 <<<<<<< Upstream, based on origin/main
@@ -130,6 +131,14 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> 3f9a979 squelette d'évaluateur
+=======
+			Arrays.asList(
+					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
+					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
+					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
+					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
+					);
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 

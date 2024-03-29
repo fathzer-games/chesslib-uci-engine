@@ -1,15 +1,22 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg;
 
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.BoardExplorerBuilder;
 =======
+=======
+import com.fathzer.chess.utils.Pieces;
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.BoardExplorerBuilder;
+<<<<<<< Upstream, based on origin/main
 
 import com.fathzer.chess.utils.Pieces;
 >>>>>>> c132cc0 Classes pour ma première fonction d'évaluation s'appuyant sur SimplifiedEvaluator
+=======
+>>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 import com.fathzer.games.MoveGenerator;
 
 abstract class HbSimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
