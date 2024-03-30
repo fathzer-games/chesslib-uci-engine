@@ -6,6 +6,7 @@ import com.fathzer.chess.utils.adapters.BoardExplorer;
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import com.github.bhlangonijr.chesslib.Board;
 
 /** The state of the evaluator.
@@ -170,6 +171,9 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 		int evalEg = points + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
 >>>>>>> 9522cc2 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 =======
+=======
+import com.github.bhlangonijr.chesslib.Board;
+>>>>>>> 7fec468 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 
 /** The state of the evaluator.
  */
@@ -178,6 +182,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	int whiteKingIndex;
 	int blackKingIndex;
 	int computedPhase;
+	Board board;
 	
 	
 	Hb2BasicState() {
@@ -190,10 +195,12 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 		other.blackKingIndex = blackKingIndex;
 		other.whiteKingIndex = whiteKingIndex;
 		other.computedPhase = computedPhase;
+		other.board = board;
+		
 	}
 	
-	Hb2BasicState(BoardExplorer explorer) {
-		
+	Hb2BasicState(BoardExplorer explorer, Board board) {
+		this.board = board;
 		this.points = 0;
 		this.computedPhase = 0;
 		do {
@@ -204,7 +211,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 			final boolean isBlack = p<0;
 			if (kind!=KING) {
 				int inc = Hb2SimplifiedEvaluatorBase.getRawValue(kind);
-				inc += Hb2SimplifiedEvaluatorBase.getPositionValue(kind, isBlack, index);
+//				inc += Hb2SimplifiedEvaluatorBase.getPositionValue(kind, isBlack, index);
 				if (isBlack) {
 					points -= inc;
 				} else {
@@ -224,10 +231,18 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	int evaluateAsWhite() {
 		// for the time being (29/03/2024) points are the same in Mg and Eg except for the king preferred squares
 		// but it's gonna change very soon
+		// points = material only, from now on.
 		int phase = getPhaseForTaperedEval(computedPhase);
+<<<<<<< Upstream, based on origin/main
 		int evalMg = points + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
 		int evalEg = points + Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
 >>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+		int pointsPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(board);
+		int pointsPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(board);
+		int evalMg = points + pointsPosMg + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
+		int evalEg = points + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
+>>>>>>> 7fec468 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 		return ((evalMg * phase + evalEg * (Hb2Phase.NB_INCR_PHASE-phase)) / Hb2Phase.NB_INCR_PHASE);
 	}
 }
