@@ -7,6 +7,7 @@ import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.games.util.Stack;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 
 /** An incremental implementation of the simplified evaluator described at <a href="https://www.chessprogramming.org/Simplified_Evaluation_Function">https://www.chessprogramming.org/Simplified_Evaluation_Function</a>
  * <br>This only works with 8*8 games and exactly one king per Color.
@@ -48,7 +49,8 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 	@Override
 	public void init(B board) {
 		states.clear();
-		states.set(new Hb2IncrementalState(getExplorer(board)));
+		states.set(new Hb2IncrementalState(getExplorer(board), ((ChessLibMoveGenerator)board).getBoard()));
+		
 	}
 
 	@Override
