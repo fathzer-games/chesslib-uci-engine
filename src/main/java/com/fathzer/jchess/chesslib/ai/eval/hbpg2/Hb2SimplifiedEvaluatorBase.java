@@ -1,6 +1,7 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import static com.fathzer.chess.utils.Pieces.KING;
 
 import com.fathzer.chess.utils.Pieces;
@@ -331,10 +332,16 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 		return (pointsPosEg);
 	
 =======
+=======
+import static com.fathzer.chess.utils.Pieces.KING;
+
+>>>>>>> 9522cc2 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.BoardExplorerBuilder;
 import com.fathzer.games.MoveGenerator;
+import com.fathzer.jchess.chesslib.ChessLibBoardExplorer;
+import com.github.bhlangonijr.chesslib.Board;
 
 
 abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
@@ -359,7 +366,62 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 			-30,-30,  0,  0,  0,  0,-30,-30,
 			-50,-30,-30,-30,-30,-30,-30,-50};
 	
-	private static final int [][] PIECE_POSITION_VALUES = new int[][] {
+//	private static final int [][] PIECE_POSITION_VALUES = new int[][] {
+//		// Just to have index equals to piece type codes
+//		new int[0],
+//		// PAWN
+//		new int[] {
+//			0,  0,  0,  0,  0,  0,  0,  0,
+//			50, 50, 50, 50, 50, 50, 50, 50,
+//			10, 10, 20, 30, 30, 20, 10, 10,
+//			 5,  5, 10, 25, 25, 10,  5,  5,
+//			 0,  0,  0, 20, 20,  0,  0,  0,
+//			 5, -5,-10,  0,  0,-10, -5,  5,
+//			 5, 10, 10,-20,-20, 10, 10,  5,
+//			 0,  0,  0,  0,  0,  0,  0,  0},
+//		// KNIGHT
+//		new int[] {
+//			-50,-40,-30,-30,-30,-30,-40,-50,
+//			-40,-20,  0,  0,  0,  0,-20,-40,
+//			-30,  0, 10, 15, 15, 10,  0,-30,
+//			-30,  5, 15, 20, 20, 15,  5,-30,
+//			-30,  0, 15, 20, 20, 15,  0,-30,
+//			-30,  5, 10, 15, 15, 10,  5,-30,
+//			-40,-20,  0,  5,  5,  0,-20,-40,
+//			-50,-40,-30,-30,-30,-30,-40,-50},
+//		// BISHOP
+//		new int[] {
+//			-20,-10,-10,-10,-10,-10,-10,-20,
+//			-10,  0,  0,  0,  0,  0,  0,-10,
+//			-10,  0,  5, 10, 10,  5,  0,-10,
+//			-10,  5,  5, 10, 10,  5,  5,-10,
+//			-10,  0, 10, 10, 10, 10,  0,-10,
+//			-10, 10, 10, 10, 10, 10, 10,-10,
+//			-10,  5,  0,  0,  0,  0,  5,-10,
+//			-20,-10,-10,-10,-10,-10,-10,-20},
+//		// ROOK
+//		new int[] {
+//			  0,  0,  0,  0,  0,  0,  0,  0,
+//			  5, 10, 10, 10, 10, 10, 10,  5,
+//			 -5,  0,  0,  0,  0,  0,  0, -5,
+//			 -5,  0,  0,  0,  0,  0,  0, -5,
+//			 -5,  0,  0,  0,  0,  0,  0, -5,
+//			 -5,  0,  0,  0,  0,  0,  0, -5,
+//			 -5,  0,  0,  0,  0,  0,  0, -5,
+//			  0,  0,  0,  5,  5,  0,  0,  0},
+//		// QUEEN
+//		new int[] {
+//			-20,-10,-10, -5, -5,-10,-10,-20,
+//			-10,  0,  0,  0,  0,  0,  0,-10,
+//			-10,  0,  5,  5,  5,  5,  0,-10,
+//			 -5,  0,  5,  5,  5,  5,  0, -5,
+//			  0,  0,  5,  5,  5,  5,  0, -5,
+//			-10,  5,  5,  5,  5,  5,  0,-10,
+//			-10,  0,  5,  0,  0,  0,  0,-10,
+//			-20,-10,-10, -5, -5,-10,-10,-20
+//	}};
+	
+	private static final int [][] PIECE_POSITION_VALUES_MG = new int[][] {
 		// Just to have index equals to piece type codes
 		new int[0],
 		// PAWN
@@ -414,12 +476,75 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 			-20,-10,-10, -5, -5,-10,-10,-20
 	}};
 	
+	private static final int [][] PIECE_POSITION_VALUES_EG= new int[][] {
+		// Just to have index equals to piece type codes
+		new int[0],
+		// PAWN
+		new int[] {
+			0,  0,  0,  0,  0,  0,  0,  0,
+			90, 90, 90, 90, 90, 90, 90, 90,
+            30, 30, 40, 60, 60, 40, 30, 30,
+            10, 10, 20, 40, 40, 20, 10, 10,
+			 0,  0,  0, 20, 20,  0,  0,  0,
+			 5,  0,  0,  0,  0,  0,  0,  5,
+			 5, 10, 10,-20,-20, 10, 10,  5,
+			 0,  0,  0,  0,  0,  0,  0,  0},
+		// KNIGHT
+		new int[] {
+			-50,-40,-30,-30,-30,-30,-40,-50,
+			-40,-20,  0,  0,  0,  0,-20,-40,
+			-30,  0, 10, 15, 15, 10,  0,-30,
+			-30,  5, 15, 20, 20, 15,  5,-30,
+			-30,  0, 15, 20, 20, 15,  0,-30,
+			-30,  5, 10, 15, 15, 10,  5,-30,
+			-40,-20,  0,  5,  5,  0,-20,-40,
+			-50,-40,-30,-30,-30,-30,-40,-50},
+		// BISHOP
+		new int[] {
+			-20,-10,-10,-10,-10,-10,-10,-20,
+			-10,  0,  0,  0,  0,  0,  0,-10,
+			-10,  0,  5, 10, 10,  5,  0,-10,
+			-10,  5,  5, 10, 10,  5,  5,-10,
+			-10,  0, 10, 10, 10, 10,  0,-10,
+			-10, 10, 10, 10, 10, 10, 10,-10,
+			-10,  5,  0,  0,  0,  0,  5,-10,
+			-20,-10,-10,-10,-10,-10,-10,-20},
+		// ROOK
+		new int[] {
+			  0,  0,  0,  0,  0,  0,  0,  0,
+			  5, 10, 10, 10, 10, 10, 10,  5,
+			 -5,  0,  0,  0,  0,  0,  0, -5,
+			 -5,  0,  0,  0,  0,  0,  0, -5,
+			 -5,  0,  0,  0,  0,  0,  0, -5,
+			 -5,  0,  0,  0,  0,  0,  0, -5,
+			 -5,  0,  0,  0,  0,  0,  0, -5,
+			  0,  0,  0,  5,  5,  0,  0,  0},
+		// QUEEN
+		new int[] {
+			-20,-10,-10, -5, -5,-10,-10,-20,
+			-10,  0,  0,  0,  0,  0,  0,-10,
+			-10,  0,  5,  5,  5,  5,  0,-10,
+			 -5,  0,  5,  5,  5,  5,  0, -5,
+			  0,  0,  5,  5,  5,  5,  0, -5,
+			-10,  5,  5,  5,  5,  5,  0,-10,
+			-10,  0,  5,  0,  0,  0,  0,-10,
+			-20,-10,-10, -5, -5,-10,-10,-20
+	}};
+	
 	Hb2SimplifiedEvaluatorBase() {
 		super();
 	}
 	
-	static int getPositionValue(int type, boolean black, int index) {
-		return getPositionValue(PIECE_POSITION_VALUES[type], index, black);
+//	static int getPositionValue(int type, boolean black, int index) {
+//		return getPositionValue(PIECE_POSITION_VALUES[type], index, black);
+//	}
+//	
+	static int getPositionValueMg(int type, boolean black, int index) {
+		return getPositionValue(PIECE_POSITION_VALUES_MG[type], index, black);
+	}
+	
+	static int getPositionValueEg(int type, boolean black, int index) {
+		return getPositionValue(PIECE_POSITION_VALUES_EG[type], index, black);
 	}
 	
 	static int getRawValue(int type) {
@@ -452,8 +577,67 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 	 * @param index The index of the piece on the board as defined in {@link BoardExplorer}
 	 * @return an integer
 	 */
+<<<<<<< Upstream, based on origin/main
 	static int getPositionValue(int type, int index) {
 		return PIECE_POSITION_VALUES[type][index];
 >>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+//	static int getPositionValue(int type, int index) {
+//		return PIECE_POSITION_VALUES[type][index];
+//	}
+	
+	static int getPositionValueMg(Board board) {
+//		BoardExplorer explorer = getExplorer(board);
+		int pointsPosMg = 0;
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
+		do {
+			final int p = explorer.getPiece();
+			
+			final int kind = Math.abs(p);
+			final int index = explorer.getIndex();
+			final boolean isBlack = p<0;
+			if (kind!=KING) {
+				
+				int inc = getPositionValueMg(kind, isBlack, index);
+				if (isBlack) {
+					pointsPosMg -= inc;
+				} else {
+					pointsPosMg += inc;
+				}
+			} 
+			
+			
+		} while (explorer.next());
+		
+		return (pointsPosMg);
+	
+	}
+	
+	static int getPositionValueEg(Board board) {
+//		BoardExplorer explorer = getExplorer(board);
+		int pointsPosEg = 0;
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
+		do {
+			final int p = explorer.getPiece();
+			
+			final int kind = Math.abs(p);
+			final int index = explorer.getIndex();
+			final boolean isBlack = p<0;
+			if (kind!=KING) {
+				
+				int inc = getPositionValueEg(kind, isBlack, index);
+				if (isBlack) {
+					pointsPosEg -= inc;
+				} else {
+					pointsPosEg += inc;
+				}
+			} 
+			
+			
+		} while (explorer.next());
+		
+		return (pointsPosEg);
+	
+>>>>>>> 9522cc2 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 	}
 }

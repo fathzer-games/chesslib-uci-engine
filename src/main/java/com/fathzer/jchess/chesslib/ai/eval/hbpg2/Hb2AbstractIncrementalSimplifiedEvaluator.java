@@ -8,6 +8,7 @@ import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.games.util.Stack;
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 
 /** An incremental implementation of the simplified evaluator described at <a href="https://www.chessprogramming.org/Simplified_Evaluation_Function">https://www.chessprogramming.org/Simplified_Evaluation_Function</a>
@@ -53,6 +54,9 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 		states.set(new Hb2IncrementalState(getExplorer(board), ((ChessLibMoveGenerator)board).getBoard()));
 		
 =======
+=======
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+>>>>>>> 9522cc2 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 
 /** An incremental implementation of the simplified evaluator described at <a href="https://www.chessprogramming.org/Simplified_Evaluation_Function">https://www.chessprogramming.org/Simplified_Evaluation_Function</a>
  * <br>This only works with 8*8 games and exactly one king per Color.
@@ -94,8 +98,13 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 	@Override
 	public void init(B board) {
 		states.clear();
+<<<<<<< Upstream, based on origin/main
 		states.set(new Hb2IncrementalState(getExplorer(board)));
 >>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
+=======
+		states.set(new Hb2IncrementalState(getExplorer(board), ((ChessLibMoveGenerator)board).getBoard()));
+		
+>>>>>>> 9522cc2 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 	}
 
 	@Override
