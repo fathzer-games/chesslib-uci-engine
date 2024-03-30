@@ -3,8 +3,8 @@ package com.fathzer.jchess.chesslib;
 import java.util.List;
 import java.util.function.Function;
 
-import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.HashProvider;
+import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.Status;
 import com.fathzer.games.util.MoveList;
 import com.fathzer.games.util.SelectiveComparator;
