@@ -12,10 +12,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.fathzer.games.movelibrary.AbstractMoveLibrary;
 import com.fathzer.games.MoveGenerator;
+<<<<<<< Upstream, based on origin/main
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
+=======
+import com.fathzer.games.movelibrary.AbstractMoveLibrary;
+>>>>>>> fec2d1d Bon, commit du Hb2MyFirstEvaluator, il a gagné contre le SimplifiedEvaluator
 
 public abstract class AbstractDefaultOpenings<M, B extends MoveGenerator<M>> extends AbstractMoveLibrary<JSONObject, M, B> {
 	private final JSONObject db;
