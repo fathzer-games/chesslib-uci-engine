@@ -1,8 +1,21 @@
 package com.fathzer.jchess.chesslib.ai;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import static com.github.bhlangonijr.chesslib.Square.*;
+import static com.github.bhlangonijr.chesslib.Square.A1;
+import static com.github.bhlangonijr.chesslib.Square.B3;
+import static com.github.bhlangonijr.chesslib.Square.C2;
+import static com.github.bhlangonijr.chesslib.Square.C3;
+import static com.github.bhlangonijr.chesslib.Square.D1;
+import static com.github.bhlangonijr.chesslib.Square.D7;
+import static com.github.bhlangonijr.chesslib.Square.F2;
+import static com.github.bhlangonijr.chesslib.Square.F3;
+import static com.github.bhlangonijr.chesslib.Square.F4;
+import static com.github.bhlangonijr.chesslib.Square.G1;
+import static com.github.bhlangonijr.chesslib.Square.G6;
+import static com.github.bhlangonijr.chesslib.Square.H1;
+import static com.github.bhlangonijr.chesslib.Square.H7;
+import static com.github.bhlangonijr.chesslib.Square.H8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +31,8 @@ import com.fathzer.games.ai.SearchParameters;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
-import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.ai.evaluation.Evaluator;
+import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.util.SelectiveComparator;
 import com.fathzer.games.util.exec.ExecutionContext;
 import com.fathzer.games.util.exec.SingleThreadContext;

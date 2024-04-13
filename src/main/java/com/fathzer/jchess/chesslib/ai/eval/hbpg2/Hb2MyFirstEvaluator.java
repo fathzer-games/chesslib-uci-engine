@@ -3,19 +3,20 @@ package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 import com.fathzer.games.ai.evaluation.StaticEvaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 
 public class Hb2MyFirstEvaluator implements StaticEvaluator<Move, ChessLibMoveGenerator>, ZeroSumEvaluator<Move, ChessLibMoveGenerator> {
 	private final Hb2SimplifiedEvaluator ev = new Hb2SimplifiedEvaluator();
-
+	private final NaiveEvaluator enNaive = new NaiveEvaluator();
 	@Override
 	public int evaluateAsWhite(ChessLibMoveGenerator board) {
 		// Calculer l'évaluation de base
 		int baseEvaluation;
 //		synchronized (this) { // Alternative à la méthode fork
-			ev.init(board);
+			ev.init(board); // On n'utilise pas le côté incréemantal
 			baseEvaluation = ev.evaluateAsWhite(board);
 //		}
 		// Tu peux ajouter ce qui concerne les chaines de pions, mauvais/bon fous, etc à l'évaluation de base ...

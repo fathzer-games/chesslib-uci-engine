@@ -12,8 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.fathzer.games.movelibrary.AbstractMoveLibrary;
 import com.fathzer.games.MoveGenerator;
+import com.fathzer.games.movelibrary.AbstractMoveLibrary;
 
 public abstract class AbstractDefaultOpenings<M, B extends MoveGenerator<M>> extends AbstractMoveLibrary<JSONObject, M, B> {
 	private final JSONObject db;

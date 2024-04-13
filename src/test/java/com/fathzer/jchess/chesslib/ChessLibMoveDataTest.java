@@ -1,8 +1,10 @@
 package com.fathzer.jchess.chesslib;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import static com.github.bhlangonijr.chesslib.Square.*;
+import static com.github.bhlangonijr.chesslib.Square.A7;
+import static com.github.bhlangonijr.chesslib.Square.A8;
+import static com.github.bhlangonijr.chesslib.Square.B8;
+import static com.github.bhlangonijr.chesslib.Square.H1;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
