@@ -129,12 +129,13 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			}
 			
 		};
-		engine.setMoveSelectorBuilder(b -> {
-			final BasicMoveComparator c = new BasicMoveComparator(b);
-			final RandomMoveSelector<Move, IterativeDeepeningSearch<Move>> rnd = new RandomMoveSelector<>();
-			final StaticMoveSelector<Move, IterativeDeepeningSearch<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
-			return new FirstBestMoveSelector<Move>().setNext(stmv.setNext(rnd));
-		});
+//FIXME
+//		engine.setMoveSelectorBuilder(b -> {
+//			final BasicMoveComparator c = new BasicMoveComparator(b);
+//			final RandomMoveSelector<Move, IterativeDeepeningSearch<Move>> rnd = new RandomMoveSelector<>();
+//			final StaticMoveSelector<Move, IterativeDeepeningSearch<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
+//			return new FirstBestMoveSelector<Move>().setNext(stmv.setNext(rnd));
+//		});
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
