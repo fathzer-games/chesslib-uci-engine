@@ -95,7 +95,8 @@ class MinimaxEngineTest {
 		mv = moves.get(0).getContent();
 		assertEquals(C3, mv.getFrom());
 		assertEquals(C2, mv.getTo());
-		assertTrue(moves.get(1).getScore()<10000.0);
+		// Warning, due to transposition table effects, the second best move (M+3) can be detected even if we search at depth 4!
+		assertTrue(moves.get(1).getScore()<moves.get(0).getScore());
 		
 		// Check in 2
 		System.out.println("------------------");
