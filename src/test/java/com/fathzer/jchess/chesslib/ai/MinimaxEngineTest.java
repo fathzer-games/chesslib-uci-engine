@@ -196,7 +196,6 @@ class MinimaxEngineTest {
 		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 4);
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		System.out.println(engine.getBestMoves(board));
-		System.out.println(engine.apply(board));
 	}
 
 	@Test
@@ -204,6 +203,6 @@ class MinimaxEngineTest {
 	void bug20230821() {
 		// Not a bug, just a problem with evaluation function
 		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 7);
-		System.out.println(engine.apply(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")));
+		System.out.println(engine.getBestMoves(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")).getBest());
 	}
 }

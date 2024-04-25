@@ -6,10 +6,11 @@ import java.util.function.Supplier;
 
 import com.fathzer.games.ai.Negamax;
 import com.fathzer.games.ai.SearchContext;
+import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.iterativedeepening.FirstBestMoveSelector;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
-import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
+import com.fathzer.games.ai.iterativedeepening.SearchHistory;
 import com.fathzer.games.ai.moveselector.RandomMoveSelector;
 import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
@@ -129,17 +130,20 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			}
 			
 		};
-//FIXME
-//		engine.setMoveSelectorBuilder(b -> {
-//			final BasicMoveComparator c = new BasicMoveComparator(b);
-//			final RandomMoveSelector<Move, IterativeDeepeningSearch<Move>> rnd = new RandomMoveSelector<>();
-//			final StaticMoveSelector<Move, IterativeDeepeningSearch<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
-//			return new FirstBestMoveSelector<Move>().setNext(stmv.setNext(rnd));
-//		});
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
 		return engine;
+	}
+	
+	@Override
+	protected EvaluatedMove<Move> getSelected(ChessLibMoveGenerator b, SearchHistory<Move> history) {
+		final BasicMoveComparator c = new BasicMoveComparator(b);
+		final RandomMoveSelector<Move, SearchHistory<Move>> rnd = new RandomMoveSelector<>();
+		final StaticMoveSelector<Move, SearchHistory<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
+		final FirstBestMoveSelector<Move> firstBestMoveSelector = new FirstBestMoveSelector<>();
+		firstBestMoveSelector.setNext(stmv.setNext(rnd));
+		return firstBestMoveSelector.select(history, history.getBestMoves()).get(0);
 	}
 
 	@Override
