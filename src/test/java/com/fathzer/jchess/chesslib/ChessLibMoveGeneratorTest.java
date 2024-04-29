@@ -1,10 +1,34 @@
 package com.fathzer.jchess.chesslib;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import static com.github.bhlangonijr.chesslib.Square.*;
-
-import static com.fathzer.games.MoveGenerator.MoveConfidence.*;
+import static com.fathzer.games.MoveGenerator.MoveConfidence.UNSAFE;
+import static com.github.bhlangonijr.chesslib.Square.A5;
+import static com.github.bhlangonijr.chesslib.Square.A7;
+import static com.github.bhlangonijr.chesslib.Square.A8;
+import static com.github.bhlangonijr.chesslib.Square.B6;
+import static com.github.bhlangonijr.chesslib.Square.B7;
+import static com.github.bhlangonijr.chesslib.Square.B8;
+import static com.github.bhlangonijr.chesslib.Square.C7;
+import static com.github.bhlangonijr.chesslib.Square.D1;
+import static com.github.bhlangonijr.chesslib.Square.D3;
+import static com.github.bhlangonijr.chesslib.Square.D4;
+import static com.github.bhlangonijr.chesslib.Square.D5;
+import static com.github.bhlangonijr.chesslib.Square.D6;
+import static com.github.bhlangonijr.chesslib.Square.E1;
+import static com.github.bhlangonijr.chesslib.Square.E2;
+import static com.github.bhlangonijr.chesslib.Square.E8;
+import static com.github.bhlangonijr.chesslib.Square.F2;
+import static com.github.bhlangonijr.chesslib.Square.F3;
+import static com.github.bhlangonijr.chesslib.Square.F6;
+import static com.github.bhlangonijr.chesslib.Square.F7;
+import static com.github.bhlangonijr.chesslib.Square.G1;
+import static com.github.bhlangonijr.chesslib.Square.G6;
+import static com.github.bhlangonijr.chesslib.Square.G7;
+import static com.github.bhlangonijr.chesslib.Square.G8;
+import static com.github.bhlangonijr.chesslib.Square.H5;
+import static com.github.bhlangonijr.chesslib.Square.H6;
+import static com.github.bhlangonijr.chesslib.Square.H7;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 

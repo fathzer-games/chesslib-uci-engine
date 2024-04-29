@@ -1,13 +1,20 @@
 package com.fathzer.jchess.chesslib.ai;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.fathzer.jchess.chesslib.ai.MinimaxEngineTest.fromFEN;
+import static com.github.bhlangonijr.chesslib.Square.A6;
+import static com.github.bhlangonijr.chesslib.Square.A7;
+import static com.github.bhlangonijr.chesslib.Square.A8;
+import static com.github.bhlangonijr.chesslib.Square.B8;
+import static com.github.bhlangonijr.chesslib.Square.G8;
+import static com.github.bhlangonijr.chesslib.Square.H1;
+import static com.github.bhlangonijr.chesslib.Square.H2;
+import static com.github.bhlangonijr.chesslib.Square.H6;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.fathzer.jchess.chesslib.ai.MinimaxEngineTest.fromFEN;
-import static com.github.bhlangonijr.chesslib.Square.*;
 
 import org.junit.jupiter.api.Test;
 

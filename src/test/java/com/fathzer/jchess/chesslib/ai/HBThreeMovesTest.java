@@ -20,7 +20,7 @@ class HBThreeMovesTest {
 		final String fen = "r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1";
 		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(SimplifiedEvaluator::new, depth);
 		engine.getDeepeningPolicy().setSize(bestMoveCount);
-		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new));
+		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new)).getBestMoves();
 		System.out.println(moves);
 		for (int i=0;i<3;i++) {
 			EvaluatedMove<Move> move = moves.get(i);

@@ -1,10 +1,18 @@
 package com.fathzer.jchess.chesslib.ai.eval;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import static com.github.bhlangonijr.chesslib.Square.*;
-
-import static com.fathzer.games.MoveGenerator.MoveConfidence.*;
+import static com.fathzer.games.MoveGenerator.MoveConfidence.UNSAFE;
+import static com.github.bhlangonijr.chesslib.Square.A6;
+import static com.github.bhlangonijr.chesslib.Square.B1;
+import static com.github.bhlangonijr.chesslib.Square.B3;
+import static com.github.bhlangonijr.chesslib.Square.B5;
+import static com.github.bhlangonijr.chesslib.Square.C7;
+import static com.github.bhlangonijr.chesslib.Square.D6;
+import static com.github.bhlangonijr.chesslib.Square.E8;
+import static com.github.bhlangonijr.chesslib.Square.F4;
+import static com.github.bhlangonijr.chesslib.Square.F8;
+import static com.github.bhlangonijr.chesslib.Square.G8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
