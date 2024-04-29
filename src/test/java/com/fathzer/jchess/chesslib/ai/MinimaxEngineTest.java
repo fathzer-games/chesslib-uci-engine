@@ -70,17 +70,17 @@ class MinimaxEngineTest {
 		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> mme4 = ChessLibEngine.buildEngine(NaiveEvaluator::new, 4);
 		mme4.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		
-//		// 3 possible Mats in 1 with whites
-//		moves = getBests(mme4, fromFEN("7k/5p2/5PQN/5PPK/6PP/8/8/8 w - - 6 5", StrictMoveEvaluator::new));
-////show(moves);
-//		assertEquals(6, moves.size());
-//		{
-//			final Evaluation max = moves.get(0).getEvaluation();
-//			assertEquals(Type.WIN, max.getType());
-//			assertEquals(1, max.getCountToEnd());
-//			assertTrue(moves.get(3).getEvaluation().compareTo(max)<0);
-//			moves.stream().limit(3).forEach(m -> assertEquals(max, m.getEvaluation()));
-//		}
+		// 3 possible Mats in 1 with whites
+		moves = getBests(mme4, fromFEN("7k/5p2/5PQN/5PPK/6PP/8/8/8 w - - 6 5", StrictMoveEvaluator::new));
+//show(moves);
+		assertEquals(6, moves.size());
+		{
+			final Evaluation max = moves.get(0).getEvaluation();
+			assertEquals(Type.WIN, max.getType());
+			assertEquals(1, max.getCountToEnd());
+			assertTrue(moves.get(3).getEvaluation().compareTo(max)<0);
+			moves.stream().limit(3).forEach(m -> assertEquals(max, m.getEvaluation()));
+		}
 
 		Evaluation max;
 		Move mv;
@@ -198,6 +198,20 @@ class MinimaxEngineTest {
 		engine.getDeepeningPolicy().setSize(Integer.MAX_VALUE);
 		System.out.println(engine.getBestMoves(board));
 	}
+	
+	@Test
+	void bug20230911() {
+		ChessLibMoveGenerator board = fromFEN("8/4k3/8/R7/8/8/8/4K2R w K - 0 1");
+		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 8);
+		engine.setParallelism(1);
+		engine.getDeepeningPolicy().setSize(1);
+		engine.getDeepeningPolicy().setAccuracy(0);
+		final SearchHistory<Move> history = engine.getBestMoves(board);
+		List<EvaluatedMove<Move>> bestMoves = history.getBestMoves();
+		System.out.println(bestMoves);
+		assertEquals(2, bestMoves.size());
+	}
+
 
 	@Test
 	@Disabled

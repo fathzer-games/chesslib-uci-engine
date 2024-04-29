@@ -11,6 +11,7 @@ import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.iterativedeepening.FirstBestMoveSelector;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.ai.iterativedeepening.SearchHistory;
+import com.fathzer.games.ai.moveselector.MoveSelector;
 import com.fathzer.games.ai.moveselector.RandomMoveSelector;
 import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
@@ -123,8 +124,8 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	public static IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine(Supplier<Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder, int maxDepth) {
 		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder) {
 			@Override
-			protected Negamax<Move, ChessLibMoveGenerator> buildNegaMax(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
-				final Negamax<Move, ChessLibMoveGenerator> negaMax = super.buildNegaMax(context);
+			protected Negamax<Move, ChessLibMoveGenerator> buildAi(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
+				final Negamax<Move, ChessLibMoveGenerator> negaMax = (Negamax<Move, ChessLibMoveGenerator>) super.buildAi(context);
 				negaMax.setQuiesceEvaluator(new BasicQuiesceSearch());
 				return negaMax;
 			}
@@ -139,11 +140,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	@Override
 	protected EvaluatedMove<Move> getSelected(ChessLibMoveGenerator b, SearchHistory<Move> history) {
 		final BasicMoveComparator c = new BasicMoveComparator(b);
-		final RandomMoveSelector<Move, SearchHistory<Move>> rnd = new RandomMoveSelector<>();
-		final StaticMoveSelector<Move, SearchHistory<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
-		final FirstBestMoveSelector<Move> firstBestMoveSelector = new FirstBestMoveSelector<>();
-		firstBestMoveSelector.setNext(stmv.setNext(rnd));
-		return firstBestMoveSelector.select(history, history.getBestMoves()).get(0);
+		final MoveSelector<Move, SearchHistory<Move>> stmv = new StaticMoveSelector<>(c::evaluate);
+		final MoveSelector<Move, SearchHistory<Move>> selector = new FirstBestMoveSelector<>();
+		selector.setNext(stmv.setNext(new RandomMoveSelector<>()));
+		return history.getBestMove(selector);
 	}
 
 	@Override
