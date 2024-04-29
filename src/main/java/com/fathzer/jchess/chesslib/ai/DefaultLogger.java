@@ -10,7 +10,7 @@ import com.fathzer.games.ai.SearchStatistics;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine.EngineEventLogger;
-import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningSearch;
+import com.fathzer.games.ai.iterativedeepening.SearchHistory;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -50,7 +50,7 @@ public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenera
 	}
 	
 	@Override
-	public void logSearchEnd(ChessLibMoveGenerator board, IterativeDeepeningSearch<Move> result) {
+	public void logSearchEnd(ChessLibMoveGenerator board, SearchHistory<Move> result) {
 		log.info("--- End of iterative evaluation returns: {}", result.getBestMoves());
 	}
 
