@@ -16,6 +16,7 @@ import com.github.bhlangonijr.chesslib.Board;
 
 abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
 	
+<<<<<<< Upstream, based on origin/main
 	private static final int[] KING_MID_GAME_EVAL = new int[] {
 			-30,-40,-40,-50,-50,-40,-40,-30,
 			-30,-40,-40,-50,-50,-40,-40,-30,
@@ -348,6 +349,13 @@ import com.github.bhlangonijr.chesslib.Board;
 
 abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> implements BoardExplorerBuilder<B> {
 	private static final int[] PIECE_VALUES = {0, 100, 320, 330, 500, 900, 20000};
+=======
+	private static final int[] PIECE_VALUES_MG = {0, 100, 320, 330, 500, 900, 20000};
+	
+	private static final int[] PIECE_VALUES_EG = {0, 100, 320, 330, 500, 900, 20000};
+	
+	
+>>>>>>> 8fcce8e Valeurs différentes du matériel en final rendues possibles
 	private static final int[] KING_MID_GAME_EVAL = new int[] {
 			-30,-40,-40,-50,-50,-40,-40,-30,
 			-30,-40,-40,-50,-50,-40,-40,-30,
@@ -368,60 +376,7 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 			-30,-30,  0,  0,  0,  0,-30,-30,
 			-50,-30,-30,-30,-30,-30,-30,-50};
 	
-//	private static final int [][] PIECE_POSITION_VALUES = new int[][] {
-//		// Just to have index equals to piece type codes
-//		new int[0],
-//		// PAWN
-//		new int[] {
-//			0,  0,  0,  0,  0,  0,  0,  0,
-//			50, 50, 50, 50, 50, 50, 50, 50,
-//			10, 10, 20, 30, 30, 20, 10, 10,
-//			 5,  5, 10, 25, 25, 10,  5,  5,
-//			 0,  0,  0, 20, 20,  0,  0,  0,
-//			 5, -5,-10,  0,  0,-10, -5,  5,
-//			 5, 10, 10,-20,-20, 10, 10,  5,
-//			 0,  0,  0,  0,  0,  0,  0,  0},
-//		// KNIGHT
-//		new int[] {
-//			-50,-40,-30,-30,-30,-30,-40,-50,
-//			-40,-20,  0,  0,  0,  0,-20,-40,
-//			-30,  0, 10, 15, 15, 10,  0,-30,
-//			-30,  5, 15, 20, 20, 15,  5,-30,
-//			-30,  0, 15, 20, 20, 15,  0,-30,
-//			-30,  5, 10, 15, 15, 10,  5,-30,
-//			-40,-20,  0,  5,  5,  0,-20,-40,
-//			-50,-40,-30,-30,-30,-30,-40,-50},
-//		// BISHOP
-//		new int[] {
-//			-20,-10,-10,-10,-10,-10,-10,-20,
-//			-10,  0,  0,  0,  0,  0,  0,-10,
-//			-10,  0,  5, 10, 10,  5,  0,-10,
-//			-10,  5,  5, 10, 10,  5,  5,-10,
-//			-10,  0, 10, 10, 10, 10,  0,-10,
-//			-10, 10, 10, 10, 10, 10, 10,-10,
-//			-10,  5,  0,  0,  0,  0,  5,-10,
-//			-20,-10,-10,-10,-10,-10,-10,-20},
-//		// ROOK
-//		new int[] {
-//			  0,  0,  0,  0,  0,  0,  0,  0,
-//			  5, 10, 10, 10, 10, 10, 10,  5,
-//			 -5,  0,  0,  0,  0,  0,  0, -5,
-//			 -5,  0,  0,  0,  0,  0,  0, -5,
-//			 -5,  0,  0,  0,  0,  0,  0, -5,
-//			 -5,  0,  0,  0,  0,  0,  0, -5,
-//			 -5,  0,  0,  0,  0,  0,  0, -5,
-//			  0,  0,  0,  5,  5,  0,  0,  0},
-//		// QUEEN
-//		new int[] {
-//			-20,-10,-10, -5, -5,-10,-10,-20,
-//			-10,  0,  0,  0,  0,  0,  0,-10,
-//			-10,  0,  5,  5,  5,  5,  0,-10,
-//			 -5,  0,  5,  5,  5,  5,  0, -5,
-//			  0,  0,  5,  5,  5,  5,  0, -5,
-//			-10,  5,  5,  5,  5,  5,  0,-10,
-//			-10,  0,  5,  0,  0,  0,  0,-10,
-//			-20,-10,-10, -5, -5,-10,-10,-20
-//	}};
+
 	
 	private static final int [][] PIECE_POSITION_VALUES_MG = new int[][] {
 		// Just to have index equals to piece type codes
@@ -537,10 +492,7 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 		super();
 	}
 	
-//	static int getPositionValue(int type, boolean black, int index) {
-//		return getPositionValue(PIECE_POSITION_VALUES[type], index, black);
-//	}
-//	
+	
 	static int getPositionValueMg(int type, boolean black, int index) {
 		return getPositionValue(PIECE_POSITION_VALUES_MG[type], index, black);
 	}
@@ -549,11 +501,13 @@ abstract class Hb2SimplifiedEvaluatorBase<M, B extends MoveGenerator<M>> impleme
 		return getPositionValue(PIECE_POSITION_VALUES_EG[type], index, black);
 	}
 	
-	static int getRawValue(int type) {
-		return PIECE_VALUES[type];
+	static int getRawValueMg(int type) {
+		return PIECE_VALUES_MG[type];
 	}
 	
-	
+	static int getRawValueEg(int type) {
+		return PIECE_VALUES_EG[type];
+	}	
 	
 	static int getKingPositionsValueMg(int whiteIndex, int blackIndex) {
 		
