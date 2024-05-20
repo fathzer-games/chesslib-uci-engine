@@ -10,7 +10,7 @@ public class Hb2Phase {
 	public static final int NB_INCR_PHASE = 64; // Pawns do not count. 3 for B and N, 5 for the R,  10 for the Q. White has therefore 32, and black likewise. Total = 64.
 	
 	// Very useful for the tapered evaluation
-	// Ethereal did not even think about it. But many others engines do.
+	// Ethereal did not even think about it. But many other engines do.
 	// For example, If white or black or both have 2 queens for example, without an upper  bound, the phase could exceed NB_INCR_PHASE, which would ruin the tapered evaluation
 	public static final int PHASE_UPPER_BOUND = NB_INCR_PHASE;
 	
