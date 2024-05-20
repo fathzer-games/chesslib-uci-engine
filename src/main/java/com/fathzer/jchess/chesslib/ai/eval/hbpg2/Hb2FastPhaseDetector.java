@@ -7,13 +7,13 @@ class Hb2FastPhaseDetector {
 //	private long state;
 
 	
-	void add(int piece) {
-//		state += PIECE_KIND_TO_VALUES[piece + KING];
-	}
-	
-	void remove(int piece) {
-//		state -= PIECE_KIND_TO_VALUES[piece + KING];
-	}
+//	void add(int piece) {
+////		state += PIECE_KIND_TO_VALUES[piece + KING];
+//	}
+//	
+//	void remove(int piece) {
+////		state -= PIECE_KIND_TO_VALUES[piece + KING];
+//	}
 	
 	int getPhaseForTaperedEval(int computedPhaseValue) {	
 		return (Math.min(computedPhaseValue, Hb2Phase.PHASE_UPPER_BOUND));
