@@ -42,7 +42,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 			final boolean isBlack = p<0;
 			if (kind!=KING) {
 				int incMg = Hb2SimplifiedEvaluatorBase.getRawValueMg(kind);
-				int incEg = Hb2SimplifiedEvaluatorBase.getRawValueMg(kind);
+				int incEg = Hb2SimplifiedEvaluatorBase.getRawValueEg(kind);
 				if (isBlack) {
 					pointsMg -= incMg;
 					pointsEg -= incEg;
@@ -62,8 +62,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 
 
 	int evaluateAsWhite() {
-		// for the time being (29/03/2024) points are the same in Mg and Eg except for the king preferred squares
-		// but it's gonna change very soon
+
 		// pointsMg = material only! The white material minus the black material in the middlegame.
 		// pointsEg = material only! The white material minus the black material in the endgame.
 		int phase = getPhaseForTaperedEval(computedPhase);
