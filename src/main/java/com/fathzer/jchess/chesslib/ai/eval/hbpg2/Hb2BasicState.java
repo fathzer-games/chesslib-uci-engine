@@ -15,6 +15,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	int pointsMg;
 	int pointsEg;
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 	int pointsPosMg;
 	int pointsPosEg;
 	int whiteKingIndex;
@@ -109,6 +110,10 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	int points;
 =======
 >>>>>>> 8fcce8e Valeurs différentes du matériel en final rendues possibles
+=======
+	int pointsPosMg;
+	int pointsPosEg;
+>>>>>>> 60c3451 Hb2SimplifiedEvaluator: incrémental achevé et propre pour position des pièces et matériel. Avec tapered eval
 	int whiteKingIndex;
 	int blackKingIndex;
 	int computedPhase;
@@ -122,6 +127,9 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	void copyTo(Hb2BasicState other) {
 		super.copyTo(other);
 		other.pointsMg = pointsMg;
+		other.pointsEg= pointsEg;
+		other.pointsPosMg = pointsPosMg;
+		other.pointsPosEg= pointsPosEg;
 		other.blackKingIndex = blackKingIndex;
 		other.whiteKingIndex = whiteKingIndex;
 		other.computedPhase = computedPhase;
@@ -129,9 +137,14 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 		
 	}
 	
+
+	
 	Hb2BasicState(BoardExplorer explorer, Board board) {
 		this.board = board;
 		this.pointsMg = 0;
+		this.pointsEg = 0;
+		this.pointsPosMg = 0;
+		this.pointsPosEg = 0;
 		this.computedPhase = 0;
 		do {
 			final int p = explorer.getPiece();
@@ -155,6 +168,19 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 				this.whiteKingIndex = index;
 			}
 			
+			
+			
+			if (kind!=KING) {
+				int incPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(kind, isBlack, index);
+				int incPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(kind, isBlack, index);
+				if (isBlack) {
+					pointsPosMg -= incPosMg;
+					pointsPosEg -= incPosEg;
+				} else {
+					pointsPosMg += incPosMg;
+					pointsPosEg += incPosEg;
+				}
+			}
 			computedPhase += Hb2Phase.getPhaseValue(kind);
 		} while (explorer.next());
 	}
@@ -165,6 +191,7 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 		// pointsMg = material only! The white material minus the black material in the middlegame.
 		// pointsEg = material only! The white material minus the black material in the endgame.
 		int phase = getPhaseForTaperedEval(computedPhase);
+<<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 		int evalMg = points + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
 		int evalEg = points + Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
@@ -250,6 +277,10 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 		int evalEg = points + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
 >>>>>>> 7fec468 Valeurs différentes pour les positions des pions en Mg et Eg. L'incrémental concerne désormais seulement le matériel
 =======
+=======
+//		int pointsPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(board);
+//		int pointsPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(board);
+>>>>>>> 60c3451 Hb2SimplifiedEvaluator: incrémental achevé et propre pour position des pièces et matériel. Avec tapered eval
 		int evalMg = pointsMg + pointsPosMg + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
 		int evalEg = pointsEg + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
 >>>>>>> 8fcce8e Valeurs différentes du matériel en final rendues possibles
