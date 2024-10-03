@@ -31,6 +31,7 @@ import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2MyFirstEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
@@ -62,7 +63,11 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			Arrays.asList(
 					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
 					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
+<<<<<<< Upstream, based on origin/main
 					new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
+=======
+					new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),				
+>>>>>>> bda7176 Hb2SimplifiedEvaluator: incrémental achevé et propre pour position des pièces et matériel. Avec tapered eval
 					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
 					);
