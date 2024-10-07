@@ -10,7 +10,11 @@
 		<version>1.0.9</version>
 	</parent>
 	<artifactId>chesslib-uci-engine</artifactId>
+<<<<<<< Upstream, based on origin/main
 	<version>0.0.4</version>
+=======
+	<version>0.0.2</version>
+>>>>>>> f67222a nettoyage, refactoring
 
 	<name>chesslib-uci-engine</name>
 	<description>A basic uci engine based on chesslib move generator.</description>
