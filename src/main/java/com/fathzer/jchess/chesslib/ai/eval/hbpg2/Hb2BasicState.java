@@ -7,6 +7,10 @@ import com.fathzer.chess.utils.adapters.BoardExplorer;
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
+=======
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.additional.ChessEvalAdditionalElems;
+>>>>>>> b73e44a Evaluation de la structure de pions: calcul du nombre de pions noirs par colonne, du nombre de pions blancs par colonne. Ca servira pour les pions doublés, les pions passés, etc...
 import com.github.bhlangonijr.chesslib.Board;
 
 /** The state of the evaluator.
@@ -25,15 +29,21 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 	Board board;
 =======
 class Hb2BasicState extends Hb2ElementaryBasicState {
+<<<<<<< Upstream, based on origin/main
 >>>>>>> f67222a nettoyage, refactoring
 	
+=======
+	private ChessEvalAdditionalElems chessEvalAdditionalElems;
+>>>>>>> b73e44a Evaluation de la structure de pions: calcul du nombre de pions noirs par colonne, du nombre de pions blancs par colonne. Ca servira pour les pions doublés, les pions passés, etc...
 	
 	Hb2BasicState() {
 		super();
 	}
 	
-	void copyTo(Hb2BasicState other) {
+	public void copyTo(Hb2BasicState other) {
 		super.copyTo(other);
+		chessEvalAdditionalElems.copyTo(other.chessEvalAdditionalElems);
+		
 //		other.pointsMg = pointsMg;
 //		other.pointsEg= pointsEg;
 //		other.pointsPosMg = pointsPosMg;
@@ -49,7 +59,17 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 	
 	Hb2BasicState(BoardExplorer explorer, Board board) {
 		super(explorer, board);
+		chessEvalAdditionalElems = new ChessEvalAdditionalElems(explorer, board);
+		
 	
+	}
+
+	public ChessEvalAdditionalElems getChessEvalAdditionalElems() {
+		return chessEvalAdditionalElems;
+	}
+
+	public void setChessEvalAdditionalElems(ChessEvalAdditionalElems chessEvalAdditionalElems) {
+		this.chessEvalAdditionalElems = chessEvalAdditionalElems;
 	}
 
 

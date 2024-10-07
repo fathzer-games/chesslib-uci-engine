@@ -24,7 +24,7 @@ class Hb2ElementaryBasicState {
 		super();
 	}
 	
-	void copyTo(Hb2BasicState other) {
+	public void copyTo(Hb2ElementaryBasicState other) {
 		
 		other.pointsMg = pointsMg;
 		other.pointsEg= pointsEg;
@@ -86,9 +86,9 @@ class Hb2ElementaryBasicState {
 
 
 	
-	int getPhaseForTaperedEval(int computedPhaseValue) {	
-		return (Math.min(computedPhaseValue, Hb2Phase.PHASE_UPPER_BOUND));
-	}
+//	int getPhaseForTaperedEval(int computedPhaseValue) {	
+//		return (Math.min(computedPhaseValue, Hb2Phase.PHASE_UPPER_BOUND));
+//	}
 	
 	
 	int evaluateAsWhite() {
