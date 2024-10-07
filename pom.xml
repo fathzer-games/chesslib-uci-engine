@@ -10,7 +10,7 @@
 		<version>1.0.8</version>
 	</parent>
 	<artifactId>chesslib-uci-engine</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 
 	<name>chesslib-uci-engine</name>
 	<description>A basic uci engine plugin for jchess-uci.</description>
