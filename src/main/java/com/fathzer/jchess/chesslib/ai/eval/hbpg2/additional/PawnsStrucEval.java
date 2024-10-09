@@ -419,7 +419,7 @@ import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2ChessConstants;
 
 import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Square;
+
 
 public class PawnsStrucEval {
 	private Board board;
@@ -439,11 +439,12 @@ public class PawnsStrucEval {
 			final int p = explorer.getPiece();
 			final int kind = Math.abs(p);
 			final int index = explorer.getIndex();
-			final boolean isBlack = p<0;
+			final boolean isPieceBlack = p<0;
 			if (kind==PAWN) {
-				Square pawnSquare = Square.squareAt(index);
-				int columnPawn = pawnSquare.getFile().ordinal(); // 0 for a column, 1 for b column, etc...
-				if (isBlack) {
+				
+				final int columnPawn = index%Hb2ChessConstants.NB_COLS;
+				
+				if (isPieceBlack) {
 					tabNbBlackPawnsByCol[columnPawn]++;
 				} else {
 					tabNbWhitePawnsByCol[columnPawn]++;
