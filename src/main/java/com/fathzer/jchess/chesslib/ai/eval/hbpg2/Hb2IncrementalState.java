@@ -21,7 +21,7 @@ public class Hb2IncrementalState extends Hb2BasicState {
 		super(exp, board);
 	}
 
-	
+	// HBR TODO FONTOS 24102024. S'occuper de l'incrémental en structure de pions (pions doublés, pour l'instant)
 	
 	void update(MoveData<?,?> move) {
 		pointsMg += getIncrementMg(move);
