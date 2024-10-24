@@ -8,7 +8,11 @@ import com.fathzer.chess.utils.adapters.BoardExplorer;
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 =======
+=======
+import com.fathzer.jchess.chesslib.ChessLibBoardExplorer;
+>>>>>>> 5ae67a7 Doubled pawns are hit with a penalty
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.additional.ChessEvalAdditionalElems;
 >>>>>>> b73e44a Evaluation de la structure de pions: calcul du nombre de pions noirs par colonne, du nombre de pions blancs par colonne. Ca servira pour les pions doublés, les pions passés, etc...
 import com.github.bhlangonijr.chesslib.Board;
@@ -42,7 +46,8 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 	
 	public void copyTo(Hb2BasicState other) {
 		super.copyTo(other);
-		chessEvalAdditionalElems.copyTo(other.chessEvalAdditionalElems);
+		other.chessEvalAdditionalElems = new ChessEvalAdditionalElems(this.chessEvalAdditionalElems);
+		
 		
 //		other.pointsMg = pointsMg;
 //		other.pointsEg= pointsEg;
@@ -59,7 +64,7 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 	
 	Hb2BasicState(BoardExplorer explorer, Board board) {
 		super(explorer, board);
-		chessEvalAdditionalElems = new ChessEvalAdditionalElems(explorer, board);
+		chessEvalAdditionalElems = new ChessEvalAdditionalElems(new ChessLibBoardExplorer(board), board);
 		
 	
 	}
@@ -72,6 +77,22 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 		this.chessEvalAdditionalElems = chessEvalAdditionalElems;
 	}
 
+	
+	int evaluateAsWhite() {
+
+		// pointsMg = material only! The white material minus the black material in the middlegame.
+		// pointsEg = material only! The white material minus the black material in the endgame.
+//		int phase = Hb2Phase.getPhaseForTaperedEval(computedPhase);
+		// gets the borned phase: necessary for the tapered evaluation
+		int phase= (computedPhase > Hb2Phase.PHASE_UPPER_BOUND?Hb2Phase.PHASE_UPPER_BOUND:computedPhase);
+//		int pointsPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(board);
+//		int pointsPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(board);
+	
+		int evalMg = pointsMg + pointsPosMg + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex) + chessEvalAdditionalElems.getContribMg();
+		int evalEg = pointsEg + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex) + chessEvalAdditionalElems.getContribEg();
+		
+		return ((evalMg * phase + evalEg * (Hb2Phase.NB_INCR_PHASE-phase)) / Hb2Phase.NB_INCR_PHASE);
+	}
 
 
 <<<<<<< Upstream, based on origin/main

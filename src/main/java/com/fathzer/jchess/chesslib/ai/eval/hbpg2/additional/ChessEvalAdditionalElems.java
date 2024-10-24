@@ -11,6 +11,11 @@ public class ChessEvalAdditionalElems {
 	
 	private PawnsStrucEval pawnsStructEval;
 	
+	public ChessEvalAdditionalElems(ChessEvalAdditionalElems ceae) {
+		pawnsStructEval = new PawnsStrucEval(ceae.pawnsStructEval);
+	}
+	
+	
 	public ChessEvalAdditionalElems(BoardExplorer explorer, Board board) {
 		pawnsStructEval = new PawnsStrucEval(explorer, board);
 	}
@@ -28,6 +33,19 @@ public class ChessEvalAdditionalElems {
 		this.pawnsStructEval = pawnsStructEval;
 	}
 	
+	public int getContribMg() {
+		int contrib = 0;
+		contrib+= pawnsStructEval.getContribMg();
+		return(contrib);
+		
+	}
+	
+	public int getContribEg() {
+		int contrib = 0;
+		contrib+= pawnsStructEval.getContribEg();
+		return(contrib);
+		
+	}
 	
 	
 
