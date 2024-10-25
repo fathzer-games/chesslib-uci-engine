@@ -34,11 +34,15 @@ class Hb2BasicState extends Hb2FastPhaseDetector {
 =======
 class Hb2BasicState extends Hb2ElementaryBasicState {
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 >>>>>>> f67222a nettoyage, refactoring
 	
 =======
 	private ChessEvalAdditionalElems chessEvalAdditionalElems;
 >>>>>>> b73e44a Evaluation de la structure de pions: calcul du nombre de pions noirs par colonne, du nombre de pions blancs par colonne. Ca servira pour les pions doublés, les pions passés, etc...
+=======
+	protected ChessEvalAdditionalElems chessEvalAdditionalElems;
+>>>>>>> 8f5557e doubled pawns evaluation + 256MB HashTable + force all variations to max depth in deepening policy
 	
 	Hb2BasicState() {
 		super();

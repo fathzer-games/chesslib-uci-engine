@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
+<<<<<<< Upstream, based on origin/main
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2ChessConstants;
 import com.github.bhlangonijr.chesslib.Bitboard;
 import com.github.bhlangonijr.chesslib.Board;
@@ -421,6 +422,8 @@ import java.util.Arrays;
 
 >>>>>>> 5ae67a7 Doubled pawns are hit with a penalty
 import com.fathzer.chess.utils.adapters.BoardExplorer;
+=======
+>>>>>>> 8f5557e doubled pawns evaluation + 256MB HashTable + force all variations to max depth in deepening policy
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2ChessConstants;
 
 import com.github.bhlangonijr.chesslib.Board;
@@ -480,10 +483,72 @@ public class PawnsStrucEval {
 	
 	void copyTo(PawnsStrucEval other) {
 		other.board = board;
-		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!!
+		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
 		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
 	}
 >>>>>>> b73e44a Evaluation de la structure de pions: calcul du nombre de pions noirs par colonne, du nombre de pions blancs par colonne. Ca servira pour les pions doublés, les pions passés, etc...
+	
+	public void modifyNumberOfBlackPawnsofColumn(int column, int nbPawns ) {
+		tabNbBlackPawnsByCol[column] += nbPawns;
+	}
+	
+	public void modifyNumberOfWhitePawnsofColumn(int column, int nbPawns ) {
+		tabNbWhitePawnsByCol[column] += nbPawns;
+	}
+	public void updatePawnsStructEval(MoveData<?,?> move) {
+		 updateDoubledPawns(move);
+	}
+	
+	
+	private void updateDoubledPawns(MoveData<?,?> move) {
+		int kind = Math.abs(move.getMovingPiece());
+		if (kind != PAWN) {
+			return;
+		}
+		boolean isBlack = (move.getMovingPiece()<0?true:false);
+		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_COLS;
+		final int promoType = move.getPromotionType();
+		if (promoType!=0) {
+			// If promotion, then the pawn disappears.
+			
+			
+			
+			// Get the pawn's column and decrement its number of pawns of its color
+			if (isBlack) {
+				modifyNumberOfBlackPawnsofColumn(columnPawn, (-1));
+			} else {
+				modifyNumberOfWhitePawnsofColumn(columnPawn, (-1));
+			}
+			return; // promotion. so we stop here: no chance of a pawn being captured...
+		
+		}
+		
+		int captured = move.getCapturedType();
+		if (captured!=0) {
+			// Well the pawn with change columns...whatever it captures
+			int destinationColumnOfThePawn = move.getMovingDestination()%Hb2ChessConstants.NB_COLS;
+			if (isBlack) {
+				modifyNumberOfBlackPawnsofColumn(columnPawn, (-1));
+				modifyNumberOfBlackPawnsofColumn(destinationColumnOfThePawn, 1);
+			} else {
+				modifyNumberOfWhitePawnsofColumn(columnPawn, (-1));
+				modifyNumberOfWhitePawnsofColumn(destinationColumnOfThePawn, 1);
+			}
+			// If a piece was captured, we don't care; whereas if a pawn is captured, it'as another story...
+			if (Math.abs(captured)== PAWN) {
+				if (isBlack) {
+					// Black pawns are eating white pawns
+					modifyNumberOfWhitePawnsofColumn(destinationColumnOfThePawn, (-1));
+					
+				} else {
+					// White pawns are eating black pawns
+					modifyNumberOfBlackPawnsofColumn(destinationColumnOfThePawn, (-1));
+					
+				}
+			}
+
+		}
+	}
 	
 	public int getContribMg() {
 		
