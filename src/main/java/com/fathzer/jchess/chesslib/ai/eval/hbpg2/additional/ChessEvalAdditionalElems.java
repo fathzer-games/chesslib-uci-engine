@@ -1,6 +1,7 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg2.additional;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
+import com.fathzer.chess.utils.adapters.MoveData;
 import com.github.bhlangonijr.chesslib.Board;
 
 
@@ -23,6 +24,10 @@ public class ChessEvalAdditionalElems {
 	public void copyTo(ChessEvalAdditionalElems other) {
 		pawnsStructEval.copyTo(other.pawnsStructEval);
 		
+	}
+	
+	public void upadateEvalAdditionalElems(MoveData<?,?> move) {
+		pawnsStructEval.updatePawnsStructEval(move);
 	}
 
 	public PawnsStrucEval getPawnsStructEval() {

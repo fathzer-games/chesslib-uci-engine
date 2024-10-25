@@ -132,7 +132,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 	
 	public static IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine(Supplier<Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder, int maxDepth) {
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder) {
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(256, SizeUnit.MB), evaluatorBuilder) {
 			@Override
 			protected Negamax<Move, ChessLibMoveGenerator> buildAi(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
 				final Negamax<Move, ChessLibMoveGenerator> negaMax = (Negamax<Move, ChessLibMoveGenerator>) super.buildAi(context);

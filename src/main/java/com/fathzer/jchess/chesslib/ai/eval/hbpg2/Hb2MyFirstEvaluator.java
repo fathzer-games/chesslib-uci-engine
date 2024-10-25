@@ -34,7 +34,12 @@ public class Hb2MyFirstEvaluator implements StaticEvaluator<Move, ChessLibMoveGe
 	public static void main(String[] args) {
 		// Exemple pour créer un ChessLibMoveGenerator à partir d'un FEN et l'évaluer
 		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(new Board());
-		mvg.getBoard().loadFromFen("8/3b3p/p3P1p1/3K4/5P1P/2k5/8/8 b - - 0 56");
+//		mvg.getBoard().loadFromFen("8/3b3p/p3P1p1/3K4/5P1P/2k5/8/8 b - - 0 56");
+		mvg.getBoard().loadFromFen("5k2/p1p2pp1/4b1p1/4p3/1P2P3/p2P1B2/1b2NP1P/6K1 w - - 0 1");
+		System.out.println(new Hb2MyFirstEvaluator().evaluate(mvg));
+		mvg.getBoard().loadFromFen("8/p1p1kppp/4b3/4p1P1/1P2P2P/p2P1B2/1b2NP2/6K1 w - - 0 1");
+		
+		
 		System.out.println(new Hb2MyFirstEvaluator().evaluate(mvg));
 	}
 }

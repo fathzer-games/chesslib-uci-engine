@@ -10,7 +10,7 @@ import com.github.bhlangonijr.chesslib.Board;
 /** The state of the evaluator.
  */
 class Hb2BasicState extends Hb2ElementaryBasicState {
-	private ChessEvalAdditionalElems chessEvalAdditionalElems;
+	protected ChessEvalAdditionalElems chessEvalAdditionalElems;
 	
 	Hb2BasicState() {
 		super();
