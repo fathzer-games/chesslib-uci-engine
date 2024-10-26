@@ -137,7 +137,7 @@ public class PawnsStrucEval {
 		int malusW = 0;
 		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
 			if (tabNbWhitePawnsByCol[i] > 1) {
-				malusW += tabNbWhitePawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWN_MG;
+				malusW += tabNbWhitePawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_MG;
 			}
 		}
 		
@@ -145,7 +145,7 @@ public class PawnsStrucEval {
 		int malusB = 0;
 		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
 			if (tabNbBlackPawnsByCol[i] > 1) {
-				malusB += tabNbBlackPawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWN_MG;
+				malusB += tabNbBlackPawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_MG;
 			}
 		}
 		return(malusW - malusB);
@@ -160,7 +160,7 @@ public class PawnsStrucEval {
 		int malusW = 0;
 		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
 			if (tabNbWhitePawnsByCol[i] > 1) {
-				malusW += tabNbWhitePawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWN_EG;
+				malusW += Hb2ChessConstants.NB_MAX_PAWNS_TAKEN_INTO_ACCOUNT_FOR_MALUS_DOUBLED_PAWNS * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_EG;
 			}
 		}
 		
@@ -168,7 +168,7 @@ public class PawnsStrucEval {
 		int malusB = 0;
 		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
 			if (tabNbBlackPawnsByCol[i] > 1) {
-				malusB += tabNbBlackPawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWN_EG;
+				malusB += Hb2ChessConstants.NB_MAX_PAWNS_TAKEN_INTO_ACCOUNT_FOR_MALUS_DOUBLED_PAWNS * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_EG;
 			}
 		}
 		return(malusW - malusB);
