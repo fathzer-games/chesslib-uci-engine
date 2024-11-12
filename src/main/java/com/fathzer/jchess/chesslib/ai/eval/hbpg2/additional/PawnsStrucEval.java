@@ -19,15 +19,15 @@ public class PawnsStrucEval {
 	
 	
 	public PawnsStrucEval() {
-		tabNbWhitePawnsByCol = new int[Hb2ChessConstants.NB_COLS];
-		tabNbBlackPawnsByCol = new int[Hb2ChessConstants.NB_COLS];
+		tabNbWhitePawnsByCol = new int[Hb2ChessConstants.NB_FILES];
+		tabNbBlackPawnsByCol = new int[Hb2ChessConstants.NB_FILES];
 	}
 	
 	public PawnsStrucEval(PawnsStrucEval pse) {
 		// Since it's an array of integers, the copy is not a shallow copy
-		tabNbWhitePawnsByCol = Arrays.copyOf(pse.tabNbWhitePawnsByCol, Hb2ChessConstants.NB_COLS);
+		tabNbWhitePawnsByCol = Arrays.copyOf(pse.tabNbWhitePawnsByCol, Hb2ChessConstants.NB_FILES);
 		// Since it's an array of integers, the copy is not a shallow copy
-		tabNbBlackPawnsByCol = Arrays.copyOf(pse.tabNbBlackPawnsByCol, Hb2ChessConstants.NB_COLS);
+		tabNbBlackPawnsByCol = Arrays.copyOf(pse.tabNbBlackPawnsByCol, Hb2ChessConstants.NB_FILES);
 	
 	}
 	
@@ -36,7 +36,7 @@ public class PawnsStrucEval {
 		
 		
 		this.board = board;
-		for (int i= 0; i < Hb2ChessConstants.NB_COLS; i++) {
+		for (int i= 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			tabNbWhitePawnsByCol[i] = 0;
 			tabNbBlackPawnsByCol[i] = 0;
 		}
@@ -48,7 +48,7 @@ public class PawnsStrucEval {
 			final boolean isPieceBlack = p<0;
 			if (kind==PAWN) {
 				
-				final int columnPawn = index%Hb2ChessConstants.NB_COLS;
+				final int columnPawn = index%Hb2ChessConstants.NB_FILES;
 				
 				if (isPieceBlack) {
 					tabNbBlackPawnsByCol[columnPawn]++;
@@ -87,7 +87,7 @@ public class PawnsStrucEval {
 			return;
 		}
 		boolean isBlack = (move.getMovingPiece()<0?true:false);
-		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_COLS;
+		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_FILES;
 		final int promoType = move.getPromotionType();
 		if (promoType!=0) {
 			// If promotion, then the pawn disappears.
@@ -107,7 +107,7 @@ public class PawnsStrucEval {
 		int captured = move.getCapturedType();
 		if (captured!=0) {
 			// Well the pawn with change columns...whatever it captures
-			int destinationColumnOfThePawn = move.getMovingDestination()%Hb2ChessConstants.NB_COLS;
+			int destinationColumnOfThePawn = move.getMovingDestination()%Hb2ChessConstants.NB_FILES;
 			if (isBlack) {
 				modifyNumberOfBlackPawnsofColumn(columnPawn, (-1));
 				modifyNumberOfBlackPawnsofColumn(destinationColumnOfThePawn, 1);
@@ -135,7 +135,7 @@ public class PawnsStrucEval {
 		
 		// white doubled pawns
 		int malusW = 0;
-		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
+		for (int i = 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			if (tabNbWhitePawnsByCol[i] > 1) {
 				malusW += tabNbWhitePawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_MG;
 			}
@@ -143,7 +143,7 @@ public class PawnsStrucEval {
 		
 		// black doubled pawns
 		int malusB = 0;
-		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
+		for (int i = 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			if (tabNbBlackPawnsByCol[i] > 1) {
 				malusB += tabNbBlackPawnsByCol[i] * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_MG;
 			}
@@ -158,7 +158,7 @@ public class PawnsStrucEval {
 		
 		// white doubled pawns
 		int malusW = 0;
-		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
+		for (int i = 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			if (tabNbWhitePawnsByCol[i] > 1) {
 				malusW += Hb2ChessConstants.NB_MAX_PAWNS_TAKEN_INTO_ACCOUNT_FOR_MALUS_DOUBLED_PAWNS * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_EG;
 			}
@@ -166,7 +166,7 @@ public class PawnsStrucEval {
 		
 		// black doubled pawns
 		int malusB = 0;
-		for (int i = 0; i < Hb2ChessConstants.NB_COLS; i++) {
+		for (int i = 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			if (tabNbBlackPawnsByCol[i] > 1) {
 				malusB += Hb2ChessConstants.NB_MAX_PAWNS_TAKEN_INTO_ACCOUNT_FOR_MALUS_DOUBLED_PAWNS * Hb2ChessConstants.MALUS_DOUBLED_PAWNS_EG;
 			}
