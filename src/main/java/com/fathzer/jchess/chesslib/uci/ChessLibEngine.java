@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.fathzer.chess.utils.transposition.GenerationDetector;
 import com.fathzer.games.ai.Negamax;
 import com.fathzer.games.ai.SearchContext;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
@@ -77,6 +78,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	@Override
 	public void setStartPosition(String fen) {
 		board = fromFEN(fen);
+System.out.println(board.getBoard().getHalfMoveCounter());
 		board.setMoveComparatorBuilder(BasicMoveComparator::new);
 	}
 	
@@ -134,6 +136,26 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
+		engine.setGenerationDetector(new GenerationDetector<ChessLibMoveGenerator>() {
+			@Override
+			public boolean test(ChessLibMoveGenerator t) {
+				final boolean test = super.test(t);
+				if (test) {
+					System.out.println("unrecoverable change detected, I clear the transposition table!"); //TODO
+				}
+				return test;
+			}
+
+			@Override
+			protected long getHash(ChessLibMoveGenerator board) {
+				return board.getHashKey();
+			}
+
+			@Override
+			protected int getHalfMoveCount(ChessLibMoveGenerator board) {
+				return board.getBoard().getHalfMoveCounter();
+			}
+		});
 		return engine;
 	}
 
