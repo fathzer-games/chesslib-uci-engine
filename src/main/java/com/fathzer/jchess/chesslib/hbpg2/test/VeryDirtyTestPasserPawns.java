@@ -343,6 +343,8 @@ public class VeryDirtyTestPasserPawns {
 		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(internal);
 >>>>>>> 2321e50 Well, see VeryDirtyTestPasserPawns.java The detection method of the passed pawns works fine, eventually!
 		
+		System.out.println(internal.toStringFromWhiteViewPoint());
+		
 		BoardExplorer explorer = new ChessLibBoardExplorer(mvg.getBoard());
 		do {
 			final int p = explorer.getPiece();
