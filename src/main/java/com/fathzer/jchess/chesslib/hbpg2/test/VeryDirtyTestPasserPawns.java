@@ -223,6 +223,8 @@ public class VeryDirtyTestPasserPawns {
 		internal.loadFromFen(fen); 
 		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(internal);
 		
+		System.out.println(internal.toStringFromWhiteViewPoint());
+		
 		BoardExplorer explorer = new ChessLibBoardExplorer(mvg.getBoard());
 		do {
 			final int p = explorer.getPiece();
