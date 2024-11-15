@@ -57,7 +57,8 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 	public void prepareMove(B board, M move) {
 		if (moveData.update(move, board)) {
 			buildToCommit();
-			toCommit.update(moveData);
+			toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
+//			toCommit.update(moveData);
 		}
 	}
 	

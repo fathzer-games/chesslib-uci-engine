@@ -4,6 +4,7 @@ public abstract class Hb2ChessConstants {
 	public static final int NB_RANKS = 8;
 	public static final int NB_FILES = 8;
 	public static final int INDEX_MAX_RANK = NB_RANKS-1;
+	public static final int INDEX_MAX_FILE = NB_FILES-1;
 	
 	
 	
