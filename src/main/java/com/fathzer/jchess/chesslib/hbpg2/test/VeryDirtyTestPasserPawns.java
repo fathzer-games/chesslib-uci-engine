@@ -109,8 +109,7 @@ public class VeryDirtyTestPasserPawns {
 				 fileFin = pawnSq.getFile().ordinal() +1;
 			 }
 			 //getRgSquare
-//			 Square sqDebut = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut);
-//			 Square sqFin = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankFin)+fileFin);
+
 //			 int rgDebutSq = (Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut;
 //			 int rgFinSq = (Hb2ChessConstants.NB_RANKS*rankFin)+fileFin;
 			 boolean areEnemyPawnInZone = false;
@@ -124,9 +123,12 @@ public class VeryDirtyTestPasserPawns {
 				 }
 				 
 			 }
+			 
+//			 Square sqDebut = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut);
+//			 Square sqFin = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankFin)+fileFin);
 //			long ALL_BITS_EQUAL_ONE_BITBOARD = 0xFFFFFFFFFFFFFFFFL;
 //			 long pionsAdversesDansZone = Bitboard.bitsBetween(ALL_BITS_EQUAL_ONE_BITBOARD, sqDebut.ordinal(), sqFin.ordinal());
-//			 long pionsAdversesDansZone = Bitboard.bitsBetween(ALL_BITS_EQUAL_ONE_BITBOARD, rgDebutSq, rgFinSq);
+////			 long pionsAdversesDansZone = Bitboard.bitsBetween(ALL_BITS_EQUAL_ONE_BITBOARD, rgDebutSq, rgFinSq);
 //			 List<Square> lstKazz = Bitboard.bbToSquareList(pionsAdversesDansZone);
 //			 for (Square kaaaaz : lstKazz) {
 //				 System.out.println(kaaaaz.value());
