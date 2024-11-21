@@ -29,22 +29,22 @@ public class Hb2IncrementalState extends Hb2BasicState {
 
 	
 	
-	void update(MoveData<?,?> move) {
-		pointsMg += getIncrementMg(move);
-		pointsEg += getIncrementEg(move);
-		pointsPosMg += getIncrementPosMg(move);
-		pointsPosEg += getIncrementPosEg(move);
-		chessEvalAdditionalElems.upadateEvalAdditionalElems(move);
-		updatePhase(move);
-	}
+//	void update(MoveData<?,?> move) {
+//		pointsMg += getIncrementMg(move);
+//		pointsEg += getIncrementEg(move);
+//		pointsPosMg += getIncrementPosMg(move);
+//		pointsPosEg += getIncrementPosEg(move);
+//		chessEvalAdditionalElems.updateEvalAdditionalElems(move);
+//		updatePhase(move);
+//	}
 	
-	//TODO STALINE à coder
+
 	void update(MoveData<?,?> move, Board board) {
 		pointsMg += getIncrementMg(move);
 		pointsEg += getIncrementEg(move);
 		pointsPosMg += getIncrementPosMg(move);
 		pointsPosEg += getIncrementPosEg(move);
-		chessEvalAdditionalElems.upadateEvalAdditionalElems(move);
+		chessEvalAdditionalElems.updateEvalAdditionalElems(move, board);
 		updatePhase(move);
 	}
 	
