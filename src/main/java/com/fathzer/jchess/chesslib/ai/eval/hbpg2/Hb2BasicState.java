@@ -21,14 +21,7 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 		other.chessEvalAdditionalElems = new ChessEvalAdditionalElems(this.chessEvalAdditionalElems);
 		
 		
-//		other.pointsMg = pointsMg;
-//		other.pointsEg= pointsEg;
-//		other.pointsPosMg = pointsPosMg;
-//		other.pointsPosEg= pointsPosEg;
-//		other.blackKingIndex = blackKingIndex;
-//		other.whiteKingIndex = whiteKingIndex;
-//		other.computedPhase = computedPhase;
-//		other.board = board;
+
 		
 	}
 	
@@ -36,7 +29,7 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 	
 	Hb2BasicState(BoardExplorer explorer, Board board) {
 		super(explorer, board);
-		chessEvalAdditionalElems = new ChessEvalAdditionalElems(new ChessLibBoardExplorer(board), board);
+		chessEvalAdditionalElems = new ChessEvalAdditionalElems( board);
 		
 	
 	}
