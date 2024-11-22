@@ -84,9 +84,10 @@ class Hb2BasicState extends Hb2ElementaryBasicState {
 		int phase= (computedPhase > Hb2Phase.PHASE_UPPER_BOUND?Hb2Phase.PHASE_UPPER_BOUND:computedPhase);
 //		int pointsPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(board);
 //		int pointsPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(board);
-	
-		int evalMg = pointsMg + pointsPosMg + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex) + chessEvalAdditionalElems.getContribMg();
-		int evalEg = pointsEg + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex) + chessEvalAdditionalElems.getContribEg();
+		int posKingMg = Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
+		int posKingEg = Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
+		int evalMg = pointsMg + pointsPosMg + posKingMg + chessEvalAdditionalElems.getContribMg();
+		int evalEg = pointsEg + pointsPosEg+ posKingEg + chessEvalAdditionalElems.getContribEg();
 		
 		return ((evalMg * phase + evalEg * (Hb2Phase.NB_INCR_PHASE-phase)) / Hb2Phase.NB_INCR_PHASE);
 	}
