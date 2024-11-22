@@ -30,6 +30,8 @@ public class Main extends ExtendedUCI {
 	
 	public static void main(String[] args) {
 		final String pathProperty = System.getProperty("openingsUrl");
+		//FIXME According to the UCI protocol, process startup should be as quick as possible
+		//So, reading the openings table should be done on "isready" command
 		final MoveLibrary<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : readOpenings(pathProperty);
 		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();

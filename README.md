@@ -21,6 +21,7 @@ To use this library, launch the engine with:
 ```java -DopeningsUrl=https://github.com/fathzer-games/jchess/raw/branch-first/src/main/resources/lichess/masters-shrink-full.json.gz -jar chesslib-uci-engine.jar```
 
 ## Known bugs
+- According to the UCI protocol, process startup should be as quick as possible. So, reading the openings table should be done on "isready" command and not during startup.
 - The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
 An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...  
 The test class ```com.fathzer.jchess.chesslib.ChessLibMoveGeneratorTest``` has commented assertions that currently fails.
