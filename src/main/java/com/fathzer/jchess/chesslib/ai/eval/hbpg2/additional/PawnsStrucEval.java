@@ -52,7 +52,7 @@ public class PawnsStrucEval {
 				PASSED_PAWN_BONUS_EG,PASSED_PAWN_BONUS_6_TH_RANK_EG,PASSED_PAWN_BONUS_7_TH_RANK_EG,
 				0};
 	
-	private Board board;
+
 	
 	private int[] tabNbWhitePawnsByCol;
 	private int[] tabNbBlackPawnsByCol;
@@ -64,8 +64,8 @@ public class PawnsStrucEval {
 	public PawnsStrucEval() {
 		tabNbWhitePawnsByCol = new int[Hb2ChessConstants.NB_FILES];
 		tabNbBlackPawnsByCol = new int[Hb2ChessConstants.NB_FILES];
+		bonusWhitePassedPawnsMg = 0;
 		bonusWhitePassedPawnsEg = 0;
-		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsEg = 0;
 		
@@ -73,7 +73,7 @@ public class PawnsStrucEval {
 	
 	public PawnsStrucEval(PawnsStrucEval pse) {
 		
-		this.board = pse.board;
+	
 		// Since it's an array of integers, the copy is not a shallow copy
 		tabNbWhitePawnsByCol = Arrays.copyOf(pse.tabNbWhitePawnsByCol, Hb2ChessConstants.NB_FILES);
 		// Since it's an array of integers, the copy is not a shallow copy
@@ -88,9 +88,9 @@ public class PawnsStrucEval {
 	
 	
 	
-	private void computeDoubledPawns() {
+	private void computeDoubledPawns(Board board) {
 	
-		BoardExplorer explorer = new ChessLibBoardExplorer(this.board);
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
 		
 		
 		for (int i= 0; i < Hb2ChessConstants.NB_FILES; i++) {
@@ -122,12 +122,12 @@ public class PawnsStrucEval {
 	
 	}
 	
-	private void computePassedAndProtectedPassedPawns() {
+	private void computePassedAndProtectedPassedPawns(Board board) {
 		
-		BoardExplorer explorer = new ChessLibBoardExplorer(this.board);
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
 		
+		bonusWhitePassedPawnsMg = 0;
 		bonusWhitePassedPawnsEg = 0;
-		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsEg = 0;
 		
@@ -193,9 +193,9 @@ public class PawnsStrucEval {
 	
 	public PawnsStrucEval( Board board) {
 		this();
-		this.board = board;
-		computeDoubledPawns( );
-		computePassedAndProtectedPassedPawns( );
+	
+		computeDoubledPawns( board);
+		computePassedAndProtectedPassedPawns( board);
 		
 	
 
@@ -346,7 +346,7 @@ public class PawnsStrucEval {
 	
 	
 	void copyTo(PawnsStrucEval other) {
-		other.board = board;
+	
 		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
 		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
 	}
@@ -360,7 +360,7 @@ public class PawnsStrucEval {
 	}
 	public void updatePawnsStructEval(MoveData<?,?> move, Board board) {
 		 updateDoubledPawns(move);
-		 updatePassedAndProtectePassedPawns(move);
+		 updatePassedAndProtectePassedPawns(move, board);
 	}
 	
 	
@@ -415,7 +415,7 @@ public class PawnsStrucEval {
 	}
 	
 	
-	private void updatePassedAndProtectePassedPawns(MoveData<?,?> move) {
+	private void updatePassedAndProtectePassedPawns(MoveData<?,?> move, Board board) {
 		boolean isBlack = (move.getMovingPiece()<0?true:false);
 		int kind = Math.abs(move.getMovingPiece());
 		if (kind == PAWN) {
@@ -426,7 +426,7 @@ public class PawnsStrucEval {
 				return; // There is a promotion (i.e. the pawn departed from the seventh rank if white, fomr the 2nd rank if black) so we stop here: a promotion does not change pawn structure on the chessboard
 			}
 			// We have to recompute all that is relevant to passed and protected passed pawns: that is the simplest solution
-			computePassedAndProtectedPassedPawns();
+			computePassedAndProtectedPassedPawns(board);
 			return;
 		}
 	
@@ -438,7 +438,7 @@ public class PawnsStrucEval {
 		if (captured!=0) {
 			if (Math.abs(captured) == PAWN) {
 				// We have to recompute all that is relevant to passed and protected passed pawns: that is the simplest solution
-				computePassedAndProtectedPassedPawns();
+				computePassedAndProtectedPassedPawns(board);
 			}
 		
 

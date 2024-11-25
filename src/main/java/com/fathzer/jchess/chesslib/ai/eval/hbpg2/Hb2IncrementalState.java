@@ -8,7 +8,9 @@ import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBa
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
+import com.fathzer.games.MoveGenerator.MoveConfidence;
 import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 /** The current state of a {@link Hb2AbstractIncrementalSimplifiedEvaluator}
  */
@@ -33,13 +35,14 @@ public class Hb2IncrementalState extends Hb2BasicState {
 //	}
 	
 
-	void update(MoveData<?,?> move, Board board) {
-		pointsMg += getIncrementMg(move);
-		pointsEg += getIncrementEg(move);
-		pointsPosMg += getIncrementPosMg(move);
-		pointsPosEg += getIncrementPosEg(move);
-		chessEvalAdditionalElems.updateEvalAdditionalElems(move, board);
-		updatePhase(move);
+	void update(MoveData<?,?> moveData, Board board) {
+	
+		pointsMg += getIncrementMg(moveData);
+		pointsEg += getIncrementEg(moveData);
+		pointsPosMg += getIncrementPosMg(moveData);
+		pointsPosEg += getIncrementPosEg(moveData);
+		chessEvalAdditionalElems.updateEvalAdditionalElems(moveData, board);
+		updatePhase(moveData);
 	}
 	
 	
