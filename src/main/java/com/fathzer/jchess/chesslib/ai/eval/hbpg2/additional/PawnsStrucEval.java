@@ -3,7 +3,6 @@ package com.fathzer.jchess.chesslib.ai.eval.hbpg2.additional;
 import static com.fathzer.chess.utils.Pieces.PAWN;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
@@ -15,7 +14,6 @@ import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.File;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Rank;
-import com.github.bhlangonijr.chesslib.Square;
 
 
 public class PawnsStrucEval {
@@ -304,9 +302,9 @@ public class PawnsStrucEval {
 		 
 		long testPassedPawn = 0L;
 		if (!isBlack) {
-			testPassedPawn = Hb2BitboardsUtils.whitePassedPawnMask[ordinalSquarePawn] & bitboardBlackPawns;
+			testPassedPawn = Hb2BitboardsUtils.WHITE_PASSED_PAWNS_MASK[ordinalSquarePawn] & bitboardBlackPawns;
 		} else {
-			testPassedPawn = Hb2BitboardsUtils.blackPassedPawnMask[ordinalSquarePawn] & bitboardWhitePawns;
+			testPassedPawn = Hb2BitboardsUtils.BLACK_PASSED_PAWNS_MASK[ordinalSquarePawn] & bitboardWhitePawns;
 		}
 		
 		if (testPassedPawn == 0L) {

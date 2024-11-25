@@ -3,7 +3,6 @@ package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
-import com.fathzer.jchess.chesslib.ChessLibBoardExplorer;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.additional.ChessEvalAdditionalElems;
 import com.github.bhlangonijr.chesslib.Board;
 

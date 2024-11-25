@@ -1,31 +1,34 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 public class Hb2BitboardsUtils {
+	
+	// This class is built mainly thanks to shameful plagiarism from https://github.com/Luecx/Chess.git (GNU Public License)
+	// That said, the guy took probably his inspiration from the C++ code described here: https://habr.com/ru/articles/682122/
 
-	public static final long h_file = 0x8080808080808080L;
-	public static final long g_file = h_file >>> 1;
-	public static final long f_file = h_file >>> 2;
-	public static final long e_file = h_file >>> 3;
-	public static final long d_file = h_file >>> 4;
-	public static final long c_file = h_file >>> 5;
-	public static final long b_file = h_file >>> 6;
-	public static final long a_file = h_file >>> 7;
+	public static final long H_FILE = 0x8080808080808080L;
+	public static final long G_FILE = H_FILE >>> 1;
+	public static final long F_FILE = H_FILE >>> 2;
+	public static final long E_FILE = H_FILE >>> 3;
+	public static final long D_FILE = H_FILE >>> 4;
+	public static final long C_FILE = H_FILE >>> 5;
+	public static final long B_FILE = H_FILE >>> 6;
+	public static final long A_FILE = H_FILE >>> 7;
 
-	public static final long rank_1 = 0x00000000000000FFL;
-	public static final long rank_2 = rank_1 << 8;
-	public static final long rank_3 = rank_1 << 16;
-	public static final long rank_4 = rank_1 << 24;
-	public static final long rank_5 = rank_1 << 32;
-	public static final long rank_6 = rank_1 << 40;
-	public static final long rank_7 = rank_1 << 48;
-	public static final long rank_8 = rank_1 << 56;
+	public static final long RANK_1 = 0x00000000000000FFL;
+	public static final long RANK_2 = RANK_1 << 8;
+	public static final long RANK_3 = RANK_1 << 16;
+	public static final long RANK_4 = RANK_1 << 24;
+	public static final long RANK_5 = RANK_1 << 32;
+	public static final long RANK_6 = RANK_1 << 40;
+	public static final long RANK_7 = RANK_1 << 48;
+	public static final long RANK_8 = RANK_1 << 56;
 
-	public static final long not_a_file = ~a_file;
-	public static final long not_h_file = ~h_file;
-	public static final long not_rank_1 = ~rank_1;
-	public static final long not_rank_8 = ~rank_8;
+	public static final long NOT_A_FILE = ~A_FILE;
+	public static final long NOT_H_FILE = ~H_FILE;
+	public static final long NOT_RANK_1 = ~RANK_1;
+	public static final long NOT_RANK_8 = ~RANK_8;
 
-	public static final long[] whitePassedPawnMask = new long[] { 0x0303030303030300L, 0x0707070707070700L,
+	public static final long[] WHITE_PASSED_PAWNS_MASK = new long[] { 0x0303030303030300L, 0x0707070707070700L,
 			0x0e0e0e0e0e0e0e00L, 0x1c1c1c1c1c1c1c00L, 0x3838383838383800L, 0x7070707070707000L, 0xe0e0e0e0e0e0e000L,
 			0xc0c0c0c0c0c0c000L, 0x0303030303030000L, 0x0707070707070000L, 0x0e0e0e0e0e0e0000L, 0x1c1c1c1c1c1c0000L,
 			0x3838383838380000L, 0x7070707070700000L, 0xe0e0e0e0e0e00000L, 0xc0c0c0c0c0c00000L, 0x0303030303000000L,
@@ -40,7 +43,7 @@ public class Hb2BitboardsUtils {
 			0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L,
 			0x0000000000000000L, 0x0000000000000000L };
 
-	public static final long[] blackPassedPawnMask = new long[] {
+	public static final long[] BLACK_PASSED_PAWNS_MASK = new long[] {
 
 			0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L,
 			0x0000000000000000L, 0x0000000000000000L, 0x0000000000000000L, 0x0000000000000003L, 0x0000000000000007L,
@@ -57,11 +60,11 @@ public class Hb2BitboardsUtils {
 			0x0038383838383838L, 0x0070707070707070L, 0x00e0e0e0e0e0e0e0L, 0x00c0c0c0c0c0c0c0L, };
 
 	public static final long shiftWest(long b) {
-		return (b >>> 1) & not_h_file;
+		return (b >>> 1) & NOT_H_FILE;
 	}
 
 	public static final long shiftEast(long b) {
-		return (b << 1) & not_a_file;
+		return (b << 1) & NOT_A_FILE;
 	}
 
 	public static final long shiftSouth(long b) {
@@ -73,19 +76,19 @@ public class Hb2BitboardsUtils {
 	}
 
 	public static final long shiftNorthEast(long b) {
-		return (b << 9) & not_a_file;
+		return (b << 9) & NOT_A_FILE;
 	}
 
 	public static final long shiftSouthEast(long b) {
-		return (b >>> 7) & not_a_file;
+		return (b >>> 7) & NOT_A_FILE;
 	}
 
 	public static final long shiftSouthWest(long b) {
-		return (b >>> 9) & not_h_file;
+		return (b >>> 9) & NOT_H_FILE;
 	}
 
 	public static final long shiftNorthWest(long b) {
-		return (b << 7) & not_h_file;
+		return (b << 7) & NOT_H_FILE;
 	}
 
 }
