@@ -66,7 +66,7 @@ public class Hb2IncrementalState extends Hb2BasicState {
 	private int getIncrementMg(MoveData<?,?> move) {
 		final boolean isBlack = move.getMovingPiece()<0;
 		int moving = Math.abs(move.getMovingPiece());
-		final int movingIndex = move.getMovingIndex();
+//		final int movingIndex = move.getMovingIndex();
 //		int inc;
 		int inc = 0;
 		if (moving==KING) {
@@ -104,7 +104,7 @@ public class Hb2IncrementalState extends Hb2BasicState {
 	private int getIncrementEg(MoveData<?,?> move) {
 		final boolean isBlack = move.getMovingPiece()<0;
 		int moving = Math.abs(move.getMovingPiece());
-		final int movingIndex = move.getMovingIndex();
+//		final int movingIndex = move.getMovingIndex();
 //		int inc;
 		int inc = 0;
 		if (moving==KING) {
