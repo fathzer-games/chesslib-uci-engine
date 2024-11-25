@@ -306,7 +306,7 @@ public class PawnsStrucEval {
 	
 		int ordinalSquarePawn = (Hb2ChessConstants.NB_RANKS*rowPawn)+colPawn;
 		 
-		long testPassedPawn = 0L;
+		long testPassedPawn;
 		if (!isBlack) {
 			testPassedPawn = Hb2BitboardsUtils.WHITE_PASSED_PAWNS_MASK[ordinalSquarePawn] & bitboardBlackPawns;
 		} else {
@@ -338,7 +338,7 @@ public class PawnsStrucEval {
 			isPawnProtected = ((1L << ordinalSquarePawn) & (connectedPawnsEastBlack | connectedPawnsWestBlack)) != 0;
 
 			
-		};
+		}
 		return (isPawnProtected);
 		
 	
@@ -373,7 +373,7 @@ public class PawnsStrucEval {
 		if (kind != PAWN) {
 			return;
 		}
-		boolean isBlack = (move.getMovingPiece()<0?true:false);
+		boolean isBlack = (move.getMovingPiece()<0);
 		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_FILES;
 		final int promoType = move.getPromotionType();
 		if (promoType!=0) {
@@ -420,7 +420,7 @@ public class PawnsStrucEval {
 	
 	
 	private void updatePassedAndProtectePassedPawns(MoveData<?,?> move, Board board) {
-		boolean isBlack = (move.getMovingPiece()<0?true:false);
+
 		int kind = Math.abs(move.getMovingPiece());
 		if (kind == PAWN) {
 			
