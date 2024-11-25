@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import com.fathzer.chess.utils.adapters.MoveData;
 import com.fathzer.games.MoveGenerator;
-import com.fathzer.games.MoveGenerator.MoveConfidence;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.games.util.Stack;
@@ -14,7 +13,6 @@ import com.fathzer.games.util.Stack;
 <<<<<<< Upstream, based on origin/main
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 /** An incremental implementation of the simplified evaluator described at <a href="https://www.chessprogramming.org/Simplified_Evaluation_Function">https://www.chessprogramming.org/Simplified_Evaluation_Function</a>
@@ -175,14 +173,9 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 			Move lMove = (Move)move;
 			bordAfterMove.doMove(lMove, true);
 			
-			if (moveData.getMovingIndex() == 28) {
-				toCommit.update(moveData, bordAfterMove); // STALINE
-//				toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
-				return;
-			}
-			toCommit.update(moveData, bordAfterMove); // STALINE
-//			toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
-//			toCommit.update(moveData);
+	
+			toCommit.update(moveData, bordAfterMove);
+
 		}
 	}
 	

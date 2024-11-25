@@ -7,16 +7,18 @@ import static com.fathzer.chess.utils.Pieces.PAWN;
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
+<<<<<<< Upstream, based on origin/main
 import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueMg;
+=======
+>>>>>>> 543b8fc cleaning
 import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueEg;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueMg;
 
 import com.fathzer.chess.utils.Pieces;
 <<<<<<< Upstream, based on origin/main
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
-import com.fathzer.games.MoveGenerator.MoveConfidence;
 import com.github.bhlangonijr.chesslib.Board;
-import com.github.bhlangonijr.chesslib.move.Move;
 
 /** The current state of a {@link Hb2AbstractIncrementalSimplifiedEvaluator}
  */
