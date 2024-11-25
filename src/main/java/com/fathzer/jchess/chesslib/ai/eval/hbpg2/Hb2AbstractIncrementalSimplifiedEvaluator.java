@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.fathzer.chess.utils.adapters.MoveData;
 import com.fathzer.games.MoveGenerator;
+import com.fathzer.games.MoveGenerator.MoveConfidence;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.ai.evaluation.ZeroSumEvaluator;
 import com.fathzer.games.util.Stack;
@@ -12,6 +13,9 @@ import com.fathzer.games.util.Stack;
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.github.bhlangonijr.chesslib.Board;
+import com.github.bhlangonijr.chesslib.Square;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 /** An incremental implementation of the simplified evaluator described at <a href="https://www.chessprogramming.org/Simplified_Evaluation_Function">https://www.chessprogramming.org/Simplified_Evaluation_Function</a>
  * <br>This only works with 8*8 games and exactly one king per Color.
@@ -165,7 +169,19 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 	public void prepareMove(B board, M move) {
 		if (moveData.update(move, board)) {
 			buildToCommit();
-			toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
+			ChessLibMoveGenerator lChessLibMoveGenerator = (ChessLibMoveGenerator)board;
+			Board boardBeforeMove = lChessLibMoveGenerator.getBoard();
+			Board bordAfterMove  = boardBeforeMove.clone();
+			Move lMove = (Move)move;
+			bordAfterMove.doMove(lMove, true);
+			
+			if (moveData.getMovingIndex() == 28) {
+				toCommit.update(moveData, bordAfterMove); // STALINE
+//				toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
+				return;
+			}
+			toCommit.update(moveData, bordAfterMove); // STALINE
+//			toCommit.update(moveData, ((ChessLibMoveGenerator)board).getBoard()); // STALINE
 //			toCommit.update(moveData);
 		}
 	}
