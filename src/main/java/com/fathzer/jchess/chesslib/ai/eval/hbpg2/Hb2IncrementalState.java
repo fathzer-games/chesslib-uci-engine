@@ -8,6 +8,7 @@ import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBa
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 
 /** The current state of a {@link Hb2AbstractIncrementalSimplifiedEvaluator}

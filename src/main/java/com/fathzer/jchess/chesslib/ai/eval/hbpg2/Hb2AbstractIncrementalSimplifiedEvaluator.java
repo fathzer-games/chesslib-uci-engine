@@ -67,6 +67,7 @@ public abstract class Hb2AbstractIncrementalSimplifiedEvaluator<M, B extends Mov
 			
 	
 			toCommit.update(moveData, bordAfterMove);
+			
 
 		}
 	}
