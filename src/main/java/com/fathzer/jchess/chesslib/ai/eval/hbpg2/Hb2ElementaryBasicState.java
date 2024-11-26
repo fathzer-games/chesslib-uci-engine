@@ -86,24 +86,7 @@ class Hb2ElementaryBasicState {
 
 
 	
-//	int getPhaseForTaperedEval(int computedPhaseValue) {	
-//		return (Math.min(computedPhaseValue, Hb2Phase.PHASE_UPPER_BOUND));
-//	}
-	
-	
-//	int evaluateAsWhite() {
-//
-//		// pointsMg = material only! The white material minus the black material in the middlegame.
-//		// pointsEg = material only! The white material minus the black material in the endgame.
-////		int phase = Hb2Phase.getPhaseForTaperedEval(computedPhase);
-//		// gets the borned phase: necessary for the tapered evaluation
-//		int phase= (computedPhase > Hb2Phase.PHASE_UPPER_BOUND?Hb2Phase.PHASE_UPPER_BOUND:computedPhase);
-////		int pointsPosMg = Hb2SimplifiedEvaluatorBase.getPositionValueMg(board);
-////		int pointsPosEg = Hb2SimplifiedEvaluatorBase.getPositionValueEg(board);
-//		int evalMg = pointsMg + pointsPosMg + Hb2SimplifiedEvaluatorBase.getKingPositionsValueMg(whiteKingIndex, blackKingIndex);
-//		int evalEg = pointsEg + pointsPosEg+ Hb2SimplifiedEvaluatorBase.getKingPositionsValueEg(whiteKingIndex, blackKingIndex);
-//		return ((evalMg * phase + evalEg * (Hb2Phase.NB_INCR_PHASE-phase)) / Hb2Phase.NB_INCR_PHASE);
-//	}
+
 
 
 

@@ -90,6 +90,16 @@ public class PawnsStrucEval {
 	
 	}
 	
+	public PawnsStrucEval( Board board) {
+		this();
+	
+		computeDoubledPawns( board);
+		computePassedAndProtectedPassedPawns( board);
+		
+	
+
+	}
+	
 	
 	
 	private void computeDoubledPawns(Board board) {
@@ -195,15 +205,7 @@ public class PawnsStrucEval {
 	
 	}
 	
-	public PawnsStrucEval( Board board) {
-		this();
 	
-		computeDoubledPawns( board);
-		computePassedAndProtectedPassedPawns( board);
-		
-	
-
-	}
 	
 	static int getRgSquare (int rank, int file) {
 		return((Hb2ChessConstants.NB_RANKS*rank)+file);
@@ -349,11 +351,11 @@ public class PawnsStrucEval {
 	
 	
 	
-	void copyTo(PawnsStrucEval other) {
-	
-		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
-		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
-	}
+//	void copyTo(PawnsStrucEval other) {
+//	
+//		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
+//		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
+//	}
 	
 	public void modifyNumberOfBlackPawnsofColumn(int column, int nbPawns ) {
 		tabNbBlackPawnsByCol[column] += nbPawns;
