@@ -16,6 +16,7 @@ public final class ChessLibDeepeningPolicy extends DeepeningPolicy {
 
 	@Override
 	public boolean isEnoughTimeToDeepen(int depth) {
-		return depth<5 || getSpent()<getMaxTime()/3;
+		final long spent = getSpent();
+		return spent<getMaxTime() && (depth<5 || spent<getMaxTime()/3);
 	}
 }

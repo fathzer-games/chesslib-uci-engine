@@ -21,7 +21,6 @@ To use this library, launch the engine with:
 ```java -DopeningsUrl=https://github.com/fathzer-games/jchess/raw/branch-first/src/main/resources/lichess/masters-shrink-full.json.gz -jar chesslib-uci-engine.jar```
 
 ## Known bugs
-- According to the UCI protocol, process startup should be as quick as possible. So, reading the openings table should be done on "isready" command and not during startup.
 - The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
 An [issue](https://github.com/bhlangonijr/chesslib/issues/114) has been posted to GitHub, as the probability of occurence of this bug is low, I'll wait for an answer...  
 The test class ```com.fathzer.jchess.chesslib.ChessLibMoveGeneratorTest``` has commented assertions that currently fails.
@@ -34,4 +33,4 @@ The duration and accuracy of this test greatly depends on its search depth.
 This depth is 1 by default (to limit Github's resources consumption - Every push trigger a mvn test action). In order to perform better test, you can set the **perftDepth** system property to a higher value.
 
 ### TODO
-- The detection of invalid UNSAFE move does not work.
+- The detection of invalid UNSAFE move does not work (An [issue](https://github.com/bhlangonijr/chesslib/issues/114) is opened in Chesslib project about this problem).
