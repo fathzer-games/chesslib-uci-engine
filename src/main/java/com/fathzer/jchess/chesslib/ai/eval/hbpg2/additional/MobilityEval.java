@@ -87,7 +87,7 @@ public class MobilityEval {
 		bonusWhiteMobilityMg = mobility(board, Side.WHITE);
 		bonusWhiteMobilityEg = bonusWhiteMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
 		bonusBlackMobilityMg = mobility(board, Side.BLACK);
-		bonusBlackMobilityEg = bonusWhiteMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
+		bonusBlackMobilityEg = bonusBlackMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
 		
 		
 	}
@@ -118,7 +118,7 @@ public class MobilityEval {
 		bonusWhiteMobilityMg = mobility(board, Side.WHITE);
 		bonusWhiteMobilityEg = bonusWhiteMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
 		bonusBlackMobilityMg = mobility(board, Side.BLACK);
-		bonusBlackMobilityEg = bonusWhiteMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
+		bonusBlackMobilityEg = bonusBlackMobilityMg * MOBILITY_MG_EG_RATIO_FACTOR_NUMERATOR / MOBILITY_MG_EG_RATIO_FACTOR_DENOMINATOR;
 		
 		
 	}
