@@ -40,7 +40,7 @@ class DeferredReadBook implements MoveLibrary<Move, ChessLibMoveGenerator> {
 		}
 	}
 	
-	private static URL toURL(String path) throws IOException {
+	static URL toURL(String path) throws IOException {
 		URL url;
 		try {
 			url = new URL(path);
@@ -54,7 +54,7 @@ class DeferredReadBook implements MoveLibrary<Move, ChessLibMoveGenerator> {
 		return url;
 	}
 	
-	private static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(final URL location) throws IOException {
+	protected static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(final URL location) throws IOException {
 		final boolean compressed = location.getFile().endsWith(".gz");
 		try (InputStream stream = location.openStream()) {
 			return new DefaultOpenings(()->stream, compressed);

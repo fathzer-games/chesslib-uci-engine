@@ -1,0 +1,9 @@
+{"rn1qkb1r/pp3ppp/2p1pnb1/3p4/2PP3N/2N2PP1/PP2P2P/R1BQKB1R w KQkq -":{"name":null,"count":83,"moves":[{"coord":"d1b3","count":75}]},
+"rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/4PN2/PP3PPP/RNBQKB1R b KQkq -":{"name":null,"count":3843,"moves":[{"coord":"f8e7","count":1136},{"coord":"c7c5","count":750},{"coord":"a7a6","count":602},{"coord":"b7b6","count":442},{"coord":"c7c6","count":411},{"coord":"b8d7","count":239},{"coord":"d5c4","count":128},{"coord":"f8b4","count":82},{"coord":"f8d6","count":36}]},
+"r1bqkb1r/pp2pppp/2n5/3np3/3P4/2N2N2/PP3PPP/R1BQKB1R w KQkq -":{"name":null,"count":168,"moves":[{"coord":"d4e5","count":158}]},
+"r1bqkb1r/pp2pp1p/2np1np1/8/Q3P3/2N2N2/PPP2PPP/R1B1KB1R w KQkq -":{"name":null,"count":382,"moves":[{"coord":"e4e5","count":378}]},
+"rnbqkb1r/pp3ppp/3pp3/3nP3/2BP4/5N2/PP3PPP/RNBQK2R b KQkq -":{"name":null,"count":2657,"moves":[{"coord":"b8c6","count":1206},{"coord":"d5b6","count":791},{"coord":"f8e7","count":540},{"coord":"d6e5","count":54},{"coord":"c8d7","count":45}]},
+"rnbqkbnr/pp3ppp/3pp3/1Bp5/4P3/2N2N2/PPPP1PPP/R1BQK2R b KQkq -":{"name":null,"count":47,"moves":[{"coord":"c8d7","count":33}]},
+"rnbqkb1r/ppp2ppp/4pn2/8/2BP4/4P3/PP3PPP/RNBQK1NR w KQkq -":{"name":null,"count":2232,"moves":[{"coord":"g1f3","count":2136},{"coord":"b1c3","count":65}]},
+"rnbqkbnr/p1pp1ppp/1p2p3/8/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq -":{"name":null,"count":453,"moves":[{"coord":"g2g3","count":347},{"coord":"b1c3","count":52}]},
+"rnbqkbnr/pp2pppp/2p5/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq -":{"name":"Slav Defense","count":90671,"moves":[{"coord":"g1f3","count":57569},{"coord":"b1c3","count":22650},{"coord":"c4d5","count":7033},{"coord":"e2e3","count":3227},{"coord":"d1c2","count":64},{"coord":"c1f4","count":57},{"coord":"g2g3","count":32}]}}
