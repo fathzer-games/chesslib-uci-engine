@@ -20,6 +20,7 @@ import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.fathzer.jchess.uci.extended.ExtendedUCI;
 import com.fathzer.jchess.uci.extended.SpeedTest;
+import com.fathzer.jchess.uci.helper.DeferredReadMoveLibrary;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class Main extends ExtendedUCI {
@@ -27,7 +28,7 @@ public class Main extends ExtendedUCI {
 	
 	public static void main(String[] args) {
 		final String pathProperty = System.getProperty("openingsUrl");
-		final DeferredReadBook<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : new DeferredReadBook<>(pathProperty, Main::readOpenings);
+		final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : new DeferredReadMoveLibrary<>(pathProperty, Main::readOpenings);
 		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();
 		}
@@ -41,7 +42,7 @@ public class Main extends ExtendedUCI {
 	@Override
 	protected void doIsReady(Deque<String> tokens) {
 		if (engine instanceof ChessLibEngine cle) {
-			final DeferredReadBook<Move, ChessLibMoveGenerator> book = cle.getOwnBook();
+			final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> book = cle.getOwnBook();
 			if (book!=null && book.isInitRequired()) {
 				LOGGER.debug("Start reading opening library from {}", book.getUrl());
 				try {
