@@ -3,6 +3,7 @@ package com.fathzer.jchess.chesslib.uci;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Deque;
@@ -10,21 +11,23 @@ import java.util.Deque;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fathzer.games.movelibrary.MoveLibrary;
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTTestData;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
+import com.fathzer.jchess.lichess.DefaultOpenings;
 import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.fathzer.jchess.uci.extended.ExtendedUCI;
 import com.fathzer.jchess.uci.extended.SpeedTest;
+import com.github.bhlangonijr.chesslib.move.Move;
 
 public class Main extends ExtendedUCI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	public static void main(String[] args) {
 		final String pathProperty = System.getProperty("openingsUrl");
-		//FIXME According to the UCI protocol, process startup should be as quick as possible
-		//So, reading the openings table should be done on "isready" command
-		final DeferredReadBook openings = pathProperty==null ? null : new DeferredReadBook(pathProperty);
+		final DeferredReadBook<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : new DeferredReadBook<>(pathProperty, Main::readOpenings);
 		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();
 		}
@@ -38,7 +41,7 @@ public class Main extends ExtendedUCI {
 	@Override
 	protected void doIsReady(Deque<String> tokens) {
 		if (engine instanceof ChessLibEngine cle) {
-			final DeferredReadBook book = cle.getOwnBook();
+			final DeferredReadBook<Move, ChessLibMoveGenerator> book = cle.getOwnBook();
 			if (book!=null && book.isInitRequired()) {
 				LOGGER.debug("Start reading opening library from {}", book.getUrl());
 				try {
@@ -51,6 +54,13 @@ public class Main extends ExtendedUCI {
 			}
 		}
 		super.doIsReady(tokens);
+	}
+	
+	static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(final URL location) throws IOException {
+		final boolean compressed = location.getFile().endsWith(".gz");
+		try (InputStream stream = location.openStream()) {
+			return new DefaultOpenings(()->stream, compressed);
+		}
 	}
 
 	@Override

@@ -3,27 +3,31 @@ package com.fathzer.jchess.chesslib.uci;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
+import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.movelibrary.MoveLibrary;
-import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
-import com.fathzer.jchess.lichess.DefaultOpenings;
-import com.github.bhlangonijr.chesslib.move.Move;
 
-class DeferredReadBook implements MoveLibrary<Move, ChessLibMoveGenerator> {
+class DeferredReadBook<M, B extends MoveGenerator<M>> implements MoveLibrary<M, B> {
+	@FunctionalInterface
+	static interface IOReader<T> {
+		T read(URL url) throws IOException;
+	}
+	
 	private final String url;
-	private MoveLibrary<Move, ChessLibMoveGenerator> internal;
+	private IOReader<MoveLibrary<M, B>> reader;
+	private MoveLibrary<M, B> internal;
 
-	DeferredReadBook(String url) {
+	DeferredReadBook(String url, IOReader<MoveLibrary<M,B>> reader) {
 		this.url = url;
+		this.reader = reader;
 	}
 
 	@Override
-	public Optional<EvaluatedMove<Move>> apply(ChessLibMoveGenerator board) {
+	public Optional<EvaluatedMove<M>> apply(B board) {
 		if (internal==null) {
 			return Optional.empty();
 		}
@@ -36,7 +40,7 @@ class DeferredReadBook implements MoveLibrary<Move, ChessLibMoveGenerator> {
 	
 	void init() throws IOException {
 		if (isInitRequired()) {
-			internal = readOpenings(toURL(this.url));
+			internal = reader.read(toURL(this.url));
 		}
 	}
 	
@@ -52,13 +56,6 @@ class DeferredReadBook implements MoveLibrary<Move, ChessLibMoveGenerator> {
 			url = file.toURI().toURL();
 		}
 		return url;
-	}
-	
-	protected static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(final URL location) throws IOException {
-		final boolean compressed = location.getFile().endsWith(".gz");
-		try (InputStream stream = location.openStream()) {
-			return new DefaultOpenings(()->stream, compressed);
-		}
 	}
 
 	String getUrl() {

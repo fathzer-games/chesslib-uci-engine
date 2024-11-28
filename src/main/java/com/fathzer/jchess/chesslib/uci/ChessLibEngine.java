@@ -41,13 +41,13 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
-	private final DeferredReadBook ownBook;
+	private final DeferredReadBook<Move, ChessLibMoveGenerator> ownBook;
 
 	public ChessLibEngine() {
 		this (null);
 	}
 
-	public ChessLibEngine(DeferredReadBook ownBook) {
+	public ChessLibEngine(DeferredReadBook<Move, ChessLibMoveGenerator> ownBook) {
 		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
 		this.ownBook = ownBook;
@@ -63,7 +63,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		return "Jean-Marc Astesana (Fathzer), Move generator is from Ben-Hur Carlos Vieira Langoni Junior";
 	}
 	
-	DeferredReadBook getOwnBook() {
+	DeferredReadBook<Move, ChessLibMoveGenerator> getOwnBook() {
 		return ownBook;
 	}
 
