@@ -75,7 +75,7 @@ public class ChessLibMoveData implements MoveData<Move, ChessLibMoveGenerator> {
 				final Side side = board.getBoard().getSideToMove();
 				this.captured = null;
 				this.movingDestination = move.getTo();
-				final Move rookMove = context.getRookCastleMove(side, context.isCastleMove(move) ? KING_SIDE :
+				final Move rookMove = context.getRookCastleMove(side, context.isKingSideCastle(move) ? KING_SIDE :
                     QUEEN_SIDE);
 				this.castlingRookIndex = rookMove.getFrom();
 				this.castlingRookDestinationIndex = rookMove.getTo();
