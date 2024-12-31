@@ -1,7 +1,5 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.fathzer/chesslib-uci-engine)](https://central.sonatype.com/artifact/com.fathzer/chesslib-uci-engine)
 [![License](https://img.shields.io/badge/license-Apache%202.0-brightgreen.svg)](https://github.com/fathzer-games/chesslib-uci-engine/blob/master/LICENSE)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fathzer-games_chesslib-uci-engine&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fathzer-games_chesslib-uci-engine)
-[![javadoc](https://javadoc.io/badge2/com.fathzer/chesslib-uci-engine/javadoc.svg)](https://javadoc.io/doc/com.fathzer/chesslib-uci-engine)
 
 # chesslib-uci-engine
 A basic [UCI](https://en.wikipedia.org/wiki/Universal_Chess_Interface) engine based on the [bhlangonijr/chesslib](https://github.com/bhlangonijr/chesslib) move generator, and the [games-core](https://github.com/fathzer-games/games-core) alpha beta search algorithm implementation. It uses the evaluation functions, the remaining move oracle and some other things from the [chess-utils](https://github.com/fathzer-games/chess-utils) library.
@@ -11,14 +9,14 @@ You can play against it on [Lichess](https://lichess.org/@/fathzer-jchess). It r
 ## How to run the engine
 It requires a Java 17+ virtual machine.
 
-Download the jar, then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
+Download the jar [here](https://fathzer-games.github.io/chesslib-uci-engine/chesslib-uci-engine.jar), then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
 
 ### Openings library
 You can use an opening library located at a URL using the ```openingsUrl``` system property.  
-Currently such a library is available in *data/masters-shrink.json.gz*, but **this location may change in the future**.
+Currently such a library is available [here](https://fathzer-games.github.io/chesslib-uci-engine/masters-shrink.json.gz).
 
 To use this library, launch the engine with:  
-```java -DopeningsUrl=https://github.com/fathzer-games/jchess/raw/branch-first/src/main/resources/lichess/masters-shrink-full.json.gz -jar chesslib-uci-engine.jar```
+```java -DopeningsUrl=https://fathzer-games.github.io/chesslib-uci-engine/masters-shrink.json.gz -jar chesslib-uci-engine.jar```
 
 ## Known bugs
 - The chesslib library method ```Board.doMove(m,true)``` used to safely play moves from transposition table plays illegal moves as if they were legal.  
