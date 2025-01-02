@@ -27,6 +27,7 @@ import com.fathzer.jchess.chesslib.ai.ChessLibDeepeningPolicy;
 import com.fathzer.jchess.chesslib.ai.DefaultLogger;
 import com.fathzer.jchess.chesslib.ai.TT;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
@@ -40,7 +41,11 @@ import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
+	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
+			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
+			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
+			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
+		);
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
