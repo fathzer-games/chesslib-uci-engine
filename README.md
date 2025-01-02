@@ -31,4 +31,4 @@ The duration and accuracy of this test greatly depends on its search depth.
 This depth is 1 by default (to limit Github's resources consumption - Every push trigger a mvn test action). In order to perform better test, you can set the **perftDepth** system property to a higher value.
 
 ### TODO
-- The detection of invalid UNSAFE move does not work.
+- The detection of invalid UNSAFE move does not work (An [issue](https://github.com/bhlangonijr/chesslib/issues/114) is opened in Chesslib project about this problem).

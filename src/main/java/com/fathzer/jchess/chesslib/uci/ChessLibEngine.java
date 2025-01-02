@@ -17,7 +17,6 @@ import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.ai.transposition.TranspositionTable;
-import com.fathzer.games.movelibrary.MoveLibrary;
 import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
 import com.fathzer.games.util.PhysicalCores;
 import com.fathzer.games.util.exec.ExecutionContext;
@@ -33,6 +32,7 @@ import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
 import com.fathzer.jchess.uci.helper.AbstractEngine;
+import com.fathzer.jchess.uci.helper.DeferredReadMoveLibrary;
 import com.fathzer.jchess.uci.helper.EvaluatorConfiguration;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Piece;
@@ -42,13 +42,13 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 	
-	private final MoveLibrary<Move, ChessLibMoveGenerator> ownBook;
+	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
 	public ChessLibEngine() {
 		this (null);
 	}
 
-	public ChessLibEngine(MoveLibrary<Move, ChessLibMoveGenerator> ownBook) {
+	public ChessLibEngine(DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook) {
 		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
 		this.ownBook = ownBook;
@@ -62,6 +62,10 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	@Override
 	public String getAuthor() {
 		return "Jean-Marc Astesana (Fathzer), Move generator is from Ben-Hur Carlos Vieira Langoni Junior";
+	}
+	
+	DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> getOwnBook() {
+		return ownBook;
 	}
 
 	@Override
@@ -111,7 +115,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 
 	@Override
 	public String getFEN() {
-		return board.getBoard().getFen();
+		return board==null ? null : board.getBoard().getFen();
 	}
 
 	@Override

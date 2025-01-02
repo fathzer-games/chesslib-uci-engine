@@ -1,11 +1,8 @@
 package com.fathzer.jchess.chesslib.uci;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -23,6 +20,7 @@ import com.fathzer.jchess.uci.Engine;
 import com.fathzer.jchess.uci.UCI;
 import com.fathzer.jchess.uci.extended.ExtendedUCI;
 import com.fathzer.jchess.uci.extended.SpeedTest;
+import com.fathzer.jchess.uci.helper.DeferredReadMoveLibrary;
 import com.github.bhlangonijr.chesslib.move.Move;
 
 public class Main extends ExtendedUCI {
@@ -30,49 +28,42 @@ public class Main extends ExtendedUCI {
 	
 	public static void main(String[] args) {
 		final String pathProperty = System.getProperty("openingsUrl");
-		final MoveLibrary<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : readOpenings(pathProperty);
+		final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> openings = pathProperty==null ? null : new DeferredReadMoveLibrary<>(pathProperty, Main::readOpenings);
 		try (UCI uci = new Main(new ChessLibEngine(openings))) {
 			uci.run();
 		}
 	}
 	
-	private static URL toURL(String path) throws IOException {
-		URL url;
-		try {
-			url = new URL(path);
-		} catch (MalformedURLException e) {
-			File file = new File(path);
-			if (!file.exists()) {
-				throw new FileNotFoundException();
-			}
-			url = file.toURI().toURL();
-		}
-		return url;
-	}
-	
-	private static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(String url) {
-		try {
-			return readOpenings(url, toURL(url));
-		} catch (IOException e) {
-			LOGGER.error("Unable to load opening library at "+url, e);
-			return null;
-		}
-	}
-
-	private static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(String url, final URL location) throws IOException {
-		final boolean compressed = location.getFile().endsWith(".gz");
-		try (InputStream stream = location.openStream()) {
-			final DefaultOpenings result = new DefaultOpenings(()->stream, compressed);
-			LOGGER.info("Opening library read from {}", url);
-			return result;
-		}
-	}
-
 	public Main(Engine defaultEngine) {
 		super(defaultEngine);
 		addCommand(this::speedTest, "st");
 	}
 	
+	@Override
+	protected void doIsReady(Deque<String> tokens) {
+		if (engine instanceof ChessLibEngine cle) {
+			final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> book = cle.getOwnBook();
+			if (book!=null && book.isInitRequired()) {
+				LOGGER.debug("Start reading opening library from {}", book.getUrl());
+				try {
+					book.init();
+					LOGGER.debug("Opening library read from {}", book.getUrl());
+				} catch (IOException e) {
+					LOGGER.error("Unable to load opening library at {}", book.getUrl(), e);
+					debug("An error occurred while reading opening book");
+				}
+			}
+		}
+		super.doIsReady(tokens);
+	}
+	
+	static MoveLibrary<Move, ChessLibMoveGenerator> readOpenings(final URL location) throws IOException {
+		final boolean compressed = location.getFile().endsWith(".gz");
+		try (InputStream stream = location.openStream()) {
+			return new DefaultOpenings(()->stream, compressed);
+		}
+	}
+
 	@Override
 	protected Collection<PerfTTestData> readTestData() {
 		try (InputStream stream = Main.class.getResourceAsStream("/Perft.txt")) {
@@ -83,10 +74,20 @@ public class Main extends ExtendedUCI {
 	}
 
 	private void speedTest(Deque<String> args) {
-		if (engine instanceof ChessLibEngine) {
-			out("completed in "+new SpeedTest<>((ChessLibEngine)engine).run()+"ms");
+		if (engine instanceof ChessLibEngine chesslibEngine) {
+			out("completed in "+new SpeedTest<>(chesslibEngine, this::out).run()+"ms");
 		} else {
 			debug("This engine does not support this command");
 		}
+	}
+
+	@Override
+	protected void err(String tag, Throwable e) {
+		LOGGER.error("An error occurred in {}", tag, e);
+	}
+
+	@Override
+	protected void err(CharSequence message) {
+		LOGGER.error("{}", message);
 	}
 }
