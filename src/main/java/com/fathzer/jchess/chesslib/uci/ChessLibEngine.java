@@ -30,8 +30,6 @@ import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
-import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2MyFirstEvaluator;
-import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
@@ -47,16 +45,13 @@ import com.github.bhlangonijr.chesslib.move.Move;
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 =======
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
 		);
+<<<<<<< Upstream, based on origin/main
 =======
 >>>>>>> 8600cfb squelette d'évaluateur
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
@@ -93,6 +88,8 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
 >>>>>>> bf384dd squelette d'évaluateur
 >>>>>>> 9c3d5f6 squelette d'évaluateur
+=======
+>>>>>>> e2c25bb Fucking rebase first try
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
@@ -190,7 +187,6 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
-		engine.getDeepeningPolicy().setDeepenOnForced(false);
 		return engine;
 	}
 
