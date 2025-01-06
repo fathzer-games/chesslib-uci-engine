@@ -1,6 +1,6 @@
 package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
-public class Hb2Phase {
+class Hb2Phase {
 	
 	// Beware, what follows  has nothing to do with com.fathzer.chess.utils.Pieces.VALUES, since the Queen is evaluated 9 instead of 10, in Pieces.VALUES
 	// Pieces.VALUE is useful only for comparing / ordering moves, by the way
@@ -15,26 +15,17 @@ public class Hb2Phase {
 	public static final int PHASE_UPPER_BOUND = NB_INCR_PHASE;
 	
 	
-	private int phase;
 	
-	public Hb2Phase(int computedPhaseValue) {
-		this.phase = computedPhaseValue;
+	public static int getPhaseForTaperedEval(int computedPhaseValue) {	
+		return (Math.min(computedPhaseValue, Hb2Phase.PHASE_UPPER_BOUND));
 	}
-
+	
 
 	public static int getPhaseValue(int indexPieceType) {
 		return(PHASE_VALUES[indexPieceType]);
 	}
 
 
-	public int getPhase() {
-		return phase;
-	}
-
-
-	public void setPhase(int phase) {
-		this.phase = phase;
-	}
 	
 	
 

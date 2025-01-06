@@ -6,13 +6,14 @@ import java.util.Arrays;
 
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
+import com.fathzer.jchess.chesslib.ChessLibBoardExplorer;
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2BitboardsUtils;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2ChessConstants;
 import com.github.bhlangonijr.chesslib.Bitboard;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.File;
 import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Rank;
-import com.github.bhlangonijr.chesslib.Side;
 
 
 public class PawnsStrucEval {
@@ -31,6 +32,9 @@ public class PawnsStrucEval {
 	private static final int PASSED_PAWN_BONUS_6_TH_RANK_EG = 30;
 	private static final int PASSED_PAWN_BONUS_7_TH_RANK_EG = 33;
 	
+	private static final int PROTECTED_PASSED_PAWN_BONUS_MG = 20;
+	private static final int PROTECTED_PASSED_PAWN_BONUS_EG = 50;
+	
 	// Here the ranks are relative to the side. For black, the seventh rank is the 2nd rank
 	private static final int[] TAB_PASSED_PAWN_BONUS_BY_RANK_MG =
 		{0,PASSED_PAWN_BONUS_LESS_THAN_5TH_RANK,
@@ -43,10 +47,10 @@ public class PawnsStrucEval {
 		{0,PASSED_PAWN_BONUS_LESS_THAN_5TH_RANK_EG,
 				PASSED_PAWN_BONUS_LESS_THAN_5TH_RANK_EG,
 				PASSED_PAWN_BONUS_LESS_THAN_5TH_RANK_EG,
-				PASSED_PAWN_BONUS,PASSED_PAWN_BONUS_6_TH_RANK_EG,PASSED_PAWN_BONUS_7_TH_RANK_EG,
+				PASSED_PAWN_BONUS_EG,PASSED_PAWN_BONUS_6_TH_RANK_EG,PASSED_PAWN_BONUS_7_TH_RANK_EG,
 				0};
 	
-	private Board board;
+
 	
 	private int[] tabNbWhitePawnsByCol;
 	private int[] tabNbBlackPawnsByCol;
@@ -58,28 +62,45 @@ public class PawnsStrucEval {
 	public PawnsStrucEval() {
 		tabNbWhitePawnsByCol = new int[Hb2ChessConstants.NB_FILES];
 		tabNbBlackPawnsByCol = new int[Hb2ChessConstants.NB_FILES];
+		bonusWhitePassedPawnsMg = 0;
 		bonusWhitePassedPawnsEg = 0;
-		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsMg = 0;
 		bonusBlackPassedPawnsEg = 0;
 		
 	}
 	
 	public PawnsStrucEval(PawnsStrucEval pse) {
+		
+	
 		// Since it's an array of integers, the copy is not a shallow copy
 		tabNbWhitePawnsByCol = Arrays.copyOf(pse.tabNbWhitePawnsByCol, Hb2ChessConstants.NB_FILES);
 		// Since it's an array of integers, the copy is not a shallow copy
 		tabNbBlackPawnsByCol = Arrays.copyOf(pse.tabNbBlackPawnsByCol, Hb2ChessConstants.NB_FILES);
+		
+		bonusWhitePassedPawnsMg = pse.bonusWhitePassedPawnsMg;
+		bonusWhitePassedPawnsEg = pse.bonusWhitePassedPawnsEg;
+		bonusBlackPassedPawnsMg = pse.bonusBlackPassedPawnsMg;
+		bonusBlackPassedPawnsEg = pse.bonusBlackPassedPawnsEg;
 	
 	}
 	
-	public PawnsStrucEval(BoardExplorer explorer, Board board) {
+	public PawnsStrucEval( Board board) {
 		this();
+	
+		computeDoubledPawns( board);
+		computePassedAndProtectedPassedPawns( board);
 		
-		long bitboardWhitePawns = board.getBitboard(Piece.WHITE_PAWN);
-		long bitboardBlackPawns = board.getBitboard(Piece.BLACK_PAWN);
+	
+
+	}
+	
+	
+	
+	private void computeDoubledPawns(Board board) {
+	
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
 		
-		this.board = board;
+		
 		for (int i= 0; i < Hb2ChessConstants.NB_FILES; i++) {
 			tabNbWhitePawnsByCol[i] = 0;
 			tabNbBlackPawnsByCol[i] = 0;
@@ -93,7 +114,7 @@ public class PawnsStrucEval {
 			if (kind==PAWN) {
 				
 				final int columnPawn = index%Hb2ChessConstants.NB_FILES;
-				int rawPawn = Hb2ChessConstants.INDEX_MAX_RANK - index/Hb2ChessConstants.NB_RANKS;
+				
 			
 				
 				if (isPieceBlack) {
@@ -102,16 +123,73 @@ public class PawnsStrucEval {
 					tabNbWhitePawnsByCol[columnPawn]++;
 				}
 				
-				boolean isPassedPawn = isPawnPassed(rawPawn, columnPawn,  isPieceBlack,  bitboardWhitePawns,  bitboardBlackPawns);
+				
+				
+			} 
+		} while (explorer.next());
+	
+	}
+	
+	private void computePassedAndProtectedPassedPawns(Board board) {
+		
+		BoardExplorer explorer = new ChessLibBoardExplorer(board);
+		
+		bonusWhitePassedPawnsMg = 0;
+		bonusWhitePassedPawnsEg = 0;
+		bonusBlackPassedPawnsMg = 0;
+		bonusBlackPassedPawnsEg = 0;
+		
+		long bitboardWhitePawns = board.getBitboard(Piece.WHITE_PAWN);
+		long bitboardBlackPawns = board.getBitboard(Piece.BLACK_PAWN);
+		
+		
+		long  connectedPawnsEastWhite = Hb2BitboardsUtils.shiftNorthEast(bitboardWhitePawns) & bitboardWhitePawns;
+		long  connectedPawnsWestWhite = Hb2BitboardsUtils.shiftNorthWest(bitboardWhitePawns) & bitboardWhitePawns;
+		
+		
+		long  connectedPawnsEastBlack = Hb2BitboardsUtils.shiftSouthEast(bitboardBlackPawns) & bitboardBlackPawns;
+		long  connectedPawnsWestBlack = Hb2BitboardsUtils.shiftSouthWest(bitboardBlackPawns) & bitboardBlackPawns;
+
+		do {
+			final int p = explorer.getPiece();
+			final int kind = Math.abs(p);
+			final int index = explorer.getIndex();
+			final boolean isPieceBlack = p<0;
+			if (kind==PAWN) {
+				
+				final int columnPawn = index%Hb2ChessConstants.NB_FILES;
+				int rowPawn = Hb2ChessConstants.INDEX_MAX_RANK - index/Hb2ChessConstants.NB_RANKS;
+			
+				
+			
+				
+				boolean isPassedPawn = isPawnPassedModernWay(rowPawn, columnPawn,  isPieceBlack,  bitboardWhitePawns,  bitboardBlackPawns);
 				if (isPassedPawn) {
 					
 					if (isPieceBlack) {
-						bonusBlackPassedPawnsMg += TAB_PASSED_PAWN_BONUS_BY_RANK_MG[Hb2ChessConstants.INDEX_MAX_RANK - rawPawn];
-						bonusBlackPassedPawnsEg += TAB_PASSED_PAWN_BONUS_BY_RANK_EG[Hb2ChessConstants.INDEX_MAX_RANK - rawPawn];
+						bonusBlackPassedPawnsMg += TAB_PASSED_PAWN_BONUS_BY_RANK_MG[Hb2ChessConstants.INDEX_MAX_RANK - rowPawn];
+						bonusBlackPassedPawnsEg += TAB_PASSED_PAWN_BONUS_BY_RANK_EG[Hb2ChessConstants.INDEX_MAX_RANK - rowPawn];
 						
 					} else {
-						bonusWhitePassedPawnsMg += TAB_PASSED_PAWN_BONUS_BY_RANK_MG[rawPawn];
-						bonusWhitePassedPawnsEg += TAB_PASSED_PAWN_BONUS_BY_RANK_EG[rawPawn];
+						bonusWhitePassedPawnsMg += TAB_PASSED_PAWN_BONUS_BY_RANK_MG[rowPawn];
+						bonusWhitePassedPawnsEg += TAB_PASSED_PAWN_BONUS_BY_RANK_EG[rowPawn];
+					}
+				}
+				
+				boolean isProtectedPawn =  isPawnProtectedModernWay( rowPawn,  columnPawn ,  isPieceBlack, 
+						 connectedPawnsEastWhite,  connectedPawnsWestWhite,
+						 connectedPawnsEastBlack,  connectedPawnsWestBlack);
+				
+				
+				if (isProtectedPawn) {
+					
+					if (isPieceBlack) {
+						bonusBlackPassedPawnsMg += PROTECTED_PASSED_PAWN_BONUS_MG;
+						bonusBlackPassedPawnsEg += PROTECTED_PASSED_PAWN_BONUS_EG;
+						
+					} else {
+						bonusWhitePassedPawnsMg += PROTECTED_PASSED_PAWN_BONUS_MG;
+						bonusWhitePassedPawnsEg += PROTECTED_PASSED_PAWN_BONUS_EG;
 					}
 				}
 				
@@ -119,8 +197,9 @@ public class PawnsStrucEval {
 			} 
 		} while (explorer.next());
 	
-
 	}
+	
+	
 	
 	static int getRgSquare (int rank, int file) {
 		return((Hb2ChessConstants.NB_RANKS*rank)+file);
@@ -201,7 +280,7 @@ public class PawnsStrucEval {
 		
 	}
 	
-	static boolean isPawnPassed(int rawPawn, int colPawn , boolean isBlack, long bitboardWhitePawns, long bitboardBlackPawns) {
+	static boolean isPawnPassed(int rowPawn, int colPawn , boolean isBlack, long bitboardWhitePawns, long bitboardBlackPawns) {
 		
 		
 		 
@@ -211,18 +290,66 @@ public class PawnsStrucEval {
 		
 		if (!isBlack) {
 		
-			return(isWhitePawnPassed( rawPawn,  colPawn,  bitboardBlackPawns));
+			return(isWhitePawnPassed( rowPawn,  colPawn,  bitboardBlackPawns));
 		} else {
-			return(isBlackPawnPassed( rawPawn,  colPawn,  bitboardWhitePawns));
+			return(isBlackPawnPassed( rowPawn,  colPawn,  bitboardWhitePawns));
 		}
 		
 	}
 	
-	void copyTo(PawnsStrucEval other) {
-		other.board = board;
-		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
-		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
+	public static boolean isPawnPassedModernWay(int rowPawn, int colPawn , boolean isBlack, long bitboardWhitePawns, long bitboardBlackPawns) {
+		
+	
+		int ordinalSquarePawn = (Hb2ChessConstants.NB_RANKS*rowPawn)+colPawn;
+		 
+		long testPassedPawn;
+		if (!isBlack) {
+			testPassedPawn = Hb2BitboardsUtils.WHITE_PASSED_PAWNS_MASK[ordinalSquarePawn] & bitboardBlackPawns;
+		} else {
+			testPassedPawn = Hb2BitboardsUtils.BLACK_PASSED_PAWNS_MASK[ordinalSquarePawn] & bitboardWhitePawns;
+		}
+		
+		if (testPassedPawn == 0L) {
+			return(true);
+			
+		}
+		return(false);
+
+		
+	
+		
 	}
+	
+	public static boolean isPawnProtectedModernWay(int rowPawn, int colPawn , boolean isBlack, 
+			long connectedPawnsEastWhite, long connectedPawnsWestWhite,
+			long connectedPawnsEastBlack, long connectedPawnsWestBlack) {
+		int ordinalSquarePawn = (Hb2ChessConstants.NB_RANKS*rowPawn)+colPawn;
+		boolean isPawnProtected = false;
+		if (!isBlack) {
+			
+			isPawnProtected = ( (1L << ordinalSquarePawn) & (connectedPawnsEastWhite | connectedPawnsWestWhite)) != 0;
+			
+			
+		} else {
+			isPawnProtected = ((1L << ordinalSquarePawn) & (connectedPawnsEastBlack | connectedPawnsWestBlack)) != 0;
+
+			
+		}
+		return (isPawnProtected);
+		
+	
+		
+	}
+	
+
+	
+	
+	
+//	void copyTo(PawnsStrucEval other) {
+//	
+//		other.tabNbBlackPawnsByCol = tabNbBlackPawnsByCol.clone(); // not a shallow copy!!!! For integers are of primitive type...
+//		other.tabNbWhitePawnsByCol = tabNbWhitePawnsByCol.clone(); // not a shallow copy!!!!
+//	}
 	
 	public void modifyNumberOfBlackPawnsofColumn(int column, int nbPawns ) {
 		tabNbBlackPawnsByCol[column] += nbPawns;
@@ -231,8 +358,9 @@ public class PawnsStrucEval {
 	public void modifyNumberOfWhitePawnsofColumn(int column, int nbPawns ) {
 		tabNbWhitePawnsByCol[column] += nbPawns;
 	}
-	public void updatePawnsStructEval(MoveData<?,?> move) {
+	public void updatePawnsStructEval(MoveData<?,?> move, Board board) {
 		 updateDoubledPawns(move);
+		 updatePassedAndProtectePassedPawns(move, board);
 	}
 	
 	
@@ -241,7 +369,7 @@ public class PawnsStrucEval {
 		if (kind != PAWN) {
 			return;
 		}
-		boolean isBlack = (move.getMovingPiece()<0?true:false);
+		boolean isBlack = (move.getMovingPiece()<0);
 		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_FILES;
 		final int promoType = move.getPromotionType();
 		if (promoType!=0) {
@@ -286,55 +414,38 @@ public class PawnsStrucEval {
 		}
 	}
 	
-	private void updatePasseddPawns(MoveData<?,?> move) {
-		//TODO STALINE A CODER!!
+	
+	private void updatePassedAndProtectePassedPawns(MoveData<?,?> move, Board board) {
+
 		int kind = Math.abs(move.getMovingPiece());
-		if (kind != PAWN) {
+		if (kind == PAWN) {
+			
+			final int promoType = move.getPromotionType();
+			if (promoType!=0) {
+				
+				return; // There is a promotion (i.e. the pawn departed from the seventh rank if white, fomr the 2nd rank if black) so we stop here: a promotion does not change pawn structure on the chessboard
+			}
+			// We have to recompute all that is relevant to passed and protected passed pawns: that is the simplest solution
+			computePassedAndProtectedPassedPawns(board);
 			return;
 		}
-		boolean isBlack = (move.getMovingPiece()<0?true:false);
-		int columnPawn = move.getMovingIndex()%Hb2ChessConstants.NB_FILES;
-		final int promoType = move.getPromotionType();
-		if (promoType!=0) {
-			// If promotion, then the pawn disappears.
-			
-			
-			
-			// Get the pawn's column and decrement its number of pawns of its color
-			if (isBlack) {
-				modifyNumberOfBlackPawnsofColumn(columnPawn, (-1));
-			} else {
-				modifyNumberOfWhitePawnsofColumn(columnPawn, (-1));
-			}
-			return; // promotion. so we stop here: no chance of a pawn being captured...
+	
 		
-		}
+		
+		
 		
 		int captured = move.getCapturedType();
 		if (captured!=0) {
-			// Well the pawn with change columns...whatever it captures
-			int destinationColumnOfThePawn = move.getMovingDestination()%Hb2ChessConstants.NB_FILES;
-			if (isBlack) {
-				modifyNumberOfBlackPawnsofColumn(columnPawn, (-1));
-				modifyNumberOfBlackPawnsofColumn(destinationColumnOfThePawn, 1);
-			} else {
-				modifyNumberOfWhitePawnsofColumn(columnPawn, (-1));
-				modifyNumberOfWhitePawnsofColumn(destinationColumnOfThePawn, 1);
+			if (Math.abs(captured) == PAWN) {
+				// We have to recompute all that is relevant to passed and protected passed pawns: that is the simplest solution
+				computePassedAndProtectedPassedPawns(board);
 			}
-			// If a piece was captured, we don't care; whereas if a pawn is captured, it'as another story...
-			if (Math.abs(captured)== PAWN) {
-				if (isBlack) {
-					// Black pawns are eating white pawns
-					modifyNumberOfWhitePawnsofColumn(destinationColumnOfThePawn, (-1));
-					
-				} else {
-					// White pawns are eating black pawns
-					modifyNumberOfBlackPawnsofColumn(destinationColumnOfThePawn, (-1));
-					
-				}
-			}
+		
 
 		}
+		
+		// We reached a point where it's for sure that the pawn structures on the chessboard are not changed by the move played
+		// Doing nothing is the way to go...
 	}
 	
 	public int getContribDoubledPawnsMg() {

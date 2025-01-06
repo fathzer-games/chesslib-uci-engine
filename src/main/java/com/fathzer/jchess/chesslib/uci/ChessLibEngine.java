@@ -30,6 +30,8 @@ import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2MyFirstEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
 import com.fathzer.jchess.uci.UCIMove;
 import com.fathzer.jchess.uci.extended.Displayable;
@@ -43,7 +45,8 @@ import com.github.bhlangonijr.chesslib.move.Move;
 
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
-			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
+			new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
+			new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
@@ -133,7 +136,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 	
 	public static IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine(Supplier<Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder, int maxDepth) {
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder) {
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(256, SizeUnit.MB), evaluatorBuilder) {
 			@Override
 			protected Negamax<Move, ChessLibMoveGenerator> buildAi(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
 				final Negamax<Move, ChessLibMoveGenerator> negaMax = (Negamax<Move, ChessLibMoveGenerator>) super.buildAi(context);
@@ -145,6 +148,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
+		engine.getDeepeningPolicy().setDeepenOnForced(false);
 		return engine;
 	}
 

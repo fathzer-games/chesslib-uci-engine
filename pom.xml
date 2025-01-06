@@ -99,7 +99,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<finalName>${customized.jar.name}</finalName>
-					<minimizeJar>true</minimizeJar>
+					<minimizeJar>false</minimizeJar>
 					<transformers>
 						<transformer
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">

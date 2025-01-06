@@ -2,12 +2,13 @@ package com.fathzer.jchess.chesslib.ai.eval.hbpg2;
 
 import static com.fathzer.chess.utils.Pieces.KING;
 import static com.fathzer.chess.utils.Pieces.PAWN;
-import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueMg;
 import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueEg;
+import static com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluatorBase.getRawValueMg;
 
 import com.fathzer.chess.utils.Pieces;
 import com.fathzer.chess.utils.adapters.BoardExplorer;
 import com.fathzer.chess.utils.adapters.MoveData;
+import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.github.bhlangonijr.chesslib.Board;
 
 /** The current state of a {@link Hb2AbstractIncrementalSimplifiedEvaluator}
@@ -23,13 +24,27 @@ public class Hb2IncrementalState extends Hb2BasicState {
 
 	
 	
-	void update(MoveData<?,?> move) {
-		pointsMg += getIncrementMg(move);
-		pointsEg += getIncrementEg(move);
-		pointsPosMg += getIncrementPosMg(move);
-		pointsPosEg += getIncrementPosEg(move);
-		updatePhase(move);
+//	void update(MoveData<?,?> move) {
+//		pointsMg += getIncrementMg(move);
+//		pointsEg += getIncrementEg(move);
+//		pointsPosMg += getIncrementPosMg(move);
+//		pointsPosEg += getIncrementPosEg(move);
+//		chessEvalAdditionalElems.updateEvalAdditionalElems(move);
+//		updatePhase(move);
+//	}
+	
+
+	void update(MoveData<?,?> moveData, Board board) {
+	
+		pointsMg += getIncrementMg(moveData);
+		pointsEg += getIncrementEg(moveData);
+		pointsPosMg += getIncrementPosMg(moveData);
+		pointsPosEg += getIncrementPosEg(moveData);
+		chessEvalAdditionalElems.updateEvalAdditionalElems(moveData, board);
+		updatePhase(moveData);
 	}
+	
+	
 	
 	private void updatePhase(MoveData<?,?> move) {
 		final int promoType = move.getPromotionType();
@@ -52,7 +67,7 @@ public class Hb2IncrementalState extends Hb2BasicState {
 	private int getIncrementMg(MoveData<?,?> move) {
 		final boolean isBlack = move.getMovingPiece()<0;
 		int moving = Math.abs(move.getMovingPiece());
-		final int movingIndex = move.getMovingIndex();
+//		final int movingIndex = move.getMovingIndex();
 //		int inc;
 		int inc = 0;
 		if (moving==KING) {
@@ -90,7 +105,7 @@ public class Hb2IncrementalState extends Hb2BasicState {
 	private int getIncrementEg(MoveData<?,?> move) {
 		final boolean isBlack = move.getMovingPiece()<0;
 		int moving = Math.abs(move.getMovingPiece());
-		final int movingIndex = move.getMovingIndex();
+//		final int movingIndex = move.getMovingIndex();
 //		int inc;
 		int inc = 0;
 		if (moving==KING) {

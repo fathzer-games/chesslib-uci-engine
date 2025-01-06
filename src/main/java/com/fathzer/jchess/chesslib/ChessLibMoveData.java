@@ -1,7 +1,9 @@
 package com.fathzer.jchess.chesslib;
 
-import static com.github.bhlangonijr.chesslib.PieceType.*;
-import static com.github.bhlangonijr.chesslib.CastleRight.*;
+import static com.github.bhlangonijr.chesslib.CastleRight.KING_SIDE;
+import static com.github.bhlangonijr.chesslib.CastleRight.QUEEN_SIDE;
+import static com.github.bhlangonijr.chesslib.PieceType.KING;
+import static com.github.bhlangonijr.chesslib.PieceType.PAWN;
 
 import com.fathzer.chess.utils.adapters.MoveData;
 import com.github.bhlangonijr.chesslib.Piece;
