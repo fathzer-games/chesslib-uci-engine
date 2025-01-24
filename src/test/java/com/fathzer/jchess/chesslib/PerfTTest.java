@@ -79,7 +79,7 @@ class PerfTTest {
 	}
 
 	private List<PerfTTestData> readTests() throws IOException {
-		try (InputStream stream = getClass().getResourceAsStream("/Perft.txt")) {
+		try (InputStream stream = getClass().getResourceAsStream("/com/fathzer/jchess/perft/Perft.txt")) {
 			return new PerfTParser().withStartPositionPrefix("position fen").read(stream, StandardCharsets.UTF_8);
 		}
 	}
