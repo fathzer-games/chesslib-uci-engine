@@ -8,6 +8,7 @@
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables"/>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
@@ -19,5 +20,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.fathzer.jchess.chesslib.PerfTTest"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="chesslib-uci-engine"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -DperftDepth=4"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
 </launchConfiguration>

@@ -66,7 +66,7 @@ public class Main extends ExtendedUCI {
 
 	@Override
 	protected Collection<PerfTTestData> readTestData() {
-		try (InputStream stream = Main.class.getResourceAsStream("/Perft.txt")) {
+		try (InputStream stream = Main.class.getResourceAsStream("/com/fathzer/jchess/perft/Perft.txt")) {
 			return new PerfTParser().withStartPositionPrefix("position fen").withStartPositionCustomizer(s -> s+" 0 1").read(stream, StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);

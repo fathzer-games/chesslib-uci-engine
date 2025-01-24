@@ -36,7 +36,7 @@ class ChessLibMoveGeneratorTest {
 		assertFalse(mvg.makeMove(move, UNSAFE));
 		
 		// Move a piece through another piece 
-		move = new Move(D6, B6);
+		move = new Move(D6, B8);
 		assertFalse(mvg.makeMove(move, UNSAFE));
 		
 		// Piece takes own piece
@@ -83,8 +83,8 @@ class ChessLibMoveGeneratorTest {
 //		assertFalse(mvg.makeMove(move, UNSAFE)); //FIXME
 		
 		// Promotion of a piece that is not a pawn
-		move = new Move(B7, B8);
-//		assertFalse(mvg.makeMove(move, UNSAFE));
+		move = new Move(B7, B8, Piece.WHITE_QUEEN);
+		assertFalse(mvg.makeMove(move, UNSAFE));
 		
 		// imaginary en-passant
 		move = new Move(H5, G6);
