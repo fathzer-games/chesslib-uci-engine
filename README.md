@@ -9,7 +9,7 @@ You can play against it on [Lichess](https://lichess.org/@/fathzer-jchess). It r
 ## How to run the engine
 It requires a Java 17+ virtual machine.
 
-Download the jar [here](https://fathzer-games.github.io/chesslib-uci-engine/chesslib-uci-engine.jar), then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
+Download the jar [here](https://fathzer-games.github.io/chesslib-uci-engine/chesslib-uci-engine.jar), then launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
 
 ### Openings library
 You can use an opening library located at a URL using the ```openingsUrl``` system property.  

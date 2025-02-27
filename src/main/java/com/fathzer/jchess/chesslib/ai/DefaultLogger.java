@@ -59,7 +59,7 @@ public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenera
 		if (evaluatedMove==null) {
 			log.info("No valid move found");
 		} else {
-			Move move = evaluatedMove.getContent();
+			Move move = evaluatedMove.getMove();
 			log.info("Move chosen :{}", move);
 			final List<Move> pv = evaluatedMove.getPrincipalVariation();
 			log.info("pv: {}", pv);

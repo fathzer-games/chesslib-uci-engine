@@ -17,7 +17,7 @@ import com.fathzer.games.ai.moveselector.StaticMoveSelector;
 import com.fathzer.games.ai.time.BasicTimeManager;
 import com.fathzer.games.ai.transposition.SizeUnit;
 import com.fathzer.games.ai.transposition.TranspositionTable;
-import com.fathzer.games.perft.TestableMoveGeneratorBuilder;
+import com.fathzer.games.perft.FromPositionMoveGeneratorBuilder;
 import com.fathzer.games.util.PhysicalCores;
 import com.fathzer.games.util.exec.ExecutionContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
@@ -40,7 +40,7 @@ import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
+public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
@@ -85,7 +85,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 
 	@Override
 	public void setStartPosition(String fen) {
-		board = fromFEN(fen);
+		board = fromPosition(fen);
 		board.setMoveComparatorBuilder(BasicMoveComparator::new);
 	}
 	
@@ -124,7 +124,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 
 	@Override
-	public ChessLibMoveGenerator fromFEN(String fen) {
+	public ChessLibMoveGenerator fromPosition(String fen) {
 		final Board internalBoard = new Board();
 		internalBoard.loadFromFen(fen);
 		return new ChessLibMoveGenerator(internalBoard);
@@ -156,7 +156,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 
 	@Override
-	protected TranspositionTable<Move> buildTranspositionTable(int sizeInMB) {
+	protected TranspositionTable<Move, ChessLibMoveGenerator> buildTranspositionTable(int sizeInMB) {
 		return new TT(sizeInMB, SizeUnit.MB);
 	}
 }

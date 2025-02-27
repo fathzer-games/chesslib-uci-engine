@@ -50,8 +50,8 @@ class MinimaxEngineTest {
 		final List<EvaluatedMove<Move>> moves = getBests(mme4, fromFEN("7k/5p1Q/5P1N/5PPK/6PP/8/8/8 b - - 6 5", StrictMoveEvaluator::new));
 //show(moves);
 		assertEquals(1, moves.size());
-		assertEquals(H8, moves.get(0).getContent().getFrom());
-		assertEquals(H7, moves.get(0).getContent().getTo());
+		assertEquals(H8, moves.get(0).getMove().getFrom());
+		assertEquals(H7, moves.get(0).getMove().getTo());
 		assertEquals(-800, moves.get(0).getScore());
 	}
 	
@@ -92,7 +92,7 @@ class MinimaxEngineTest {
 		max = moves.get(0).getEvaluation();
 		assertEquals(Type.WIN, max.getType());
 		assertEquals(1, max.getCountToEnd());
-		mv = moves.get(0).getContent();
+		mv = moves.get(0).getMove();
 		assertEquals(C3, mv.getFrom());
 		assertEquals(C2, mv.getTo());
 		// Warning, due to transposition table effects, the second best move (M+3) can be detected even if we search at depth 4!
@@ -106,7 +106,7 @@ class MinimaxEngineTest {
 		assertEquals(Type.WIN, max.getType());
 		assertEquals(2, max.getCountToEnd());
 		assertTrue(moves.get(1).getScore()<max.getScore());
-		mv = moves.get(0).getContent();
+		mv = moves.get(0).getMove();
 		assertEquals(B3, mv.getFrom());
 		assertEquals(A1, mv.getTo());
 		
@@ -118,8 +118,8 @@ class MinimaxEngineTest {
 		assertEquals(Type.WIN, max.getType());
 		assertEquals(2, max.getCountToEnd());
 		assertTrue(moves.get(1).getScore()<max.getScore());
-		assertEquals(G6, moves.get(0).getContent().getFrom());
-		assertEquals(H8, moves.get(0).getContent().getTo());
+		assertEquals(G6, moves.get(0).getMove().getFrom());
+		assertEquals(H8, moves.get(0).getMove().getTo());
 		
 		
 		// Check in 3
@@ -129,7 +129,7 @@ class MinimaxEngineTest {
 		engine.getDeepeningPolicy().setAccuracy(100);
 		moves = getBests(engine, fromFEN("r2k1r2/pp1b2pp/1b2Pn2/2p5/Q1B2Bq1/2P5/P5PP/3R1RK1 w - - 0 1", StrictMoveEvaluator::new));
 //show(moves);
-		mv = moves.get(0).getContent();
+		mv = moves.get(0).getMove();
 		assertEquals(D1, mv.getFrom());
 		assertEquals(D7, mv.getTo());
 	}

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -13,13 +12,10 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fathzer.games.MoveGenerator;
-import com.fathzer.games.perft.PerfT;
+import com.fathzer.games.perft.PerfTBuilder;
 import com.fathzer.games.perft.PerfTParser;
 import com.fathzer.games.perft.PerfTResult;
 import com.fathzer.games.perft.PerfTTestData;
-import com.fathzer.games.util.PhysicalCores;
-import com.fathzer.games.util.exec.ContextualizedExecutor;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -33,48 +29,33 @@ class PerfTTest {
 		if (depth!=1) {
 			log.info("PerfT test depth is set to {}",depth);
 		}
-		final Iterator<PerfTTestData> iterator = readTests().iterator();
-		try (ContextualizedExecutor<MoveGenerator<Move>> exec =new ContextualizedExecutor<>(PhysicalCores.count())) {
-			while (iterator.hasNext()) {
-				final PerfTTestData test = iterator.next();
-				try {
-					doTest(exec, test, depth);
-				} catch (Exception e) {
-					fail("Exception on "+test.getStartPosition(),e);
-				}
+		readTests().stream().parallel().forEach(test -> {
+			try {
+				doTest(test, depth);
+			} catch (Exception e) {
+				fail("Exception on "+test.getStartPosition(),e);
 			}
-		}
+		});
 	}
 	
-//	@Test
+	@Test
 	void showDivide() {
-		try (ContextualizedExecutor<MoveGenerator<Move>> exec =new ContextualizedExecutor<>(PhysicalCores.count())) {
-			final Board board = new Board();
-			board.loadFromFen("8/8/6b1/k3p2N/8/b1PB4/K6p/8 b - - 0 1");
-			final PerfT<Move> perfT = new PerfT<>(exec);
-			final PerfTResult<Move> divide = perfT.divide(2, new ChessLibMoveGenerator(board));
-			System.out.println("Leaves: "+ divide.getNbLeaves());
-			System.out.println("Divide is "+divide.getDivides());
-		}
+		final Board board = new Board();
+//		board.loadFromFen("8/8/6b1/k3p2N/8/b1PB4/K6p/8 b - - 0 1");
+		board.loadFromFen("r1b3r1/p2p1pk1/np6/4q1p1/N1P2RPp/1P1PP3/P1RK3P/1QN1B1n1 b - - 0 1");
+		final PerfTBuilder<Move> perfT = new PerfTBuilder<>();
+		final PerfTResult<Move> divide = perfT.build(new ChessLibMoveGenerator(board), 2).get();
+		System.out.println("Leaves: "+ divide.getNbLeaves());
+		System.out.println("Divide is "+divide.getDivides());
 	}
 
-	private void doTest(ContextualizedExecutor<MoveGenerator<Move>> exec, PerfTTestData test, int depth) {
+	private void doTest(PerfTTestData test, int depth) {
 		final Board board = new Board();
 		board.loadFromFen(test.getStartPosition()+" 0 1");
-		final PerfT<Move> perfT = new PerfT<>(exec);
+		final PerfTBuilder<Move> perfT = new PerfTBuilder<>();
 		if (test.getSize()>=depth) {
-//			try {
-				final PerfTResult<Move> divide = perfT.divide(depth, new ChessLibMoveGenerator(board));
-				assertEquals(test.getCount(depth), divide.getNbLeaves(), "Error for "+test.getStartPosition()+". Divide is "+divide.getDivides());
-//				if (count != test.getCount(depth)) {
-//					System.out.println("Error for "+test.getFen()+" expected "+test.getCount(depth)+" got "+count);
-//				} else {
-//					System.out.println("Ok for "+test.getFen());
-//				}
-//			} catch (RuntimeException e) {
-//				System.out.println("Exception for "+test.getFen());
-//				throw e;
-//			}
+			final PerfTResult<Move> divide = perfT.build(new ChessLibMoveGenerator(board), depth).get();
+			assertEquals(test.getExpectedLeaveCount(depth), divide.getNbLeaves(), "Error for "+test.getStartPosition()+". Divide is "+divide.getDivides());
 		}
 	}
 
