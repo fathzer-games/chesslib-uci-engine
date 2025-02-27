@@ -24,7 +24,6 @@ import com.fathzer.games.ai.iterativedeepening.SearchHistory;
 import com.fathzer.games.ai.evaluation.Evaluator;
 import com.fathzer.games.util.SelectiveComparator;
 import com.fathzer.games.util.exec.ExecutionContext;
-import com.fathzer.games.util.exec.SingleThreadContext;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.uci.ChessLibEngine;
@@ -140,7 +139,7 @@ class MinimaxEngineTest {
 		final Evaluator<Move,ChessLibMoveGenerator> basicEvaluator = new NaiveEvaluator();
 		basicEvaluator.init(board);
 		SearchContext<Move, ChessLibMoveGenerator> context = SearchContext.get(board, () -> basicEvaluator);
-		try (ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> exec = new SingleThreadContext<>(context)) {
+		try (ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> exec = ExecutionContext.get(1, context)) {
 			Negamax<Move, ChessLibMoveGenerator> ai = new Negamax<>(exec);
 			List<Move> l = new ArrayList<>();
 			l.add(new Move(H1, G1));
