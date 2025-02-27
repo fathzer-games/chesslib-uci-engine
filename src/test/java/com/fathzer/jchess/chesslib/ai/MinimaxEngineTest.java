@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.fathzer.games.MoveGenerator;
 import com.fathzer.games.ai.Negamax;
 import com.fathzer.games.ai.SearchContext;
-import com.fathzer.games.ai.SearchParameters;
+import com.fathzer.games.ai.DepthFirstSearchParameters;
 import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.evaluation.Evaluation;
 import com.fathzer.games.ai.evaluation.Evaluation.Type;
@@ -146,7 +146,7 @@ class MinimaxEngineTest {
 			l.add(new Move(H1, G1));
 			l.add(new Move(F2, F3));
 			l.add(new Move(F2, F4));
-			final SearchParameters params = new SearchParameters(4, Integer.MAX_VALUE, 0);
+			final DepthFirstSearchParameters params = new DepthFirstSearchParameters(4, Integer.MAX_VALUE, 0);
 			final List<EvaluatedMove<Move>> eval = ai.getBestMoves(l, params).getCut();
 			assertEquals(3, eval.size());
 			for (EvaluatedMove<Move> e : eval) {
