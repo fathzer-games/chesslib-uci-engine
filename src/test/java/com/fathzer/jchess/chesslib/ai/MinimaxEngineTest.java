@@ -60,7 +60,7 @@ class MinimaxEngineTest {
 	
 	private <M, B extends MoveGenerator<M>> List<EvaluatedMove<M>> getBests(IterativeDeepeningEngine<M, B> engine, B moveGenerator) {
 		final SearchHistory<M> bestMoves = engine.getBestMoves(moveGenerator);
-		return bestMoves.getBestMoves();
+		return bestMoves.getAccurateMoves();
 	}
 	
 	@Test
@@ -206,7 +206,7 @@ class MinimaxEngineTest {
 		engine.getDeepeningPolicy().setSize(1);
 		engine.getDeepeningPolicy().setAccuracy(0);
 		final SearchHistory<Move> history = engine.getBestMoves(board);
-		List<EvaluatedMove<Move>> bestMoves = history.getBestMoves();
+		List<EvaluatedMove<Move>> bestMoves = history.getAccurateMoves();
 		System.out.println(bestMoves);
 		assertEquals(2, bestMoves.size());
 	}
@@ -217,6 +217,6 @@ class MinimaxEngineTest {
 	void bug20230821() {
 		// Not a bug, just a problem with evaluation function
 		IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(NaiveEvaluator::new, 7);
-		System.out.println(engine.getBestMoves(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")).getBestMoves().get(0));
+		System.out.println(engine.getBestMoves(fromFEN("8/6k1/6p1/1N6/6K1/R7/4B3/8 w - - 21 76")).getAccurateMoves().get(0));
 	}
 }
