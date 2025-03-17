@@ -59,8 +59,7 @@ public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenera
 			EvaluatedMove<Move> evaluatedMove = result.getAccurateMoves().get(0);
 			Move move = evaluatedMove.getMove();
 			log.info("Move chosen :{}", move);
-			final List<Move> pv = evaluatedMove.getPrincipalVariation();
-			log.info("pv: {}", pv);
+			log.info("pv: {}", engine.getTranspositionTable().collectPV(board, move, result.getLastDepth()));
 		}
 	}
 }
