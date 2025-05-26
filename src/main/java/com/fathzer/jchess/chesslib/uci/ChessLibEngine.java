@@ -54,7 +54,13 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 <<<<<<< Upstream, based on origin/main
 <<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
+<<<<<<< Upstream, based on origin/main
 			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
+=======
+			new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
+			new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
+			new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),
+>>>>>>> 9ffe81b Ajout de hbSimplified Evaluator, qui avait été perdu
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
