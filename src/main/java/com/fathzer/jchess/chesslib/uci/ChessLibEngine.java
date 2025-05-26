@@ -47,6 +47,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
 			new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
 			new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
+			new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
