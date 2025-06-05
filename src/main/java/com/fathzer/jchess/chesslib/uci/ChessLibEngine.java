@@ -54,7 +54,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 
 	public ChessLibEngine(DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook) {
-		super (buildEngine(EVALUATORS.get(0).getBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
+		super (buildEngine(EVALUATORS.get(0).evaluatorBuilder(), 20), new BasicTimeManager<>(RemainingMoveOracle.INSTANCE));
 		setEvaluators(EVALUATORS);
 		this.ownBook = ownBook;
 	}
