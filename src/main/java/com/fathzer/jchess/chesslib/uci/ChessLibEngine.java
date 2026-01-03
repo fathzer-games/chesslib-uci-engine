@@ -30,6 +30,7 @@ import com.fathzer.jchess.chesslib.ai.eval.MyTinyEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.NaiveEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.PestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.SimplifiedEvaluator;
+import com.fathzer.jchess.chesslib.ai.eval.hb.HbPestoEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2MyFirstEvaluator;
 import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.time.RemainingMoveOracle;
@@ -63,7 +64,8 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 >>>>>>> 9ffe81b Ajout de hbSimplified Evaluator, qui avait été perdu
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
-			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
+			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new),
+			new EvaluatorConfiguration<>("hbPesto",HbPestoEvaluator::new)
 		);
 <<<<<<< Upstream, based on origin/main
 =======
