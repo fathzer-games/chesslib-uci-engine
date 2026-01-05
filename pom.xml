@@ -27,6 +27,7 @@
 		<maven.compiler.release>17</maven.compiler.release>
 		<sonar.organization>fathzer-games</sonar.organization>
 		<customized.jar.name>chesslib-uci-engine</customized.jar.name>
+		<maven.build.timestamp.format>yyyyMMdd HH-mm-ss</maven.build.timestamp.format>
 	</properties>
 
 	<repositories>
@@ -94,6 +95,31 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>generate-build-info</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo message="Generating build-info.properties"/>
+								<mkdir dir="${project.build.outputDirectory}"/>
+								<propertyfile file="${project.build.outputDirectory}/build-info.properties" comment="Build information">
+									<entry key="name" value="${project.groupId}:${project.artifactId}"/>
+									<entry key="version" value="${project.version}"/>
+									<entry key="build" value="${maven.build.timestamp}"/>
+								</propertyfile>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>3.4.1</version>
