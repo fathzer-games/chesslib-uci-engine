@@ -51,18 +51,15 @@ public class DefaultLogger implements EngineEventLogger<Move, ChessLibMoveGenera
 	
 	@Override
 	public void logSearchEnd(ChessLibMoveGenerator board, SearchHistory<Move> result) {
-		log.info("--- End of iterative evaluation returns: {}", result.getBestMoves());
-	}
-
-	@Override
-	public void logMoveChosen(ChessLibMoveGenerator board, EvaluatedMove<Move> evaluatedMove) {
-		if (evaluatedMove==null) {
+		log.info("--- End of iterative evaluation returns: {}", result.getAccurateMoves());
+		if (result.isEmpty()) {
 			log.info("No valid move found");
 		} else {
-			Move move = evaluatedMove.getContent();
+			//TODO Not the right place, the engine could return another move, especially when there is tie moves
+			EvaluatedMove<Move> evaluatedMove = result.getAccurateMoves().get(0);
+			Move move = evaluatedMove.getMove();
 			log.info("Move chosen :{}", move);
-			final List<Move> pv = evaluatedMove.getPrincipalVariation();
-			log.info("pv: {}", pv);
+			log.info("pv: {}", engine.getTranspositionTable().collectPV(board, move, result.getLastDepth()));
 		}
 	}
 }

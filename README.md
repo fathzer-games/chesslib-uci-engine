@@ -4,12 +4,12 @@
 # chesslib-uci-engine
 A basic [UCI](https://en.wikipedia.org/wiki/Universal_Chess_Interface) engine based on the [bhlangonijr/chesslib](https://github.com/bhlangonijr/chesslib) move generator, and the [games-core](https://github.com/fathzer-games/games-core) alpha beta search algorithm implementation. It uses the evaluation functions, the remaining move oracle and some other things from the [chess-utils](https://github.com/fathzer-games/chess-utils) library.
 
-You can play against it on [Lichess](https://lichess.org/@/fathzer-jchess). It runs on a Minisforum U300 with [3867U processor](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Celeron+3867U+%40+1.80GHz&id=3442).
+You can play against it on [Lichess](https://lichess.org/@/fathzer-jchess). It runs on a Nipogi e2 with N97 processor](https://www.passmark.com/baselines/V11/display.php?id=284967660181).
 
 ## How to run the engine
 It requires a Java 17+ virtual machine.
 
-Download the jar [here](https://fathzer-games.github.io/chesslib-uci-engine/chesslib-uci-engine.jar), then Launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
+Download the jar [here](https://fathzer-games.github.io/chesslib-uci-engine/chesslib-uci-engine.jar), then launch the engine with the following command: ```java -jar chesslib-uci-engine.jar```
 
 ### Openings library
 You can use an opening library located at a URL using the ```openingsUrl``` system property.  

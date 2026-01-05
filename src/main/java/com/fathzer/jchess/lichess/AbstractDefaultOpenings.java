@@ -2,9 +2,9 @@ package com.fathzer.jchess.lichess;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
 
@@ -38,18 +38,18 @@ public abstract class AbstractDefaultOpenings<M, B extends MoveGenerator<M>> ext
 	}
 	
 	@Override
-	protected Optional<List<JSONObject>> getRecord(B board) {
+	protected List<JSONObject> getRecords(B board) {
 		final String fen = toReducedXFen(board);
 		final JSONObject theRecord = db.optJSONObject(fen);
 		final JSONArray moves = theRecord==null ? null : theRecord.optJSONArray("moves");
 		if (moves==null) {
-			return Optional.empty();
+			return Collections.emptyList();
 		}
 		final List<JSONObject> result = new LinkedList<>();
 		for (int i=0;i<moves.length();i++) {
 			result.add(moves.getJSONObject(i));
 		}
-		return Optional.of(result);
+		return result;
 	}
 
 	@Override
