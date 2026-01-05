@@ -28,11 +28,12 @@ class HBThreeMovesTestPassedPawns {
 		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = ChessLibEngine.buildEngine(Hb2SimplifiedEvaluator::new, depth);
 		engine.getDeepeningPolicy().setSize(bestMoveCount);
 		engine.getDeepeningPolicy().setDeepenOnForced(true);
-		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new)).getBestMoves();
+		final ChessLibMoveGenerator board = MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new);
+		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(board).getAccurateMoves();
 		System.out.println(moves);
 		for (EvaluatedMove<Move> move : moves) {
 //			EvaluatedMove<Move> move = moves.get(i);
-			List<Move> principalVariation = move.getPrincipalVariation();
+			List<Move> principalVariation = engine.getTranspositionTable().collectPV(board, move.getMove(), depth);
 			System.out.println(move+" -> "+principalVariation);
 		}
 	}

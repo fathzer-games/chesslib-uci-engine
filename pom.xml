@@ -10,15 +10,7 @@
 		<version>1.0.9</version>
 	</parent>
 	<artifactId>chesslib-uci-engine</artifactId>
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
 	<version>0.0.4</version>
-=======
-	<version>0.0.2</version>
->>>>>>> f67222a nettoyage, refactoring
-=======
-	<version>0.0.3</version>
->>>>>>> 7a85b33 multiple pawns of the same color on a column taken into account for pawns structure's evaluation
 
 	<name>chesslib-uci-engine</name>
 	<description>A basic uci engine based on chesslib move generator.</description>

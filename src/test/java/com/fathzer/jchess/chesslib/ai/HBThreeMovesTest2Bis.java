@@ -8,7 +8,6 @@ import com.fathzer.games.ai.evaluation.EvaluatedMove;
 import com.fathzer.games.ai.iterativedeepening.IterativeDeepeningEngine;
 import com.fathzer.jchess.chesslib.ChessLibMoveGenerator;
 import com.fathzer.jchess.chesslib.ai.eval.hb.HbPestoEvaluator;
-import com.fathzer.jchess.chesslib.ai.eval.hbpg2.Hb2SimplifiedEvaluator;
 import com.fathzer.jchess.chesslib.uci.ChessLibEngine;
 import com.github.bhlangonijr.chesslib.move.Move;
 
@@ -29,11 +28,12 @@ class HBThreeMovesTest2Bis {
 		
 		engine.getDeepeningPolicy().setSize(bestMoveCount);
 		engine.getDeepeningPolicy().setDeepenOnForced(true);
-		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new)).getBestMoves();
+		final ChessLibMoveGenerator board = MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new);
+		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(board).getAccurateMoves();
 		System.out.println(moves);
 		for (EvaluatedMove<Move> move : moves) {
 //			EvaluatedMove<Move> move = moves.get(i);
-			List<Move> principalVariation = move.getPrincipalVariation();
+			List<Move> principalVariation = engine.getTranspositionTable().collectPV(board, move.getMove(), depth);
 			System.out.println(move+" -> "+principalVariation);
 		}
 	}

@@ -44,114 +44,16 @@ import com.github.bhlangonijr.chesslib.Piece;
 import com.github.bhlangonijr.chesslib.Square;
 import com.github.bhlangonijr.chesslib.move.Move;
 
-<<<<<<< Upstream, based on origin/main
 public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements FromPositionMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-=======
-public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> implements TestableMoveGeneratorBuilder<Move, ChessLibMoveGenerator>, Displayable {
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
 	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = Arrays.asList(
-<<<<<<< Upstream, based on origin/main
-			new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),
-=======
 			new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
 			new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
 			new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),
->>>>>>> 9ffe81b Ajout de hbSimplified Evaluator, qui avait été perdu
 			new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
 			new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
 			new EvaluatorConfiguration<>("naive",NaiveEvaluator::new),
 			new EvaluatorConfiguration<>("hbPesto",HbPestoEvaluator::new)
 		);
-<<<<<<< Upstream, based on origin/main
-=======
->>>>>>> 8600cfb squelette d'évaluateur
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(
-					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
-					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
-					new EvaluatorConfiguration<>("pesto",PestoEvaluator::new),
-=======
-					new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),				
->>>>>>> bda7176 Hb2SimplifiedEvaluator: incrémental achevé et propre pour position des pièces et matériel. Avec tapered eval
-					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
-					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
-					);
-<<<<<<< Upstream, based on origin/main
-=======
->>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-<<<<<<< Upstream, based on origin/main
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> f86bfc5 squelette d'évaluateur
-<<<<<<< Upstream, based on origin/main
->>>>>>> 8600cfb squelette d'évaluateur
-=======
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-<<<<<<< Upstream, based on origin/main
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> e44b9b1 squelette d'évaluateur
-<<<<<<< Upstream, based on origin/main
->>>>>>> 270a4e0 squelette d'évaluateur
-=======
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> bf384dd squelette d'évaluateur
->>>>>>> 9c3d5f6 squelette d'évaluateur
-=======
->>>>>>> e2c25bb Fucking rebase first try
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> 021efeb squelette d'évaluateur
-=======
-			Arrays.asList(
-					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
-					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
-=======
-					new EvaluatorConfiguration<>("hbSimplified",Hb2SimplifiedEvaluator::new),				
->>>>>>> 60c3451 Hb2SimplifiedEvaluator: incrémental achevé et propre pour position des pièces et matériel. Avec tapered eval
-					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
-					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
-					);
->>>>>>> d32a00b Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> f86bfc5 squelette d'évaluateur
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> e44b9b1 squelette d'évaluateur
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> bf384dd squelette d'évaluateur
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> 31f501a squelette d'évaluateur
-=======
-	private static final List<EvaluatorConfiguration<Move, ChessLibMoveGenerator>> EVALUATORS = 
-			Arrays.asList(new EvaluatorConfiguration<>("hb",MyTinyEvaluator::new),new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),new EvaluatorConfiguration<>("naive",NaiveEvaluator::new));
->>>>>>> 3f9a979 squelette d'évaluateur
-=======
-			Arrays.asList(
-					new EvaluatorConfiguration<>("hbfirst2",Hb2MyFirstEvaluator::new),
-					new EvaluatorConfiguration<>("hbtiny",MyTinyEvaluator::new),
-					new EvaluatorConfiguration<>("simplified",SimplifiedEvaluator::new),
-					new EvaluatorConfiguration<>("naive",NaiveEvaluator::new)
-					);
->>>>>>> 1477ae6 Hb2MyFirstEvaluator: the beginning. Compared to the SimplifiedEvaluator the evaluation function is tapered (scale = 64)
 	
 	private final DeferredReadMoveLibrary<Move, ChessLibMoveGenerator> ownBook;
 
@@ -237,7 +139,7 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 	}
 	
 	public static IterativeDeepeningEngine<Move, ChessLibMoveGenerator> buildEngine(Supplier<Evaluator<Move, ChessLibMoveGenerator>> evaluatorBuilder, int maxDepth) {
-		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(256, SizeUnit.MB), evaluatorBuilder) {
+		final IterativeDeepeningEngine<Move, ChessLibMoveGenerator> engine = new IterativeDeepeningEngine<>(new ChessLibDeepeningPolicy(maxDepth), new TT(16, SizeUnit.MB), evaluatorBuilder) {
 			@Override
 			protected Negamax<Move, ChessLibMoveGenerator> buildAI(ExecutionContext<SearchContext<Move, ChessLibMoveGenerator>> context) {
 				final Negamax<Move, ChessLibMoveGenerator> negaMax = (Negamax<Move, ChessLibMoveGenerator>) super.buildAI(context);
@@ -249,7 +151,6 @@ public class ChessLibEngine extends AbstractEngine<Move, ChessLibMoveGenerator> 
 		engine.setLogger(new DefaultLogger(engine));
 		engine.setParallelism(PhysicalCores.count()>1 ? 2 : 1);
 		engine.getDeepeningPolicy().setMaxTime(60000);
-		engine.getDeepeningPolicy().setDeepenOnForced(false);
 		return engine;
 	}
 

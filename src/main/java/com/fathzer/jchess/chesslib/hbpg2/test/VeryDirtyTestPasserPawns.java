@@ -109,8 +109,6 @@ public class VeryDirtyTestPasserPawns {
 				 fileFin = pawnSq.getFile().ordinal() +1;
 			 }
 			 //getRgSquare
-<<<<<<< Upstream, based on origin/main
-<<<<<<< Upstream, based on origin/main
 
 //			 int rgDebutSq = (Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut;
 //			 int rgFinSq = (Hb2ChessConstants.NB_RANKS*rankFin)+fileFin;
@@ -226,129 +224,6 @@ public class VeryDirtyTestPasserPawns {
 		Board internal = new Board();
 		internal.loadFromFen(fen); 
 		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(internal);
-		
-		System.out.println(internal.toStringFromWhiteViewPoint());
-=======
-//			 Square sqDebut = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut);
-//			 Square sqFin = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankFin)+fileFin);
-=======
-
->>>>>>> 1e497ad Retour à la v1.3.3 de chesslib
-//			 int rgDebutSq = (Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut;
-//			 int rgFinSq = (Hb2ChessConstants.NB_RANKS*rankFin)+fileFin;
-			 boolean areEnemyPawnInZone = false;
-			 for (int rankk = rankDebut; rankk <= rankFin; rankk++) {
-				 int rgSqDebutRank  = getRgSquare(rankk, fileDebut);
-				 int rgSqFintRank  = getRgSquare(rankk, fileFin);
-				 long pionsAdversesDansZoneForRank = Bitboard.bitsBetween(bitboardEnemyPawns, rgSqDebutRank, rgSqFintRank);
-				 if (pionsAdversesDansZoneForRank != 0L) {
-					 areEnemyPawnInZone = true;
-					 break;
-				 }
-				 
-			 }
-			 
-//			 Square sqDebut = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut);
-//			 Square sqFin = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankFin)+fileFin);
-//			long ALL_BITS_EQUAL_ONE_BITBOARD = 0xFFFFFFFFFFFFFFFFL;
-//			 long pionsAdversesDansZone = Bitboard.bitsBetween(ALL_BITS_EQUAL_ONE_BITBOARD, sqDebut.ordinal(), sqFin.ordinal());
-////			 long pionsAdversesDansZone = Bitboard.bitsBetween(ALL_BITS_EQUAL_ONE_BITBOARD, rgDebutSq, rgFinSq);
-//			 List<Square> lstKazz = Bitboard.bbToSquareList(pionsAdversesDansZone);
-//			 for (Square kaaaaz : lstKazz) {
-//				 System.out.println(kaaaaz.value());
-//			 }
-			 if (areEnemyPawnInZone == false) {
-				 System.out.println("THE WHITE " + pawnSq.name()+ " PAWN IS A PASSED PAWN!");
-			 }
-
-			 		
-			
-			
-		} else {
-			
-			// Bon, on part de la rangée devant le pion noir (du point de vue noir) et on va jusqu'à la 2ème rangée, pour la colonne du pion et ses colonnes adjacentes (au max 2)
-			// On regarde s'il y a un pion blanc ennemi dans cette zone. Si c'est le cas, alors le pion n'est pas passé. Si cette zone est vide de pions blancs, alors 
-			// le pion noir est passé
-			 int rankDebut = Rank.RANK_2.ordinal(); 
-			 int rankFin = pawnSq.getRank().ordinal()-1;
-			 int fileDebut = pawnSq.getFile().ordinal();
-			 int fileFin = pawnSq.getFile().ordinal();
-			 if (columnPawn == 0) {
-				 fileFin = File.FILE_B.ordinal(); 
-			 } else if (columnPawn == 7) {
-				 fileDebut = File.FILE_G.ordinal(); 
-			 }	else {
-				 fileDebut = pawnSq.getFile().ordinal() - 1;
-				 fileFin = pawnSq.getFile().ordinal() +1;
-			 }
-			 
-//			 Square sqDebut = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankDebut)+fileDebut);
-//			 Square sqFin = Square.squareAt((Hb2ChessConstants.NB_RANKS*rankFin)+fileFin);
-			 
-			 boolean areEnemyPawnInZone = false;
-			 for (int rankk = rankDebut; rankk <= rankFin; rankk++) {
-				 int rgSqDebutRank  = getRgSquare(rankk, fileDebut);
-				 int rgSqFintRank  = getRgSquare(rankk, fileFin);
-				 long pionsAdversesDansZoneForRank = Bitboard.bitsBetween(bitboardEnemyPawns, rgSqDebutRank, rgSqFintRank);
-				 if (pionsAdversesDansZoneForRank != 0L) {
-					 areEnemyPawnInZone = true;
-					 break;
-				 }
-				 
-			 }
-	
-			 
-			 if (areEnemyPawnInZone == false) {
-				 System.out.println("THE BLACK " + pawnSq.name()+ " PAWN IS A PASSED PAWN!");
-			 }
-			
-			
-		}
-
-		System.out.println("####################");
-		System.out.println();
-		System.out.println();
-		
-	}
-	
-	static void deallWithSquareOccupiedByPawn(Square pawnSq, boolean isBlack, Board board) {
-	
-		printDetailsAboutPawn(pawnSq, isBlack, board);
-		
-	}
-
-	
-	
-	static void testFen1() {
-
-		
-		testFen("6k1/8/1Pp5/8/8/3P4/1K6/8 w - - 0 1");
-		
-		
-	}
-		
-	
-		
-	static void testFen2() {
-		testFen("6k1/8/1Pp5/8/8/3P3p/1K2Pp2/8 w - - 0 1");
-			
-			
-		}
-	static void testFen3() {
-		testFen("6k1/8/1Pp5/8/8/7p/1K1PPp2/8 w - - 0 1");
-			
-			
-		}
-	
-	
-	static void testFen(String fen) {
-		
-		System.out.println();
-		System.out.println("FEN en test pour les pions passés:" + fen);
-		Board internal = new Board();
-		internal.loadFromFen(fen); 
-		ChessLibMoveGenerator mvg = new ChessLibMoveGenerator(internal);
->>>>>>> 2321e50 Well, see VeryDirtyTestPasserPawns.java The detection method of the passed pawns works fine, eventually!
 		
 		System.out.println(internal.toStringFromWhiteViewPoint());
 		
