@@ -28,6 +28,13 @@ public abstract class HbAbstractIncrementalPestoEvaluator<M, B extends MoveGener
 		super(HbPestoState::new, state);
 	}
 	
+	@Override
+	public void init(B board) {
+		super.init(board);
+		// utiliser board, qui en vrai est un ChessLibMoveGenerator
+	
+	}
+	
     @Override
 	protected void clear(HbPestoState state) {
 		state.clear();

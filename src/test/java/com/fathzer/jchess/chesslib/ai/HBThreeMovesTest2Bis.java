@@ -29,6 +29,10 @@ class HBThreeMovesTest2Bis {
 		engine.getDeepeningPolicy().setSize(bestMoveCount);
 		engine.getDeepeningPolicy().setDeepenOnForced(true);
 		final ChessLibMoveGenerator board = MinimaxEngineTest.fromFEN(fen, BasicMoveComparator::new);
+//		final ChessLibMoveGenerator board = new ChessLibEngine().fromPosition(fen);
+//		board.setMoveComparatorBuilder( BasicMoveComparator::new);
+		
+		
 		final List<EvaluatedMove<Move>> moves = engine.getBestMoves(board).getAccurateMoves();
 		System.out.println(moves);
 		for (EvaluatedMove<Move> move : moves) {
