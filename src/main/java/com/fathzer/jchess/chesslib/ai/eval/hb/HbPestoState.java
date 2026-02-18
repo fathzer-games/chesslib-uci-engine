@@ -6,11 +6,11 @@ package com.fathzer.jchess.chesslib.ai.eval.hb;
  */
 public class HbPestoState {
 	
-	class HpComplementsPestoState {
+	public class HbComplementsPestoState {
 		
-		int mgPassedPawnsBonus;
-		int egPassedPawnsBonus;
-		public HpComplementsPestoState() {
+		public int mgPassedPawnsBonus;
+		public int egPassedPawnsBonus;
+		public HbComplementsPestoState() {
 			super();
 			mgPassedPawnsBonus = 1;
 		}
@@ -19,15 +19,15 @@ public class HbPestoState {
 	}
 	int mgPoints;
 	int egPoints;
-	HpComplementsPestoState hnComplPs;
+	public HbComplementsPestoState hbComplPs;
 	
 	int phasePoints;
 	
 	
 	
-	HbPestoState() {
+	public HbPestoState() {
 		super();
-		hnComplPs = new HpComplementsPestoState();
+		hbComplPs = new HbComplementsPestoState();
 	}
 	
 	public int getMgPoints() {
@@ -46,12 +46,12 @@ public class HbPestoState {
 		this.egPoints = egPoints;
 	}
 
-	public HpComplementsPestoState getHnComplPs() {
-		return hnComplPs;
+	public HbComplementsPestoState getHnComplPs() {
+		return hbComplPs;
 	}
 
-	public void setHnComplPs(HpComplementsPestoState hnComplPs) {
-		this.hnComplPs = hnComplPs;
+	public void setHnComplPs(HbComplementsPestoState hnComplPs) {
+		this.hbComplPs = hnComplPs;
 	}
 
 	public int getPhasePoints() {
@@ -62,31 +62,22 @@ public class HbPestoState {
 		this.phasePoints = phasePoints;
 	}
 
-	void copyTo(HbPestoState other) {
+	public void copyTo(HbPestoState other) {
 		other.mgPoints = mgPoints;
 		other.egPoints = egPoints;
 		other.phasePoints = phasePoints;
-		other.hnComplPs.mgPassedPawnsBonus = hnComplPs.mgPassedPawnsBonus;
-		other.hnComplPs.egPassedPawnsBonus = hnComplPs.egPassedPawnsBonus;
+		other.hbComplPs.mgPassedPawnsBonus = hbComplPs.mgPassedPawnsBonus;
+		other.hbComplPs.egPassedPawnsBonus = hbComplPs.egPassedPawnsBonus;
 	}
 	
 	void clear() {
 		mgPoints = 0;
 		egPoints = 0;
 		phasePoints = 0;
+		hbComplPs.mgPassedPawnsBonus =0;
+		hbComplPs.egPassedPawnsBonus =0;
+				
 	}
 	
-	public static void main(String[] args) {
-		HbPestoState lHbPestoState = new HbPestoState();
-		System.out.println(lHbPestoState.hnComplPs.mgPassedPawnsBonus);
-		System.out.println(lHbPestoState.hnComplPs.egPassedPawnsBonus);
-		(lHbPestoState.hnComplPs.mgPassedPawnsBonus)++;
-		System.out.println(lHbPestoState.hnComplPs.mgPassedPawnsBonus);
-		System.out.println("STALINE");
-		HbPestoState HbPestoState2 = new HbPestoState();
-		lHbPestoState.copyTo(HbPestoState2);
-		System.out.println(HbPestoState2.hnComplPs.mgPassedPawnsBonus);
-		System.out.println(HbPestoState2.hnComplPs.egPassedPawnsBonus);
-
-	}
+	
 }
